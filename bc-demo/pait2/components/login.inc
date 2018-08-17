@@ -1,0 +1,61 @@
+<?PHP
+/**
+ * anApp login component
+ * Requires the alib user object.
+ */
+
+
+/**
+ * There are two ways one won't get a true login. One is if you don't attempt to log in, and one is if you do and fail.
+ * If $login->loggedIn is false, you're in one of these error states. If $login->error == BADLOGIN, you failed auth.
+ */
+
+define("BADLOGIN", 1);
+
+
+class login extends anObject {
+  public $user;
+  public $loggedIn;
+  public $error;
+  public $template;
+
+  function __construct ($tempfile) {
+    global $form, $AGLOBAL, $debug;
+    $AGLOBAL['DEBUG'] = $debug;
+    
+    $this->user = new User();
+    $badlogin = 0;
+    $this->loggedIn = FALSE;
+    if ($form->logout == 1) {
+      $this->user->CookieLogout();
+    }
+    if ($this->user->CookieAuth()) {
+      $debug->line("Passed cookieauth from cookie", 8);
+      $this->user->loggedIn = TRUE;
+      $this->error = FALSE;
+      $this->loggedIn = TRUE;
+    } elseif ($form->username && $form->password) {
+       $debug->line("Checking cookieauth for " . $form->username . " : " . $form->password, 8);
+	if (! $this->user->CookieAuth($form->username, $form->password)) {
+	  $debug->line("failed cookieauth for " . $form->username . " : " . $form->password, 8);
+	  $this->error = BADLOGIN;
+	} else {
+	  $debug->line("Passed cookieauth from form", 8);
+	  $this->error = FALSE;
+	  $this->user->loggedIn = TRUE;
+	  $this->loggedIn = TRUE;
+	}
+    }
+    $debug->line("Getting template $tempfile", 8);
+    $this->template = new template($tempfile);
+    $debug->variable($this->template, 9);
+    $this->template->set('user', $this->user);
+    $this->template->set('badlogin', $this->error);
+    parent::__construct();
+  }
+
+}
+
+
+
+?>

@@ -1,0 +1,80 @@
+<div class="tableViewerContainer" id="grid-panel">
+<div id="showTable" class="tableViewer"></div>
+</div>
+<script type="text/javascript">
+Ext.onReady(function(){
+Ext.namespace('Ext.PAIT.tableViewer');
+
+Ext.PAIT.personIDRenderer = function(value) {
+    if (value == '-1') {
+        return 'Not in PAIT';
+    } else {
+        return '<a href="<?=$self;?>?mode=Person&action=showPerson&personID='+value+'" target="_blank">'+value+'</a>';
+    }
+}
+            // Create the store
+            Ext.PAIT.tableViewer.store = new Ext.data.Store({
+                proxy: new Ext.data.HttpProxy({
+                    url: '<?=$self;?>/index.php?mode=ajax&module=reportViewer&report=<?=$reportType;?>&table=<?=$table;?>'
+                }),
+                reader: new Ext.data.JsonReader(),
+                remoteSort: true,
+                baseParams: { node: '<?=$node;?>' }
+            });
+            
+            Ext.PAIT.tableViewer.store.addListener('load', function(){
+                var gv = Ext.PAIT.tableViewer.grid.getView();
+                var tbh = gv.headerPanel.getHeight();
+                var bbh = gv.footerPanel.getHeight();
+                var ch = gv.getBodyTable().offsetHeight + tbh + bbh + gv.mainHd.getHeight();
+                var newHeight = ch + Ext.PAIT.tableViewer.grid.getGridEl().getBorderWidth("tb");
+                Ext.PAIT.tableViewer.layout.getEl().setHeight(newHeight+ 25);
+                Ext.PAIT.tableViewer.layout.layout();
+                });
+            // Create the grid
+            Ext.PAIT.tableViewer.grid = new Ext.ux.AutoGrid('showTable', {
+                ds: Ext.PAIT.tableViewer.store,
+                selModel: new Ext.grid.RowSelectionModel({singleSelect:true}),
+                enableColLock:false,
+                loadMask: false,
+                view: new FilteredGridView(),
+                minHeight: 300
+            });
+            Ext.PAIT.tableViewer.grid.addRenderer('Ext.PAIT.personIDRenderer', Ext.PAIT.personIDRenderer);
+            Ext.PAIT.tableViewer.gp = new Ext.GridPanel(Ext.PAIT.tableViewer.grid, {});
+		
+	    Ext.PAIT.tableViewer.layout = Ext.BorderLayout.create({
+            center: {
+                margins:{left:3,top:3,right:3,bottom:3},
+                panels: [Ext.PAIT.tableViewer.gp]
+            }
+            }, 'grid-panel');
+
+            // render grid
+            Ext.PAIT.tableViewer.grid.render();
+            
+            Ext.PAIT.tableViewer.gridFoot = Ext.PAIT.tableViewer.grid.getView().getFooterPanel(true);
+            Ext.PAIT.tableViewer.paging = new Ext.PagingToolbar(Ext.PAIT.tableViewer.gridFoot,Ext.PAIT.tableViewer.store, {
+                pageSize: <?=($size)?$size:"50";?>,
+                displayInfo: true,
+                displayMsg: 'Displaying {0} - {1} of {2}',
+                emptyMsg: 'Nothing to display'
+            });
+            Ext.PAIT.tableViewer.paging.add('-', {
+                text: 'Export to Excel',
+       icon: 'images/excel.gif',
+       cls: 'x-btn-text-icon button', // icon and text class
+        handler: function(e) {
+            window.location = '<?=$self;?>/index.php?mode=ajax&module=reportViewer&report=<?=$reportType;?>&table=<?=$table;?>&exportXLS=1';
+        }
+    });
+            // load + metadata
+            
+            Ext.PAIT.tableViewer.store.load({params: {meta: true,
+                                      start:0,
+                                      limit:<?=($size)?$size:"50";?>
+                                      <?=($prettyNames)?',prettyNames: true':'';?>
+                                      
+                                      }});
+        });        
+    </script>

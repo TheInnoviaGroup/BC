@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+	<title><?=$title;?></title>
+<? foreach ($stylesheets as $stylesheet => $type): ?>
+<link rel="stylesheet" href="<?=$stylesheet;?>" type="text/css" media="<?=$type;?>" />
+<? endforeach; ?>
+<? foreach ($javascripts as $javascript): ?>
+ <script src="javascripts/<?=$javascript;?>" type="text/javascript"></script>
+<? endforeach; ?>
+</head>
+<body>
+<div class="container">
+<?=$body;?>
+</div>
+<div class="logo"></div>
+</body>
+</html>

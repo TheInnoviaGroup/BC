@@ -1,0 +1,20 @@
+1. Check for error states:
+   a. No identifier
+2. Check for configurations:
+   a. Default Status
+   b. Status Override
+   c. Create New People (or not)
+   d. Date Type
+3. Iterate through table:
+   a. Determine create or update:
+      i. If table has personID, 0 is create, >0 is update *
+      ii. If not, create personID column and update as we go.
+      iii. If identifier is ssn:
+      	  a. Clean column.
+   b. Log changes, inserts, found-but-not-changed, not-found-not-added
+4. Map names to tables...
+
+
+
+
+* This happens when certain reports are run.

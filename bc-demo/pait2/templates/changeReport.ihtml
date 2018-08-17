@@ -1,0 +1,58 @@
+<h2 style="text-align: left;">Changes on Import</h2>
+<? switch ($show): ?>
+<? case "changeReport": ?>
+<span style="font-weight: bold; color: rgb(24, 27, 122);">Import for <?=$importInfo['companyName'];?> on <?=gmdate(PAITDATE, $importInfo['time']);?><br /></span>
+<table><tr><td valign=top>
+<span style="font-weight: bold; color: rgb(24, 27, 122);">Actions taken:<br /></span>
+<div style="margin-left: 40px;">
+<dl>
+<? foreach ($action as $act): ?>
+<? if ($act['action'] == "") { $act['action'] = "None"; }; ?>
+  <dt style="font-weight: bold;"><?=$act['action'];?>: <a href="<?=$self;?>?mode=Report&action=changeReport&drilltype=action&drilldown=<?=urlencode($act['action']);?>&importID=<?=$importID;?>"><?=$act['total'];?></a></dt>
+<? endforeach; ?>
+</dl>
+</div>
+</td><td valign=top>
+<span style="font-weight: bold; color: rgb(24, 27, 122);">Status Changes:<br /></span>
+<div style="margin-left: 40px;">
+<dl>
+<? foreach ($status as $act): ?>
+<? if ($act['statusChange'] == "") { $act['statusChange'] = "None"; }; ?>
+  <dt style="font-weight: bold;"><?=$act['statusChange'];?>: <a href="<?=$self;?>?mode=Report&action=changeReport&drilltype=statusChange&drilldown=<?=urlencode($act['statusChange']);?>&importID=<?=$importID;?>"><?=$act['total'];?></a></dt>
+<? endforeach; ?>
+</dl>
+</div>
+</td></tr><tr><td>
+<span style="font-weight: bold; color: rgb(24, 27, 122);">Policies Imported Per Person:<br /></span>
+<div style="margin-left: 40px;">
+<dl>
+<? foreach ($policy as $act): ?>
+  <dt style="font-weight: bold;"><?=$act['policyAdded'];?>: <a href="<?=$self;?>?mode=Report&action=changeReport&drilltype=policyAdded&drilldown=<?=urlencode($act['policyAdded']);?>&importID=<?=$importID;?>"><?=$act['total'];?></a></dt>
+<? endforeach; ?>
+</dl>
+</div></td><td>&nbsp;</td></tr></table>
+<? break; ?>
+<? case "drilldown": ?>
+<span style="font-weight: bold; color: rgb(24, 27, 122);">Import for <?=$importInfo['companyName'];?> on <?=gmdate(PAITDATE, $importInfo['time']);?><br />
+Drilldown: <?=$column.": ".$value;?>  (<a href="<?=$self;?>?mode=Report&action=changeReport&importID=<?=$importID;?>">go back</a>)</span>
+<div class="hideme" id="sheet1"><br><br><table class="sortable worksheet" id="worksheet1">
+<tr><th>Row</th>
+<? foreach($headers as $cruft => $header): ?>
+<? if (! is_numeric($cruft) && $cruft != "rowID"): ?>
+<th><?=$header;?></th>
+<? endif; ?>
+<? endforeach; ?>
+<th>Import ID</th><th>Action Taken</th><th>Compensation Added</th><th>Status Change</th><th>Policy Added</th><th>Log ID</th>
+</tr>
+<? foreach ($data as $row): ?>
+<tr class=\"hoverable\"><td><?=$row['rowID'];?></td><? unset($row['rowID']);
+foreach ($row as $cruft => $cell): ?>
+<? if (!is_int($cruft)): ?>
+<td><?=$cell;?></td>
+<? endif; ?>
+<? endforeach;?>
+</tr>
+<? endforeach; ?>
+</table></div>
+<? break; ?>
+<? endswitch; ?>

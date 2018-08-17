@@ -1,0 +1,594 @@
+<!-- this puts ie6 in quirksmode -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>PAIT: LOB Manager</title>
+    <style type="text/css">
+        html, body {
+    font:normal 12px verdana;
+    margin:0;
+    padding:0;
+    border:0 none;
+    overflow:hidden;
+      height:100%;
+      }
+      .x-layout-panel-north {
+      border:0px none;
+      padding: 0px;
+	    height: 72px;
+      }
+      #nav {
+      }
+      #autoTabs, #center1, #center2, #west {
+      padding:10px;
+      }
+      #south{
+      font:normal 8pt arial, helvetica;
+	    padding:4px;
+      }
+      #north.x-layout-active-content {
+      font:normal 12pt arial, helvetica;
+	    padding: 0px;
+	    height: 72px;
+      }
+      .x-layout-panel-center p {
+      margin:5px;
+      }
+#props-panel .x-grid-col-0{
+      }
+      #props-panel .x-grid-col-1{
+      }
+
+h1 {
+    font-size: x-large;
+}
+h2 {
+    font-size: large;
+}
+th {
+    font-weight: bold;
+}
+
+    .logo {
+			background: url(<?=$rootDir;?>images/banner_bg.jpg) repeat-x left top;
+			height: 12px;
+			width: 100%;
+			position: absolute;
+			z-index: 1;
+			top: 0px;
+			left: 0px;
+			}
+
+          ul.actionBloc {
+        border-top: 1px solid #99bbe8;
+        margin-right: 1px;
+        background: #d8e6f6;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      
+      ul.actionBloc li {
+        width: 100%;
+        height: 2em;
+        position: relative;
+        border-bottom: 2px solid #99bbe8;
+        border-right: 2px solid #99bbe8;
+        border-left: 2px solid #99bbe8;
+        text-align: center;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      
+      ul.actionBloc li.header {
+        background: #c7d5e5;
+      }
+      
+      ul.actionBloc li h2 {
+        font-size: 1.5em;
+        display: block;
+        width: 100%;
+        background: #c7d5e5;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      
+      ul.actionBloc li a{
+        color: #41418b;
+        height: 2em;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.33em;
+        line-height: 1em;
+        vertical-align: middle;
+        text-decoration: none;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    ul.actionBloc li a:hover {
+        color: #E2A53C;
+      }
+  
+		.x-layout-panel-hd-text {
+			color: #FFF;
+		}
+		
+		.x-layout-split-h {
+			background:#5080CF none repeat scroll 0%;
+		}
+		.x-layout-split {
+			background-color:#5080CF;
+		}
+		#searchDiv {
+			margin: 10px;
+		}
+		.x-form-item label {
+			width: 150px;
+		}
+		.x-grid-hd-text {
+			color: #FFF;
+		}
+		.x-grid-row-selected a {
+			color:#ECC47E;
+		}
+		.x-grid-row-selected a:visited {
+			color:#ECC47E;
+		}
+		a {
+			color:#316AC5;
+		}
+		a:visited {
+			color:#316AC5;
+		}
+		.centerContent {
+			padding: 10px;
+		}
+		.loggedinbox {
+				background: #D8E6F6;
+				font-size: small;
+				font-weight: bolder;
+				color: black;
+				width: 175px;
+				margin-left: auto;
+				margin-right: auto;
+				text-align: center;
+		}
+		.top {	background-image: url(images/login-ts.gif);
+			background-repeat: repeat-x;
+			background-position: top;}
+		.bottom {background-image: url(images/login-bs.gif);
+					background-repeat: repeat-x;
+					background-position: bottom; }
+		.left {background-image: url(images/login-ls.gif);
+					background-repeat: repeat-y;
+					background-position: left;}
+		.right {background-image: url(images/login-rs.gif);
+					background-repeat: repeat-y;
+					background-position: right; }    
+
+table.sortable { 
+width: 85%;
+margin-left: auto;
+margin-right: auto;
+border-spacing: 0px;
+border-collapse: collapse;
+margin-bottom: 5px;
+margin-top: 5px;
+ }
+
+table.searchresults { 
+width: 85%;
+margin-left: auto;
+margin-right: auto;
+border-spacing: 0px;
+border-collapse: collapse;
+margin-bottom: 5px;
+ }
+
+table.searchresults table.sortable { 
+  width: 100%;
+ }
+
+table.sortable td { 
+  padding: 2px;
+  border: 1px solid #14164D;
+  font-size: small;
+ }
+
+
+table.sortable th { 
+padding: 2px;
+background-color:#316AC5;
+border: 1px solid #14164D;
+font-size: small;
+ }
+ 
+table.sortable a.sortheader {
+    color:#FFFFFF;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 0 2px 0 2px;
+    display: block;
+    font-size: small;
+}
+table.sortable span.sortarrow {
+    color: black;
+    text-decoration: none;
+}
+
+tr.hoverable:hover {
+	background-color: #FF9;
+	color: #000000;
+}
+		.actionBox {
+				display:block;
+        text-align: center;
+        margin-top: 14px;
+        margin-bottom: 14px;
+		}
+		.actionBox a {
+        border: 2px solid #99BBE8;
+        text-align: center;
+        padding: 3px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        background: #EEF4FB;
+		}
+                .hide-label label {
+     display:none;
+}
+.hide-label .x-form-element {
+     padding-left: 0 !important;
+}
+    </style>
+
+  <? if (is_array($stylesheets)): ?>
+  <? foreach ($stylesheets as $stylesheet => $type): ?>
+  <link rel="stylesheet" href="<?=$stylesheet;?>" type="text/css" media="<?=$type;?>" />
+  <? endforeach; ?>
+  <!--[if lt IE 7]>
+      <? foreach ($stylesheets as $stylesheet => $type): ?>
+      <link rel="stylesheet" href="ie<?=$stylesheet;?>" type="text/css" media="<?=$type;?>" />
+      <? endforeach; ?>
+      <![endif]-->
+  <? endif; ?>
+  <? if (is_array($javascripts)): ?>
+  <? foreach ($javascripts as $javascript): ?>
+  <script src="javascripts/<?=$javascript;?>" type="text/javascript"></script>
+  <? endforeach; ?>
+  <? endif; ?>
+  <link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css" />
+  <!-- GC --> <link rel="stylesheet" type="text/css" href="ext/resources/css/xtheme-aero.css" />
+  <!-- LIBS -->
+  <script type="text/javascript" src="firebug/firebugx.js"></script>
+  <script type="text/javascript" src="ext/adapter/ext/ext-base.js"></script>
+  <!-- ENDLIBS -->
+  <script type="text/javascript" src="ext/ext-all-debug.js"></script>
+  <!-- Optional Libs -->
+  <script type="text/javascript" src="ext/Ext.ux.TableGrid.js"></script>
+<!--  <script type="text/javascript" src="ext/Ext.ux.InfoPanel.js"></script>
+  <script type="text/javascript" src="ext/Ext.ux.Accordion.js"></script> -->
+  <script type="text/javascript" src="ext/Ext.ux.FormBuilder.js"></script>
+  <script type="text/javascript" src="ext/Ext.ux.CascadingDialogs.js"></script>
+  <!-- End Optional Libs -->
+    <script type="text/javascript">
+    Ext.namespace('Ext.PAIT');
+      Ext.BLANK_IMAGE_URL = 'ext/resources/images/default/s.gif';
+      App = {};
+      App.layout = {};
+      App.init = function(){
+	               App.layout = new Ext.BorderLayout(document.body, {
+	                    north: {
+	                        split:false,
+	                        initialSize: 72,
+	                        titlebar: false
+	                    },
+			    east: {
+	                        split:true,
+	                        initialSize: 220,
+	                        minSize: 175,
+	                        maxSize: 400,
+	                        titlebar: true,
+	                        collapsible: true,
+                            animate: true,
+                            autoScroll: true
+	                    },
+	                    //south: southConf,
+	                    center: {
+	                        titlebar: true,
+	                        autoScroll:true,
+			       closeOnTab: false
+			       }
+	                });
+
+                    App.layout.beginUpdate();
+	                App.layout.add('north', new Ext.ContentPanel('north', 'PAIT'));
+	                App.layout.add('east', new Ext.ContentPanel('east', {title: 'Options', closable: true}));
+	                App.layout.add('center', new Ext.ContentPanel('center', {title: 'LOB Main', closable: true}));
+	                App.layout.getRegion('center').showPanel('center');
+	                App.layout.endUpdate();
+	           };
+
+	Ext.PAIT.openAddLOBTab = function() {
+            App.layout.beginUpdate();
+            var iframe = Ext.DomHelper.append(document.body,{tag: 'div', frameBorder: 0});
+            var panel = new Ext.ContentPanel(iframe,{title: 'Add LOB', autoScroll:true, fitToFrame:true, closable:true});
+            panel.setUrl({url: '<?=$self;?>?mode=LOB&action=addlob', scripts: true, text: 'Loading ...', callback: Ext.ux.CascadingDialogs.scanHrefs}, {}, true);
+            App.layout.add('center', panel);
+            App.layout.endUpdate();
+        }
+        
+        Ext.PAIT.openShowLOBTab = function() {
+            App.layout.beginUpdate();
+            var iframe = Ext.DomHelper.append(document.body,{tag: 'div', frameBorder: 0});
+            var panel = new Ext.ContentPanel(iframe,{title: 'Show LOB', autoScroll:true, fitToFrame:true, closable:true});
+            panel.setUrl({url: '<?=$self;?>?mode=LOB&action=showlob', scripts: true, text: 'Loading ...', callback: Ext.ux.CascadingDialogs.scanHrefs}, {}, true);
+            App.layout.add('center', panel);
+            App.layout.endUpdate();
+        }
+	     
+	Ext.EventManager.onDocumentReady(App.init, App, true);
+	</script>
+<style type="text/css">
+ html, body {
+    font:normal 12px verdana;
+    margin:0;
+    padding:0;
+    border:0 none;
+    overflow:hidden;
+      height:100%;
+      }
+      .x-layout-panel-north {
+      border:0px none;
+      padding: 0px;
+	    height: 72px;
+      }
+      #nav {
+      }
+      #autoTabs, #center1, #center2, #west {
+      padding:10px;
+      }
+      #south{
+      font:normal 8pt arial, helvetica;
+	    padding:4px;
+      }
+      #north.x-layout-active-content {
+      font:normal 12pt arial, helvetica;
+	    padding: 0px;
+	    height: 72px;
+      }
+      .x-layout-panel-center p {
+      margin:5px;
+      }
+#props-panel .x-grid-col-0{
+      }
+      #props-panel .x-grid-col-1{
+      }
+
+    .logo {
+			background: url(<?=$rootDir;?>images/banner_bg.jpg) repeat-x left top;
+			height: 12px;
+			width: 100%;
+			position: absolute;
+			z-index: 1;
+			top: 0px;
+			left: 0px;
+			}
+
+          ul.actionBloc {
+        border-top: 1px solid #99bbe8;
+        margin-right: 1px;
+        background: #d8e6f6;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      
+      ul.actionBloc li {
+        width: 100%;
+        height: 1.5em;
+        position: relative;
+        border-bottom: 2px solid #99bbe8;
+        border-right: 2px solid #99bbe8;
+        border-left: 2px solid #99bbe8;
+        text-align: center;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      
+      ul.actionBloc li.header {
+        background: #c7d5e5;
+      }
+      
+      ul.actionBloc li h2 {
+        font-size: 1.5em;
+        display: block;
+        width: 100%;
+        background: #c7d5e5;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      
+      ul.actionBloc li a{
+        color: #41418b;
+        height: 1.5em;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.33em;
+        line-height: 1em;
+        vertical-align: middle;
+        text-decoration: none;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    ul.actionBloc li a:hover {
+        color: #E2A53C;
+      }
+  
+		.x-layout-panel-hd-text {
+			color: #FFF;
+		}
+		
+		.x-layout-split-h {
+			background:#5080CF none repeat scroll 0%;
+		}
+		.x-layout-split {
+			background-color:#5080CF;
+		}
+		#searchDiv {
+			margin: 10px;
+		}
+		.x-form-item label {
+			width: 150px;
+		}
+		.x-grid-hd-text {
+			color: #FFF;
+		}
+		.x-grid-row-selected a {
+			color:#ECC47E;
+		}
+		.x-grid-row-selected a:visited {
+			color:#ECC47E;
+		}
+		a {
+			color:#316AC5;
+		}
+		a:visited {
+			color:#316AC5;
+		}
+		.centerContent {
+			padding: 10px;
+		}
+		.loggedinbox {
+				background: #D8E6F6;
+				font-size: small;
+				font-weight: bolder;
+				color: black;
+				width: 175px;
+				margin-left: auto;
+				margin-right: auto;
+				text-align: center;
+		}
+		.top {	background-image: url(images/login-ts.gif);
+			background-repeat: repeat-x;
+			background-position: top;}
+		.bottom {background-image: url(images/login-bs.gif);
+					background-repeat: repeat-x;
+					background-position: bottom; }
+		.left {background-image: url(images/login-ls.gif);
+					background-repeat: repeat-y;
+					background-position: left;}
+		.right {background-image: url(images/login-rs.gif);
+					background-repeat: repeat-y;
+					background-position: right; }
+		
+		.addressCompany {
+			font-size: .8em;
+		}
+		.phoneCompany {
+			font-size: .8em;
+		}
+		.statsTable {
+			font-size: .8em;
+		}
+		.planDesign {
+			font-size: 1em;
+		}
+		.planDesign caption {
+			font-size: 1.1em;
+			font-weight: bold;
+			display: block;
+			border-top: 1px solid #99BBE8;
+			border-bottom: 1px solid #99BBE8;
+		}
+		.log {
+			font-size: 1em;
+		}
+		.paitTable {
+			
+		}
+
+		.paitTable td {
+			padding: 10px;
+			font-size: 10px;
+		}
+		.companycontacts {
+			font-size: .9em;
+		}
+		.contactPeopleTitle {
+			font-size: 1.1em;
+			font-weight: bold;
+			display: block;
+			margin-top: 10px;
+			border-top: 1px solid #99BBE8;
+			border-bottom: 1px solid #99BBE8;
+		}
+                .rulesbox {
+			font-size: 1em;
+			display: block;
+			margin-top: 10px;
+			border-top: 1px solid #99BBE8;
+			border-bottom: 1px solid #99BBE8;
+		}
+                .rulesbox td div.rule {
+                   margin-left: 3em;
+                   font-size: smaller;
+                }
+		.accountHistoryTitle {
+			font-size: 1.1em;
+			font-weight: bold;
+			display: block;
+			margin-top: 10px;
+			border-top: 1px solid #99BBE8;
+			border-bottom: 1px solid #99BBE8;
+		}
+		.actionBox {
+				display:block;
+        text-align: center;
+        margin-top: 14px;
+        margin-bottom: 14px;
+		}
+		.actionBox a {
+        border: 2px solid #99BBE8;
+        text-align: center;
+        padding: 3px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        background: #EEF4FB;
+		}
+		.fileListItem {
+        margin-bottom: 4px;
+        margin-top: 4px;
+		}
+</style>
+</head>
+<body>
+<div id ="container">
+  <div id="north" class="x-layout-inactive-content">
+<table border="0" width="100%" height="72" cellspacing="0" cellpadding="0" align="center" class="logo">
+	<tr>
+		<td><a href="<?=$self;?>"><img src="<?=$rootDir;?>images/lr.jpg" alt="" width="400" height="72" hspace="0" vspace="0" border="0" align="left" /></a></td>
+		<td><?=$loginbox;?></td>
+	</tr>
+</table>
+  </div>
+  <div id="east" class="x-layout-inactive-content">
+	       <ul class="actionBloc">
+	       	<li class="header"><h2>Lines of Business</h2></li>
+                <li><a href="javascript:void(0);" onClick="javascript:Ext.PAIT.openShowLOBTab()">View by Company</a></li>
+                <li><a href="javascript:void(0);" onClick="javascript:Ext.PAIT.openAddLOBTab()">Add an LOB</a></li>
+                <li><a href="">View LOB Reports</a></li>
+               </ul>
+  </div>
+  <div id="center" class="x-layout-inactive-content">
+    Welcome to the PAIT: Line of Business manager. Please choose an option to the right in order to get started.
+  </div>
+</div>
+ </body>
+</html>

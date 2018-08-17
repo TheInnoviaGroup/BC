@@ -1,0 +1,29 @@
+<form action="<?=$self;?>" method="post" id="logEntryForm">
+<fieldset>
+<? if ($done): ?>
+<legend>Log Added</legend>
+<a href="<?=$self;?>?mode=<?=ucfirst($type);?>&action=show<?=ucfirst($type);?>&<?=$type;?>ID=<?=$id;?>">Return to <?=$type;?> view</a>
+<? else: ?>
+<legend>Add a Log Entry</legend>
+
+<div class="x-form-item"><label for="category">Type: </label><select style="width: 145px;" name="category">
+<option>Phone</option>
+<option>Email</option>
+<option>Meeting</option>
+<option>Fax</option>
+<option>Letter</option>
+<option>Other</option>
+</select></div>
+<div id="ajax_spell1" class="x-form-item">
+<textarea name="notes" style="width: 500px; height: 300px;">
+</textarea>
+</div>
+
+<div class="x-form-item"><input type="submit" value="Submit" name="Submit"/></div>
+
+<? endif; ?>
+</fieldset>
+</form>
+<script type="text/javascript">
+Ext.ux.HTMLForm('logEntryForm', Ext.PAIT.addLog);
+    </script>

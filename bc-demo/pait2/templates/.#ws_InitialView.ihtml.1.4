@@ -1,0 +1,829 @@
+<!-- this puts ie6 in quirksmode -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>PAIT:Sheets -- My WorkSpace</title>
+  <? if (is_array($stylesheets)): ?>
+  <? foreach ($stylesheets as $stylesheet => $type): ?>
+  <link rel="stylesheet" href="<?=$stylesheet;?>" type="text/css" media="<?=$type;?>" />
+  <? endforeach; ?>
+  <!--[if lt IE 7]>
+      <? foreach ($stylesheets as $stylesheet => $type): ?>
+      <link rel="stylesheet" href="ie<?=$stylesheet;?>" type="text/css" media="<?=$type;?>" />
+      <? endforeach; ?>
+      <![endif]-->
+  <? endif; ?>
+  <? if (is_array($javascripts)): ?>
+  <? foreach ($javascripts as $javascript): ?>
+  <script src="javascripts/<?=$javascript;?>" type="text/javascript"></script>
+  <? endforeach; ?>
+  <? endif; ?>
+  <link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css" />
+  <!-- GC --> <link rel="stylesheet" type="text/css" href="ext/resources/css/xtheme-aero.css" />
+  <link rel="stylesheet" type="text/css" href="ext/ProgressBar/Ext.ux.ProgressBar.css" />
+  <link rel="stylesheet" type="text/css" href="ext/UploadDialog/css/Ext.ux.UploadDialog.css" />
+  <link rel="stylesheet" type="text/css" href="upload-dialog.css" />
+  <!-- LIBS -->
+  <script type="text/javascript" src="firebug/firebugx.js"></script>
+  <script type="text/javascript" src="ext/adapter/ext/ext-base.js"></script>
+  <!-- ENDLIBS -->
+  <script type="text/javascript" src="ext/ext-all-debug.js"></script>
+  <!-- Optional Libs -->
+  <script type="text/javascript" src="ext/Ext.ux.TableGrid.js"></script>
+<!--  <script type="text/javascript" src="ext/Ext.ux.InfoPanel.js"></script>
+  <script type="text/javascript" src="ext/Ext.ux.Accordion.js"></script> -->
+  <script type="text/javascript" src="ext/Ext.ux.FormBuilder.js"></script>
+  <script type="text/javascript" src="ext/Ext.ux.CascadingDialogs.js"></script>
+<script type='text/javascript' src='ext/ProgressBar/Ext.ux.ProgressBar.js'></script>
+
+ <script type='text/javascript' src='ext/UploadDialog/Ext.ux.UploadDialog.js'></script>
+ <script type='text/javascript' src='upload-dialog.js'></script>
+  <!-- End Optional Libs -->
+  <style type="text/css">
+    html, body {
+    font:normal 12px verdana;
+    margin:0;
+    padding:0;
+    border:0 none;
+    overflow:hidden;
+      height:100%;
+      }
+      .x-layout-panel-north {
+      border:0px none;
+      padding: 0px;
+	    height: 72px;
+      }
+      #nav {
+      }
+      #autoTabs, #center1, #center2, #west {
+      padding:10px;
+      }
+      #south{
+      font:normal 8pt arial, helvetica;
+	    padding:4px;
+      }
+      #north.x-layout-active-content {
+      font:normal 12pt arial, helvetica;
+	    padding: 0px;
+	    height: 72px;
+      }
+      .x-layout-panel-center p {
+      margin:5px;
+      }
+#props-panel .x-grid-col-0{
+      }
+      #props-panel .x-grid-col-1{
+      }
+
+h1 {
+    font-size: x-large;
+}
+h2 {
+    font-size: large;
+}
+th {
+    font-weight: bold;
+}
+
+    .logo {
+			background: url(<?=$rootDir;?>images/banner_bg.jpg) repeat-x left top;
+			height: 12px;
+			width: 100%;
+			position: absolute;
+			z-index: 1;
+			top: 0px;
+			left: 0px;
+			}
+
+          ul.actionBloc {
+        border-top: 1px solid #99bbe8;
+        margin-right: 1px;
+        background: #d8e6f6;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      
+      ul.actionBloc li {
+        width: 100%;
+        height: 2em;
+        position: relative;
+        border-bottom: 2px solid #99bbe8;
+        border-right: 2px solid #99bbe8;
+        border-left: 2px solid #99bbe8;
+        text-align: center;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      
+      ul.actionBloc li.header {
+        background: #c7d5e5;
+      }
+      
+      ul.actionBloc li h2 {
+        font-size: 1.5em;
+        display: block;
+        width: 100%;
+        background: #c7d5e5;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      
+      ul.actionBloc li a{
+        color: #41418b;
+        height: 2em;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.33em;
+        line-height: 1em;
+        vertical-align: middle;
+        text-decoration: none;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    ul.actionBloc li a:hover {
+        color: #E2A53C;
+      }
+  
+		.x-layout-panel-hd-text {
+			color: #FFF;
+		}
+		
+		.x-layout-split-h {
+			background:#5080CF none repeat scroll 0%;
+		}
+		.x-layout-split {
+			background-color:#5080CF;
+		}
+		#searchDiv {
+			margin: 10px;
+		}
+		.x-form-item label {
+			width: 150px;
+		}
+		.x-grid-hd-text {
+			color: #FFF;
+		}
+		.x-grid-row-selected a {
+			color:#ECC47E;
+		}
+		.x-grid-row-selected a:visited {
+			color:#ECC47E;
+		}
+		a {
+			color:#316AC5;
+		}
+		a:visited {
+			color:#316AC5;
+		}
+		.centerContent {
+			padding: 10px;
+		}
+		.loggedinbox {
+				background: #D8E6F6;
+				font-size: small;
+				font-weight: bolder;
+				color: black;
+				width: 175px;
+				margin-left: auto;
+				margin-right: auto;
+				text-align: center;
+		}
+		.top {	background-image: url(images/login-ts.gif);
+			background-repeat: repeat-x;
+			background-position: top;}
+		.bottom {background-image: url(images/login-bs.gif);
+					background-repeat: repeat-x;
+					background-position: bottom; }
+		.left {background-image: url(images/login-ls.gif);
+					background-repeat: repeat-y;
+					background-position: left;}
+		.right {background-image: url(images/login-rs.gif);
+					background-repeat: repeat-y;
+					background-position: right; }    
+
+table.sortable { 
+width: 85%;
+margin-left: auto;
+margin-right: auto;
+border-spacing: 0px;
+border-collapse: collapse;
+margin-bottom: 5px;
+margin-top: 5px;
+ }
+
+table.searchresults { 
+width: 85%;
+margin-left: auto;
+margin-right: auto;
+border-spacing: 0px;
+border-collapse: collapse;
+margin-bottom: 5px;
+ }
+
+table.searchresults table.sortable { 
+  width: 100%;
+ }
+
+table.sortable td { 
+  padding: 2px;
+  border: 1px solid #14164D;
+  font-size: small;
+ }
+
+
+table.sortable th { 
+padding: 2px;
+background-color:#316AC5;
+border: 1px solid #14164D;
+font-size: small;
+ }
+ 
+table.sortable a.sortheader {
+    color:#FFFFFF;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 0 2px 0 2px;
+    display: block;
+    font-size: small;
+}
+table.sortable span.sortarrow {
+    color: black;
+    text-decoration: none;
+}
+
+tr.hoverable:hover {
+	background-color: #FF9;
+	color: #000000;
+}
+		.actionBox {
+				display:block;
+        text-align: center;
+        margin-top: 14px;
+        margin-bottom: 14px;
+		}
+		.actionBox a {
+        border: 2px solid #99BBE8;
+        text-align: center;
+        padding: 3px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        background: #EEF4FB;
+		}
+.x-tree-node-leaf .x-tree-node-icon {
+	background-image:url(<?=$rootDir;?>images/folder.gif);
+}
+
+.x-tree-node-leaf .excel-icon {
+	background-image:url(<?=$rootDir;?>images/excel.gif);
+}
+
+.x-tree-node-leaf .report-icon {
+	background-image:url(<?=$rootDir;?>images/report.gif);
+}
+
+.file_blue{
+	background: #DAE7F6;
+}
+.file_green{
+	background: #DAF6DB;
+}
+#form-ct {
+	margin: 10px;
+}
+    </style>
+    
+    
+    <script type="text/javascript">
+      Ext.BLANK_IMAGE_URL = 'ext/resources/images/default/s.gif';
+Ext.namespace('Ext.PAIT');
+
+
+// state manager
+
+Ext.PAIT.StateMgr = function(){
+    var /* private */ groups = {};
+
+    function /* private */ onRegister(control) {
+    
+        if(control.stateGroup && control.enable) {
+            if (!groups[control.stateGroup]) {
+                groups[control.stateGroup] = new Ext.util.MixedCollection();
+            }
+            groups[control.stateGroup].add(control);
+        }
+    };
+
+    function /* private */ onUnregister(control) {
+        if (control.stateGroup && groups[control.stateGroup]) {
+            groups[control.stateGroup].remove(control);
+        }
+    };
+
+    with(Ext.ComponentMgr) {
+        unregister.createInterceptor(onUnregister);
+        register = register.createSequence(onRegister);
+    }
+
+    with(Ext.ButtonToggleMgr) {
+        unregister.createInterceptor(onUnregister);
+        register = register.createSequence(onRegister);
+    }
+
+    return {
+        enable: /* public */ function(group) {
+            if(group instanceof Array) for(var i = 0; i < group.length; i++)
+                this.enable(group[i]);
+            else if(groups[group]) groups[group].each(function(control) {
+                    control.enable();
+            });
+        },
+
+        disable: /* public */ function(group) {
+            if(group instanceof Array) for(var i = 0; i < group.length; i++)
+                this.disable(group[i]);
+            else if(groups[group]) groups[group].each(function(control) {
+                control.disable();
+            });
+        },
+
+        setEnabled: /* public */ function(stateGroup, state) {
+            if(state) this.enable(stateGroup);
+            else this.disable(stateGroup);
+        }
+    };
+    
+}();
+
+App = {};
+App.layout = {};
+      App.init = function() {
+	  var southConf;
+		       
+	               App.layout = new Ext.BorderLayout(document.body, {
+	                    north: {
+	                        split:false,
+	                        initialSize: 72,
+	                        titlebar: false
+	                    },
+			    east: {
+	                        split:true,
+	                        initialSize: 250,
+	                        minSize: 175,
+	                        maxSize: 400,
+	                        titlebar: true,
+	                        collapsible: true,
+                            animate: true
+	                    },
+	                    center: {
+	                    titlebar: true,
+	                   //autoScroll: true,
+			       					closeOnTab: false
+			       }
+	                });
+
+    App.layout.beginUpdate();   
+	  App.layout.add('north', new Ext.ContentPanel('north', 'North'));
+	  App.layout.add('east', new Ext.ContentPanel('east', {closable: false}));
+	  App.layout.add('center', new Ext.ContentPanel('optionsDiv', {title: 'Sheet Options', autoScroll: true, fitToFrame:true}));
+	  App.layout.add('center', new Ext.ContentPanel('sheetsTab', {title: 'Sheet List', autoScroll: true, fitToFrame:true}));
+	  App.layout.endUpdate();
+	  App.layout.getRegion('center').showPanel('optionsDiv');
+	  
+	  // do the tree
+	  var Tree = Ext.tree;
+    var sm = new Tree.MultiSelectionModel();
+    sm.on('selectionchange', function(e,f) {
+    Ext.PAIT.StateMgr.setEnabled(['workspace', '1sheet', '2sheet'], false);
+    	console.log("Tree: %o, Array: %o",e,f);
+    	if(f.length > 2) {
+    		Ext.MessageBox.alert('Not so fast, bucko.', 'There can be only 2.');
+    		this.clearSelections();
+    		Ext.PAIT.StateMgr.setEnabled(['workspace', '1sheet', '2sheet'], false);
+    	} else if(f.length == 2) {
+    		if (f[0].attributes.type == 'sheet' && f[1].attributes.type == 'sheet') {
+    			Ext.PAIT.StateMgr.setEnabled(['2sheet'], true);
+    		}
+    	} else if(f.length == 1) {
+    		if (f[0].attributes.type == 'sheet') {
+    			Ext.PAIT.StateMgr.setEnabled(['1sheet'], true);
+    		} else if (f[0].attributes.type == 'workspace') {
+    			Ext.PAIT.StateMgr.setEnabled(['workspace'], true);
+    		}
+				
+    	}
+    });
+    
+    Ext.PAIT.wsTreeDoubleClick = function (node,event) {
+        console.log('Tree dbl Click: this:%o, node:%o, event:%o', this,node,event);
+        if (node.attributes.type == "sheet" && node.attributes.status > 0) {
+            var nodeID = node.id;
+            var nodeName = node.text;
+            var e = {};
+            e.target = {};
+            e.target.id = nodeID;
+            e.target.title = nodeName;
+            e.target.href = '<?=$self;?>?mode=ajax&module=showSheetViewer&node='+String.escape(nodeID);
+            console.log('Opening Sheet: %o', e);
+            Ext.ux.CascadingDialogs.openCenter(e, App);
+        } else if (node.attributes.type == "sheet") {
+            Ext.MessageBox.alert('Unable to open Sheet', 'Sorry, but while that sheet has been uploaded, it has not yet been imported into PAIT:Sheets.');
+        }
+    }
+    
+    var tree = new Tree.TreePanel('tree-div', {
+        animate:true, 
+        loader: new Tree.TreeLoader({
+            dataUrl:'getWorkspaces.php'
+        }),
+     //   enableDD:true,
+        containerScroll: true,
+        selModel: sm
+    });
+   //tree.on('select', alert("test"));
+		Ext.PAIT.wsTree = tree;
+    // set the root node
+    var root = new Tree.AsyncTreeNode({
+        text: 'My Workspaces',
+        draggable:false,
+        id:'source'
+    });
+    tree.setRootNode(root);
+    tree.on('dblclick', Ext.PAIT.wsTreeDoubleClick, tree);
+    // render the tree
+    tree.render();
+    root.expand();
+
+		// add toolbar for the tree
+		var toolbar = new Ext.Toolbar('toolbar-div');
+	
+		// add greedy spacer to align button right
+		Ext.fly(toolbar.addSpacer().getEl().parentNode).setStyle('width', '100%');
+		toolbar.add([{
+			icon:'<?=$rootDir;?>images/ws_add.gif'
+			, cls: 'x-btn-text-icon'
+			, text: 'Add'
+			, id: 'addWorkspaceMenuItem'
+			, tooltip: 'Add A New Workspace'
+			, tooltipType: 'title'
+			, handler: function(e) {
+		 		Ext.ux.CascadingDialogs.handleDialog(e, this, '<?=$self;?>?mode=Workspace&action=addWorkspace', 170, 360);
+		  }
+		}, {
+			icon:'<?=$rootDir;?>images/ws_delete.gif'
+			, cls: 'x-btn-text-icon'
+			, text: 'Delete'
+			, id: 'deleteWorkspaceMenuItem'
+			, tooltip: 'Delete Selected Workspace'
+			, tooltipType: 'title'
+			, stateGroup: 'workspace'
+			, handler: function(e) { }
+		}, {
+			icon:'<?=$rootDir;?>images/ws_add_item.gif'
+			, cls: 'x-btn-text-icon'
+			, text: 'Add'
+			, id: 'addItemMenuItem'
+			, tooltip: 'Add A Spreadsheet To The Selected Workspace'
+			, tooltipType: 'title'
+			, stateGroup: 'workspace'
+			, handler: function(e) { 
+			App.layout.getRegion('center').showPanel('sheetsTab');
+			}
+		}, {
+			icon:'<?=$rootDir;?>images/ws_remove_item.gif'
+			, cls: 'x-btn-text-icon'
+			, text: 'Remove'
+			, id: 'removeItemMenuItem'
+			, tooltip: 'Remove Selected Item'
+			, tooltipType: 'title'
+			, stateGroup: '1sheet'
+			, handler: function(e) { }
+		}]);
+                
+  Ext.PAIT.workSpaceActionsSubmit = function (btn,event) {
+    console.log('This:%o, btn:%o, event:%o', this,btn,event);
+    var action;
+    var tree = Ext.PAIT.wsTree;
+    var selectedNodes = tree.getSelectionModel().getSelectedNodes();;
+    for (var i = 0; i < this.items.items.length; i++) {
+        if (this.items.items[i].checked) {
+            action = this.items.items[i].getGroupValue();
+        }
+    }
+    console.log('Action: %s Node(s): %o', action, selectedNodes);
+    if (selectedNodes.length == 1) {
+        var nodeID = selectedNodes[0].id;
+    var nodeName = selectedNodes[0].text;
+    var nodeStatus = selectedNodes[0].attributes.status;
+    console.log('nodeID: %o, nodeName: %o, nodeStatus: %o', nodeID, nodeName, nodeStatus);
+    }
+    if (action == 'assign') {
+     if (nodeStatus > 0) {
+        // do stuff
+    } else {
+        Ext.MessageBox.alert('Unable to Add Column', 'Sorry, but while that sheet has been uploaded, it has not yet been imported into PAIT:Sheets.');
+    }   
+  } else if (action == 'view') {
+    if (nodeStatus > 0) {
+    var e = {};
+    e.target = {};
+    e.target.id = nodeID;
+    e.target.title = nodeName;
+    e.target.href = '<?=$self;?>?mode=ajax&module=showSheetViewer&node='+String.escape(nodeID);
+    console.log('Opening Sheet: %o', e);
+    Ext.ux.CascadingDialogs.openCenter(e, App);
+    } else {
+        Ext.MessageBox.alert('Unable to open Sheet', 'Sorry, but while that sheet has been uploaded, it has not yet been imported into PAIT:Sheets.');
+    }
+  } else if (action == 'import') {
+    if (nodeStatus > 1) {
+        // do stuff
+    } else if (nodeStatus == 1) {
+        Ext.MessageBox.alert('Unable to Import Sheet', 'Sorry, but you have not assigned headers to this sheet yet, so it cannot be imported into PAIT.');
+    } else {
+        Ext.MessageBox.alert('Unable to Import Sheet', 'Sorry, but while that sheet has been uploaded, it has not yet been imported into PAIT:Sheets.');
+    }
+  } else if (action == 'comparePAIT') {
+    if (nodeStatus > 1) {
+        // do stuff
+    } else if (nodeStatus == 1) {
+        Ext.MessageBox.alert('Unable to Compare to PAIT', 'Sorry, but you have not assigned headers to this sheet yet, so it cannot be compared to PAIT.');
+    } else {
+        Ext.MessageBox.alert('Unable to Compare to PAIT', 'Sorry, but while that sheet has been uploaded, it has not yet been imported into PAIT:Sheets.');
+    }
+  } else if (action == 'unmatchedSpouses') {
+    if (nodeStatus > 1) {
+        // do stuff
+    } else if (nodeStatus == 1) {
+        Ext.MessageBox.alert('Unable to find unmatched Spouses', 'Sorry, but you have not assigned headers to this sheet yet, so it cannot be compared to PAIT.');
+    } else {
+        Ext.MessageBox.alert('Unable to find unmatched Spouses', 'Sorry, but while that sheet has been uploaded, it has not yet been imported into PAIT:Sheets.');
+    }
+  } else if (action == 'unmatchedPeople') {
+    if (nodeStatus > 1) {
+        // do stuff
+    } else if (nodeStatus == 1) {
+        Ext.MessageBox.alert('Unable to find unmatched People', 'Sorry, but you have not assigned headers to this sheet yet, so it cannot be compared to PAIT.');
+    } else {
+        Ext.MessageBox.alert('Unable to find unmatched People', 'Sorry, but while that sheet has been uploaded, it has not yet been imported into PAIT:Sheets.');
+    }
+  } else if (action == 'addColumn') {
+    if (nodeStatus > 0) {
+        // do stuff
+    } else {
+        Ext.MessageBox.alert('Unable to Add Column', 'Sorry, but while that sheet has been uploaded, it has not yet been imported into PAIT:Sheets.');
+    }
+  }
+  
+  
+  
+}
+
+    // Set up the form... 
+    var form = new Ext.form.Form({
+        labelWidth: 75, // label settings here cascade unless overridden
+        url:'save-form.php'
+    });
+    
+  
+
+    
+    form.fieldset(
+        {legend:'Single Spreadsheet Options', hideLabels:true},
+        new Ext.form.Radio({
+            boxLabel:'Assign Headers',
+            name:'sheetOption',
+            id:'assign',
+            width:'auto',
+						labelStyle:'display:none',
+						labelWidth:0,
+						inputValue:'assign', 
+						stateGroup: '1sheet'
+        }),
+               new Ext.form.Radio({
+            boxLabel:'View Sheet',
+            name:'sheetOption',
+            id:'view',
+            width:'auto',
+						labelStyle:'display:none',
+						labelWidth:0,
+						inputValue:'view', 
+						stateGroup: '1sheet'
+        }),
+
+        new Ext.form.Radio({
+            boxLabel:'Import Sheet into PAIT',
+            name:'sheetOption',
+            id:'import',
+            width:'auto',
+						labelStyle:'display:none',
+						labelWidth:0,
+						inputValue:'import', 
+						stateGroup: '1sheet'
+        }),
+       
+       new Ext.form.Radio({
+            boxLabel:'Compare to Data In PAIT',
+            name:'sheetOption',
+            id:'comparePAIT',
+            width:'auto',
+						labelStyle:'display:none',
+						labelWidth:0,
+						inputValue:'comparePAIT', 
+						stateGroup: '1sheet'
+        }),
+       
+       new Ext.form.Radio({
+            boxLabel:'Find Unmatched People',
+            name:'sheetOption',
+            id:'unmatchedPeople',
+            width:'auto',
+						labelStyle:'display:none',
+						labelWidth:0,
+						inputValue:'unmatchedPeople', 
+						stateGroup: '1sheet'
+        }),
+       new Ext.form.Radio({
+            boxLabel:'Find Unmatched Spouses',
+            name:'sheetOption',
+            id:'unmatchedSpouses',
+            width:'auto',
+						labelStyle:'display:none',
+						labelWidth:0,
+						inputValue:'unmatchedSpouses', 
+						stateGroup: '1sheet'
+        }),
+       
+       new Ext.form.Radio({
+            boxLabel:'Add a Single Data Column',
+            name:'sheetOption',
+            id:'addColumn',
+            width:'auto',
+						labelStyle:'display:none',
+						labelWidth:0,
+						inputValue:'addColumn', 
+						stateGroup: '1sheet'
+        })
+      
+    );
+    
+    form.fieldset(
+        {legend:'Two Spreadsheet Options', hideLabels:true},
+        new Ext.form.Radio({
+            boxLabel:'Show Differences Between Two Sheets',
+            name:'sheetOption',
+            id:'compareTwo',
+            width:'auto',
+						labelStyle:'display:none',
+						labelWidth:0,
+						inputValue:'compareTwo', 
+						stateGroup: '2sheet'
+        }),
+
+        new Ext.form.Radio({
+            boxLabel:'Merge Two Sheets',
+            name:'sheetOption',
+            id:'mergeTwo',
+            width:'auto',
+						labelStyle:'display:none',
+						labelWidth:0,
+						inputValue:'mergeTwo', 
+						stateGroup: '2sheet'
+        }),
+       
+       new Ext.form.Radio({
+            boxLabel:'Filter Data Using a Second Sheet',
+            name:'sheetOption',
+            id:'filterSecond',
+            width:'auto',
+						labelStyle:'display:none',
+						labelWidth:0,
+						inputValue:'filterSecond', 
+						stateGroup: '2sheet'
+        })
+    );
+
+    form.addButton({text: 'Perform Action',handler: Ext.PAIT.workSpaceActionsSubmit, scope: form});
+    form.addButton({text: 'Reset', handler: function() {
+        this.reset();
+        Ext.PAIT.wsTree.getSelectionModel().clearSelections();
+    }, scope: form});
+    
+
+    form.render('form-ct');
+
+
+Ext.PAIT.StateMgr.setEnabled(['workspace', '1sheet', '2sheet'], false);
+
+
+Ext.PAIT.refreshTree = function(e, f, g, h) {
+	var wsTree = Ext.PAIT.wsTree;
+	var selectedNode = e.treeNode;
+	var loader = wsTree.getLoader();
+	loader.load(e.sourceNode);
+	selectedNode.expand();
+}
+
+Ext.PAIT.sheetSubmit = function(e, f, g, h) {
+    e.stopEvent();
+    console.log('DLG Submit: %o', this,f,e,g);
+    //causeAnError();
+  var wsTree = Ext.PAIT.wsTree;
+  var selectedNode = wsTree.getSelectionModel().getSelectedNodes();
+  var nodeID = selectedNode[0].id;
+  
+  var form = this;
+  form.on('actioncomplete', Ext.PAIT.refreshTree, form);
+  form.on('actionfailed', Ext.PAIT.refreshTree, form);
+  console.log('Submitting %o!', this);
+  if (Ext.isIE) {
+  form.submit({url: '<?=$self;?>',
+              params: {mode: 'Workspace',
+                       action: 'addSheet',
+                       wsID: nodeID}
+              }); 
+  } else {
+  form.submit({url: '<?=$self;?>',
+              params: {mode: 'Workspace',
+                       action: 'addSheet',
+                       wsID: nodeID},
+                       waitMsg: 'Please wait...'}); 
+  }
+}
+
+Ext.ux.HTMLForm('sheetList', Ext.PAIT.sheetSubmit);
+Ext.PAIT.StateMgr.setEnabled(['workspace', '1sheet', '2sheet'], false);
+
+}
+	    
+Ext.EventManager.onDocumentReady(App.init, App, true);
+Ext.EventManager.onDocumentReady(Ext.ux.CascadingDialogs.scanHrefs, App, true);
+
+
+
+</script>
+    </head>
+<body>
+<div id ="container">
+  <div id="west" class="x-layout-inactive-content">
+    West
+  </div>
+  <div id="north" class="x-layout-inactive-content">
+<table border="0" width="100%" height="72" cellspacing="0" cellpadding="0" align="center" class="logo">
+	<tr>
+		<td><a href="<?=$self;?>"><img src="<?=$rootDir;?>images/lr.jpg" alt="" width="400" height="72" hspace="0" vspace="0" border="0" align="left" /></a></td>
+		<td><?=$loginbox;?></td>
+	</tr>
+</table>
+  </div>
+  <div id="east" class="x-layout-inactive-content">
+  	<div id="toolbar-div"></div>
+    <div id="tree-div">
+			
+    </div>
+    </div>
+  <div id="optionsDiv" class="x-layout-inactive-content">
+  <div id="form-ct">Instructions go here...
+    </div>
+  </div>
+  <div id="sheetsTab" class="x-layout-inactive-content">
+    <table width=100% border=0><tr><td align=center>
+  <div id='demo-panel'>
+  <div id='show-dialog-btn'>
+  </div>
+    <div id='file-list'></div>
+ </div></td></tr>
+<tr><td valign=top align=center>
+  <p align="center">
+Check the boxes next to the sheet(s) you wish to add to the selected Workspace and click the <b>Submit</b> button.<br><b>Note:</b> The checkboxes will be disabled if no workspace is selected on the right.
+</p>
+  	<div id="sheetListDiv">
+  	<form id="sheetList">
+  		<table cellspacing="4" cellpadding="4" align="center">
+<tr> 
+	<td colspan="2" align="center">
+<p>
+<input name="Submit" id="Submit" type="submit" value="Submit">
+</p>
+</td>
+</tr>
+<? $count = 0; ?>
+<? foreach ($sheets as $sheet): ?> 	
+	<tr>
+		<td><?=$sheet['type'].":".$sheet['filename'];?></td>
+		<td><input name="sheets[<?=$sheet['sheetID'];?>]" class="Checkbox" type="checkbox" value="<?=$sheet['sheetID'];?>" id="box_<?=$sheet['sheetID'];?>" stateGroup="workspace"></td>
+	</tr>
+	<? $count++ ; ?>
+<? endforeach; ?>
+
+</table>
+
+</form>
+  	</div>
+</td></tr></table>
+  </div>
+  </body>
+</html>

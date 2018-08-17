@@ -1,0 +1,2103 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+
+xmlns="http://www.w3.org/TR/REC-html40">
+
+
+
+<head>
+
+<meta http-equiv=Content-Type content="text/html; charset=macintosh">
+
+<meta name=ProgId content=Excel.Sheet>
+
+<meta name=Generator content="Microsoft Excel 11">
+
+<link rel=File-List href="testUpdated50State_files/filelist.xml">
+
+<link rel=Edit-Time-Data href="testUpdated50State_files/editdata.mso">
+
+<link rel=OLE-Object-Data href="testUpdated50State_files/oledata.mso">
+
+<!--[if gte mso 9]><xml>
+
+ <o:DocumentProperties>
+
+  <o:LastAuthor>John Clark</o:LastAuthor>
+
+  <o:LastPrinted>2007-06-07T16:01:26Z</o:LastPrinted>
+
+  <o:Created>2007-06-07T15:58:15Z</o:Created>
+
+  <o:LastSaved>2007-06-07T16:03:38Z</o:LastSaved>
+
+  <o:Version>11.6408</o:Version>
+
+ </o:DocumentProperties>
+
+</xml><![endif]-->
+
+<style>
+
+<!--td
+
+	{padding-top:1px;}
+
+table
+
+	{mso-displayed-decimal-separator:"\.";
+
+	mso-displayed-thousand-separator:"\,";}
+
+@page
+
+	{margin:1.0in .75in 1.0in .75in;
+
+	mso-header-margin:.5in;
+
+	mso-footer-margin:.5in;}
+
+tr
+
+	{mso-height-source:auto;}
+
+col
+
+	{mso-width-source:auto;}
+
+br
+
+	{mso-data-placement:same-cell;}
+
+.style0
+
+	{mso-number-format:General;
+
+	text-align:general;
+
+	vertical-align:bottom;
+
+	white-space:nowrap;
+
+	mso-rotate:0;
+
+	mso-background-source:auto;
+
+	mso-pattern:auto;
+
+	color:windowtext;
+
+	font-size:10.0pt;
+
+	font-weight:400;
+
+	font-style:normal;
+
+	text-decoration:none;
+
+	font-family:Arial;
+
+	mso-generic-font-family:auto;
+
+	mso-font-charset:0;
+
+	border:none;
+
+	mso-protection:locked visible;
+
+	mso-style-name:Normal;
+
+	mso-style-id:0;}
+
+td
+
+	{mso-style-parent:style0;
+
+	padding-top:1px;
+
+	padding-right:1px;
+
+	padding-left:1px;
+
+	mso-ignore:padding;
+
+	color:windowtext;
+
+	font-size:10.0pt;
+
+	font-weight:400;
+
+	font-style:normal;
+
+	text-decoration:none;
+
+	font-family:Arial;
+
+	mso-generic-font-family:auto;
+
+	mso-font-charset:0;
+
+	mso-number-format:General;
+
+	text-align:general;
+
+	vertical-align:bottom;
+
+	border:none;
+
+	mso-background-source:auto;
+
+	mso-pattern:auto;
+
+	mso-protection:locked visible;
+
+	white-space:nowrap;
+
+	mso-rotate:0;}
+
+.xl24
+
+	{mso-style-parent:style0;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;}
+
+.xl25
+
+	{mso-style-parent:style0;
+
+	color:white;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:1.0pt solid windowtext;
+
+	border-right:none;
+
+	border-bottom:1.0pt solid windowtext;
+
+	border-left:1.0pt solid windowtext;
+
+	background:#FF6600;
+
+	mso-pattern:auto none;}
+
+.xl26
+
+	{mso-style-parent:style0;
+
+	color:white;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:1.0pt solid windowtext;
+
+	border-right:1.0pt solid windowtext;
+
+	border-bottom:1.0pt solid windowtext;
+
+	border-left:none;
+
+	background:#FF6600;
+
+	mso-pattern:auto none;}
+
+.xl27
+
+	{mso-style-parent:style0;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:none;
+
+	border-bottom:none;
+
+	border-left:1.0pt solid windowtext;}
+
+.xl28
+
+	{mso-style-parent:style0;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:1.0pt solid windowtext;
+
+	border-bottom:none;
+
+	border-left:none;}
+
+.xl29
+
+	{mso-style-parent:style0;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;}
+
+.xl30
+
+	{mso-style-parent:style0;
+
+	color:white;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:none;
+
+	border-bottom:none;
+
+	border-left:1.0pt solid windowtext;
+
+	background:green;
+
+	mso-pattern:auto none;}
+
+.xl31
+
+	{mso-style-parent:style0;
+
+	color:white;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	background:green;
+
+	mso-pattern:auto none;}
+
+.xl32
+
+	{mso-style-parent:style0;
+
+	color:white;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:1.0pt solid windowtext;
+
+	border-bottom:none;
+
+	border-left:none;
+
+	background:green;
+
+	mso-pattern:auto none;}
+
+.xl33
+
+	{mso-style-parent:style0;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:none;
+
+	border-bottom:none;
+
+	border-left:1.0pt solid windowtext;}
+
+.xl34
+
+	{mso-style-parent:style0;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;}
+
+.xl35
+
+	{mso-style-parent:style0;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:none;
+
+	border-bottom:.5pt solid windowtext;
+
+	border-left:1.0pt solid windowtext;}
+
+.xl36
+
+	{mso-style-parent:style0;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:none;
+
+	border-bottom:.5pt solid windowtext;
+
+	border-left:none;}
+
+.xl37
+
+	{mso-style-parent:style0;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:1.0pt solid windowtext;
+
+	border-bottom:.5pt solid windowtext;
+
+	border-left:none;}
+
+.xl38
+
+	{mso-style-parent:style0;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:right;
+
+	border-top:none;
+
+	border-right:none;
+
+	border-bottom:none;
+
+	border-left:1.0pt solid windowtext;}
+
+.xl39
+
+	{mso-style-parent:style0;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	border-top:none;
+
+	border-right:1.0pt solid windowtext;
+
+	border-bottom:none;
+
+	border-left:none;}
+
+.xl40
+
+	{mso-style-parent:style0;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	border-top:none;
+
+	border-right:none;
+
+	border-bottom:none;
+
+	border-left:1.0pt solid windowtext;}
+
+.xl41
+
+	{mso-style-parent:style0;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	border-top:none;
+
+	border-right:none;
+
+	border-bottom:1.0pt solid windowtext;
+
+	border-left:1.0pt solid windowtext;}
+
+.xl42
+
+	{mso-style-parent:style0;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:none;
+
+	border-bottom:1.0pt solid windowtext;
+
+	border-left:none;}
+
+.xl43
+
+	{mso-style-parent:style0;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	mso-number-format:"\0022$\0022\#\,\#\#0\.00_\)\;\[Red\]\\\(\0022$\0022\#\,\#\#0\.00\\\)";
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:1.0pt solid windowtext;
+
+	border-bottom:1.0pt solid windowtext;
+
+	border-left:none;}
+
+.xl44
+
+	{mso-style-parent:style0;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	border-top:1.0pt solid windowtext;
+
+	border-right:none;
+
+	border-bottom:none;
+
+	border-left:1.0pt solid windowtext;}
+
+.xl45
+
+	{mso-style-parent:style0;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	border-top:1.0pt solid windowtext;
+
+	border-right:none;
+
+	border-bottom:none;
+
+	border-left:none;}
+
+.xl46
+
+	{mso-style-parent:style0;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	border-top:1.0pt solid windowtext;
+
+	border-right:1.0pt solid windowtext;
+
+	border-bottom:none;
+
+	border-left:none;}
+
+.xl47
+
+	{mso-style-parent:style0;
+
+	color:white;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:none;
+
+	border-bottom:none;
+
+	border-left:1.0pt solid windowtext;
+
+	background:blue;
+
+	mso-pattern:auto none;}
+
+.xl48
+
+	{mso-style-parent:style0;
+
+	color:white;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	background:blue;
+
+	mso-pattern:auto none;}
+
+.xl49
+
+	{mso-style-parent:style0;
+
+	color:white;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:1.0pt solid windowtext;
+
+	border-bottom:none;
+
+	border-left:none;
+
+	background:blue;
+
+	mso-pattern:auto none;}
+
+.xl50
+
+	{mso-style-parent:style0;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	mso-number-format:0%;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:1.0pt solid windowtext;
+
+	border-bottom:none;
+
+	border-left:none;}
+
+.xl51
+
+	{mso-style-parent:style0;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	mso-number-format:0%;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:1.0pt solid windowtext;
+
+	border-bottom:.5pt solid windowtext;
+
+	border-left:none;}
+
+.xl52
+
+	{mso-style-parent:style0;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	mso-number-format:0%;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:1.0pt solid windowtext;
+
+	border-bottom:none;
+
+	border-left:none;}
+
+.xl53
+
+	{mso-style-parent:style0;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:none;
+
+	border-bottom:1.0pt solid windowtext;
+
+	border-left:1.0pt solid windowtext;}
+
+.xl54
+
+	{mso-style-parent:style0;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:1.0pt solid windowtext;
+
+	border-bottom:1.0pt solid windowtext;
+
+	border-left:none;}
+
+.xl55
+
+	{mso-style-parent:style0;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:none;
+
+	border-bottom:1.0pt solid windowtext;
+
+	border-left:1.0pt solid windowtext;}
+
+.xl56
+
+	{mso-style-parent:style0;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:1.0pt solid windowtext;
+
+	border-bottom:1.0pt solid windowtext;
+
+	border-left:none;}
+
+.xl57
+
+	{mso-style-parent:style0;
+
+	font-size:12.0pt;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;}
+
+.xl58
+
+	{mso-style-parent:style0;
+
+	font-weight:700;
+
+	font-style:italic;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:1.0pt solid windowtext;
+
+	border-right:none;
+
+	border-bottom:none;
+
+	border-left:1.0pt solid windowtext;}
+
+.xl59
+
+	{mso-style-parent:style0;
+
+	font-weight:700;
+
+	font-style:italic;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:1.0pt solid windowtext;
+
+	border-right:none;
+
+	border-bottom:none;
+
+	border-left:none;}
+
+.xl60
+
+	{mso-style-parent:style0;
+
+	font-weight:700;
+
+	font-style:italic;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:1.0pt solid windowtext;
+
+	border-right:1.0pt solid black;
+
+	border-bottom:none;
+
+	border-left:none;}
+
+.xl61
+
+	{mso-style-parent:style0;
+
+	font-weight:700;
+
+	font-style:italic;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:none;
+
+	border-bottom:.5pt solid windowtext;
+
+	border-left:1.0pt solid windowtext;}
+
+.xl62
+
+	{mso-style-parent:style0;
+
+	font-weight:700;
+
+	font-style:italic;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:none;
+
+	border-bottom:.5pt solid windowtext;
+
+	border-left:none;}
+
+.xl63
+
+	{mso-style-parent:style0;
+
+	font-weight:700;
+
+	font-style:italic;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:1.0pt solid black;
+
+	border-bottom:.5pt solid windowtext;
+
+	border-left:none;}
+
+.xl64
+
+	{mso-style-parent:style0;
+
+	font-weight:700;
+
+	font-family:Arial, sans-serif;
+
+	mso-font-charset:0;
+
+	text-align:center;
+
+	border-top:none;
+
+	border-right:none;
+
+	border-bottom:1.0pt solid windowtext;
+
+	border-left:none;}
+
+-->
+
+</style>
+
+<!--[if gte mso 9]><xml>
+
+ <x:ExcelWorkbook>
+
+  <x:ExcelWorksheets>
+
+   <x:ExcelWorksheet>
+
+    <x:Name>testUpdated</x:Name>
+
+    <x:WorksheetOptions>
+
+     <x:Print>
+
+      <x:ValidPrinterInfo/>
+
+      <x:HorizontalResolution>300</x:HorizontalResolution>
+
+      <x:VerticalResolution>300</x:VerticalResolution>
+
+     </x:Print>
+
+     <x:Selected/>
+
+     <x:DoNotDisplayGridlines/>
+
+     <x:Panes>
+
+      <x:Pane>
+
+       <x:Number>3</x:Number>
+
+       <x:ActiveRow>1</x:ActiveRow>
+
+       <x:ActiveCol>9</x:ActiveCol>
+
+      </x:Pane>
+
+     </x:Panes>
+
+     <x:ProtectContents>False</x:ProtectContents>
+
+     <x:ProtectObjects>False</x:ProtectObjects>
+
+     <x:ProtectScenarios>False</x:ProtectScenarios>
+
+    </x:WorksheetOptions>
+
+   </x:ExcelWorksheet>
+
+  </x:ExcelWorksheets>
+
+  <x:WindowHeight>6660</x:WindowHeight>
+
+  <x:WindowWidth>11355</x:WindowWidth>
+
+  <x:WindowTopX>240</x:WindowTopX>
+
+  <x:WindowTopY>75</x:WindowTopY>
+
+  <x:ProtectStructure>False</x:ProtectStructure>
+
+  <x:ProtectWindows>False</x:ProtectWindows>
+
+ </x:ExcelWorkbook>
+
+</xml><![endif]-->
+
+</head>
+
+
+
+<body link=blue vlink="#993366">
+
+<? $now = time(); ?>
+
+<table x:str border=0 cellpadding=0 cellspacing=0 width=581 style='border-collapse:
+
+ collapse;table-layout:fixed;width:437pt'>
+
+ <col width=149 style='mso-width-source:userset;mso-width-alt:5449;width:112pt'>
+
+ <col width=99 style='mso-width-source:userset;mso-width-alt:3620;width:74pt'>
+
+ <col width=76 style='mso-width-source:userset;mso-width-alt:2779;width:57pt'>
+
+ <col width=94 style='mso-width-source:userset;mso-width-alt:3437;width:71pt'>
+
+ <col width=23 style='mso-width-source:userset;mso-width-alt:841;width:17pt'>
+
+ <col width=50 span=2 style='mso-width-source:userset;mso-width-alt:1828;
+
+ width:38pt'>
+
+ <col width=40 span=249 style='mso-width-source:userset;mso-width-alt:1462;
+
+ width:30pt'>
+
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+
+  <td colspan=8 height=20 class=xl57 width=581 style='height:15.0pt;width:437pt'></td>
+
+ </tr>
+
+ <tr height=21 style='mso-height-source:userset;height:15.75pt'>
+
+  <td colspan=4 height=21 class=xl57 style='height:15.75pt'>Demographics Report
+
+  for: <?=$companyName;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl25>State</td>
+
+  <td class=xl26>Count</td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 colspan=5 class=xl24 style='height:12.0pt;mso-ignore:colspan'></td>
+
+  <td class=xl27>?</td>
+
+  <td class=xl28 x:num><?=$_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=15 style='mso-height-source:userset;height:11.25pt'>
+
+  <td colspan=4 height=15 class=xl29 style='height:11.25pt'></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>AK</td>
+
+  <td class=xl28 x:num><?=$AK_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=17 style='mso-height-source:userset;height:12.75pt'>
+
+  <td colspan=4 height=17 class=xl64 style='height:12.75pt'>Compensation
+
+  Statistics</td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>AL</td>
+
+  <td class=xl28 x:num><?=$AL_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td colspan=4 height=16 class=xl58 style='border-right:1.0pt solid black;
+
+  height:12.0pt'>By Annual Compensation</td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>AR</td>
+
+  <td class=xl28 x:num><?=$AR_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl30 style='height:12.0pt'>Total Compensation</td>
+
+  <td class=xl31>Executives</td>
+
+  <td class=xl31>Avg. Age</td>
+
+  <td class=xl32>Avg. Tenure</td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>AZ</td>
+
+  <td class=xl28 x:num><?=$AZ_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl33 style='height:12.0pt'><?=$l_0;?></td>
+
+  <td class=xl34 x:num><?=$e_0;?></td>
+
+  <td class=xl34 x:num><? if($a_0 != 0): ?><?=(sprintf("%01.2f", ($now - $a_0) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl28 x:num><? if($t_0 != 0): ?><?=(sprintf("%01.2f", ($now - $t_0) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>CA</td>
+
+  <td class=xl28 x:num><?=$CA_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl33 style='height:12.0pt'><?=$l_1;?></td>
+
+  <td class=xl34 x:num><?=$e_1;?></td>
+
+  <td class=xl34 x:num><? if($a_1 != 0): ?><?=(sprintf("%01.2f", ($now - $a_1) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl28 x:num><? if($t_1 != 0): ?><?=(sprintf("%01.2f", ($now - $t_1) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>CO</td>
+
+  <td class=xl28 x:num><?=$CO_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl33 style='height:12.0pt'><?=$l_2;?></td>
+
+  <td class=xl34 x:num><?=$e_2;?></td>
+
+  <td class=xl34 x:num><? if($a_2 != 0): ?><?=(sprintf("%01.2f", ($now - $a_2) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl28 x:num><? if($t_2 != 0): ?><?=(sprintf("%01.2f", ($now - $t_2) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>CT</td>
+
+  <td class=xl28 x:num><?=$CT_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl33 style='height:12.0pt'><?=$l_3;?></td>
+
+  <td class=xl34 x:num><?=$e_3;?></td>
+
+  <td class=xl34 x:num><? if($a_3 != 0): ?><?=(sprintf("%01.2f", ($now - $a_3) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl28 x:num><? if($t_3 != 0): ?><?=(sprintf("%01.2f", ($now - $t_3) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>DC</td>
+
+  <td class=xl28 x:num><?=$DC_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl33 style='height:12.0pt'><?=$l_4;?></td>
+
+  <td class=xl34 x:num><?=$e_4;?></td>
+
+  <td class=xl34 x:num><? if($a_4 != 0): ?><?=(sprintf("%01.2f", ($now - $a_4) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl28 x:num><? if($t_4 != 0): ?><?=(sprintf("%01.2f", ($now - $t_4) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>DE</td>
+
+  <td class=xl28 x:num><?=$DE_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl33 style='height:12.0pt'><?=$l_5;?></td>
+
+  <td class=xl34 x:num><?=$e_5;?></td>
+
+  <td class=xl34 x:num><? if($a_5 != 0): ?><?=(sprintf("%01.2f", ($now - $a_5) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl28 x:num><? if($t_5 != 0): ?><?=(sprintf("%01.2f", ($now - $t_5) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>FL</td>
+
+  <td class=xl28 x:num><?=$FL_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl33 style='height:12.0pt'><?=$l_6;?></td>
+
+  <td class=xl34 x:num><?=$e_6;?></td>
+
+  <td class=xl34 x:num><? if($a_6 != 0): ?><?=(sprintf("%01.2f", ($now - $a_6) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl28 x:num><? if($t_6 != 0): ?><?=(sprintf("%01.2f", ($now - $t_6) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>GA</td>
+
+  <td class=xl28 x:num><?=$GA_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl33 style='height:12.0pt'><?=$l_7;?></td>
+
+  <td class=xl34 x:num><?=$e_7;?></td>
+
+  <td class=xl34 x:num><? if($a_7 != 0): ?><?=(sprintf("%01.2f", ($now - $a_7) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl28 x:num><? if($t_7 != 0): ?><?=(sprintf("%01.2f", ($now - $t_7) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>HI</td>
+
+  <td class=xl28 x:num><?=$HI_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl33 style='height:12.0pt'><?=$l_8;?></td>
+
+  <td class=xl34 x:num><?=$e_8;?></td>
+
+  <td class=xl34 x:num><? if($a_8 != 0): ?><?=(sprintf("%01.2f", ($now - $a_8) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl28 x:num><? if($t_8 != 0): ?><?=(sprintf("%01.2f", ($now - $t_8) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>IA</td>
+
+  <td class=xl28 x:num><?=$IA_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl33 style='height:12.0pt'><?=$l_9;?></td>
+
+  <td class=xl34 x:num><?=$e_9;?></td>
+
+  <td class=xl34 x:num><? if($a_9 != 0): ?><?=(sprintf("%01.2f", ($now - $a_9) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl28 x:num><? if($t_9 != 0): ?><?=(sprintf("%01.2f", ($now - $t_9) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>ID</td>
+
+  <td class=xl28 x:num><?=$ID_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl33 style='height:12.0pt'><?=$l_10;?></td>
+
+  <td class=xl34 x:num><?=$e_10;?></td>
+
+  <td class=xl34 x:num><? if($a_10 != 0): ?><?=(sprintf("%01.2f", ($now - $a_10) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl28 x:num><? if($t_10 != 0): ?><?=(sprintf("%01.2f", ($now - $t_10) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>IL</td>
+
+  <td class=xl28 x:num><?=$IL_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl33 style='height:12.0pt'><?=$l_11;?></td>
+
+  <td class=xl34 x:num><?=$e_11;?></td>
+
+  <td class=xl34 x:num><? if($a_11 != 0): ?><?=(sprintf("%01.2f", ($now - $a_11) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl28 x:num><? if($t_11 != 0): ?><?=(sprintf("%01.2f", ($now - $t_11) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>IN</td>
+
+  <td class=xl28 x:num><?=$IN_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl33 style='height:12.0pt'><?=$l_12;?></td>
+
+  <td class=xl34 x:num><?=$e_12;?></td>
+
+  <td class=xl34 x:num><? if($a_12 != 0): ?><?=(sprintf("%01.2f", ($now - $a_12) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl28 x:num><? if($t_12 != 0): ?><?=(sprintf("%01.2f", ($now - $t_12) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>KS</td>
+
+  <td class=xl28 x:num><?=$KS_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl33 style='height:12.0pt'><?=$l_13;?></td>
+
+  <td class=xl34 x:num><?=$e_13;?></td>
+
+  <td class=xl34 x:num><? if($a_13 != 0): ?><?=(sprintf("%01.2f", ($now - $a_13) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl28 x:num><? if($t_13 != 0): ?><?=(sprintf("%01.2f", ($now - $t_13) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>KY</td>
+
+  <td class=xl28 x:num><?=$KY_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl33 style='height:12.0pt'><?=$l_14;?></td>
+
+  <td class=xl34 x:num><?=$e_14;?></td>
+
+  <td class=xl34 x:num><? if($a_14 != 0): ?><?=(sprintf("%01.2f", ($now - $a_14) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl28 x:num><? if($t_14 != 0): ?><?=(sprintf("%01.2f", ($now - $t_14) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>LA</td>
+
+  <td class=xl28 x:num><?=$LA_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl33 style='height:12.0pt'><?=$l_15;?></td>
+
+  <td class=xl34 x:num><?=$e_15;?></td>
+
+  <td class=xl34 x:num><? if($a_15 != 0): ?><?=(sprintf("%01.2f", ($now - $a_15) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl28 x:num><? if($t_15 != 0): ?><?=(sprintf("%01.2f", ($now - $t_15) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>MA</td>
+
+  <td class=xl28 x:num><?=$MA_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl33 style='height:12.0pt'><?=$l_16;?></td>
+
+  <td class=xl34 x:num><?=$e_16;?></td>
+
+  <td class=xl34 x:num><? if($a_16 != 0): ?><?=(sprintf("%01.2f", ($now - $a_16) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl28 x:num><? if($t_16 != 0): ?><?=(sprintf("%01.2f", ($now - $t_16) / AYEAR));?><? else: ?>0<?endif;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>MD</td>
+
+  <td class=xl28 x:num><?=$MD_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+  <td height=16 class=xl38 style='height:12.0pt'>Total:</td>
+  <td class=xl29 x:num><?=$e_total;?></td>
+  <td class=xl34 x:num><? if($a_total != 0): ?><?=(sprintf("%01.2f", ($now - $a_total) / AYEAR));?><? else: ?>0<?endif;?></td>
+  <td class=xl28 x:num><? if($t_total != 0): ?><?=(sprintf("%01.2f", ($now - $t_total) / AYEAR));?><? else: ?>0<?endif;?></td>
+  <td class=xl24></td>
+  <td class=xl27>ME</td>
+  <td class=xl28 x:num><?=$ME_number;?></td>
+  <td class=xl24></td>
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl40 style='height:12.0pt'>&nbsp;</td>
+
+  <td colspan=2 class=xl24 style='mso-ignore:colspan'></td>
+
+  <td class=xl39>&nbsp;</td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>MI</td>
+
+  <td class=xl28 x:num><?=$MI_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td colspan=4 height=16 class=xl61 style='border-right:1.0pt solid black;
+
+  height:12.0pt'>Average Compensations</td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>MN</td>
+
+  <td class=xl28 x:num><?=$MN_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl40 style='height:12.0pt'>&nbsp;</td>
+
+  <td class=xl31>Type</td>
+
+  <td class=xl31>Year</td>
+
+  <td class=xl32>Average</td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>MO</td>
+
+  <td class=xl28 x:num><?=$MO_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl40 style='height:12.0pt'>&nbsp;</td>
+
+  <td class=xl24><? if($type_0 != ""):?><?=$type_0;?><? endif; ?></td>
+
+  <td class=xl24 x:num><? if($type_0 != ""):?><?=$year;?><? endif; ?></td>
+
+  <td class=xl39><? if($type_0 != ""):?><?=formatMoney($comp_0);?><? endif; ?> </td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>MS</td>
+
+  <td class=xl28 x:num><?=$MS_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl40 style='height:12.0pt'>&nbsp;</td>
+
+  <td class=xl24><? if($type_1 != ""):?><?=$type_1;?><? endif; ?></td>
+
+  <td class=xl24 x:num><? if($type_1 != ""):?><?=$year;?><? endif; ?></td>
+
+  <td class=xl39><? if($type_1 != ""):?><?=formatMoney($comp_1);?><? endif; ?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>MT</td>
+
+  <td class=xl28 x:num><?=$MT_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl40 style='height:12.0pt'>&nbsp;</td>
+
+  <td class=xl24><? if($type_2 != ""):?><?=$type_2;?><? endif; ?></td>
+
+  <td class=xl24 x:num><? if($type_2 != ""):?><?=$year;?><? endif; ?></td>
+
+  <td class=xl39><? if($type_2 != ""):?><?=formatMoney($comp_2);?><? endif; ?> </td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>NC</td>
+
+  <td class=xl28 x:num><?=$NC_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl41 style='height:12.0pt'>&nbsp;</td>
+
+  <td class=xl42><? if($type_3 != ""):?><?=$type_3;?><? endif; ?></td>
+
+  <td class=xl42 x:num><? if($type_3 != ""):?><?=$year;?><? endif; ?></td>
+
+  <td class=xl43><? if($type_3 != ""):?><?=formatMoney($comp_3);?><? endif; ?> </td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>ND</td>
+
+  <td class=xl28 x:num><?=$ND_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 colspan=5 class=xl24 style='height:12.0pt;mso-ignore:colspan'></td>
+
+  <td class=xl27>NE</td>
+
+  <td class=xl28 x:num><?=$NE_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 colspan=5 class=xl24 style='height:12.0pt;mso-ignore:colspan'></td>
+
+  <td class=xl27>NH</td>
+
+  <td class=xl28 x:num><?=$NH_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl24 style='height:12.0pt'></td>
+
+  <td class=xl44 colspan=2 style='mso-ignore:colspan'>Gender Statistics</td>
+
+  <td class=xl46>&nbsp;</td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>NJ</td>
+
+  <td class=xl28 x:num><?=$NJ_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl24 style='height:12.0pt'></td>
+
+  <td class=xl47>Gender</td>
+
+  <td class=xl48>Count</td>
+
+  <td class=xl49>Percentage</td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>NM</td>
+
+  <td class=xl28 x:num><?=$NM_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl24 style='height:12.0pt'></td>
+
+  <td class=xl33>Female</td>
+
+  <td class=xl34 x:num><?=$female_count;?></td>
+
+  <td class=xl50 x:num><?=$female_percentage;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>NV</td>
+
+  <td class=xl28 x:num><?=$NV_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl24 style='height:12.0pt'></td>
+
+  <td class=xl35>Male</td>
+
+  <td class=xl36 x:num><?=$male_count;?></td>
+
+  <td class=xl51 x:num><?=$male_percentage;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>NY</td>
+
+  <td class=xl28 x:num><?=$NY_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl24 style='height:12.0pt'></td>
+
+  <td class=xl38>Total</td>
+
+  <td class=xl29 x:num><?=$female_count+$male_count;?></td>
+
+  <td class=xl52 x:num><?=$female_percentage+$male_percentage;?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>OH</td>
+
+  <td class=xl28 x:num><?=$OH_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl24 style='height:12.0pt'></td>
+
+  <td class=xl40>&nbsp;</td>
+
+  <td class=xl24></td>
+
+  <td class=xl39>&nbsp;</td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>OK</td>
+
+  <td class=xl28 x:num><?=$OK_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl24 style='height:12.0pt'></td>
+
+  <td class=xl47>Gender</td>
+
+  <td class=xl48>Avg. Age</td>
+
+  <td class=xl49>Avg. Tenure</td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>OR</td>
+
+  <td class=xl28 x:num><?=$OR_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl24 style='height:12.0pt'></td>
+
+  <td class=xl33>Female</td>
+
+  <td class=xl34 x:num><? if ($female_average_age) {printf("%01.2f", (time() - $female_average_age) / AYEAR );}?></td>
+
+  <td class=xl28 x:num><? if ($female_average_tenure){ printf("%01.2f", (time() - $female_average_tenure) / AYEAR );}?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>PA</td>
+
+  <td class=xl28 x:num><?=$PA_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl24 style='height:12.0pt'></td>
+
+  <td class=xl33>Male</td>
+
+  <td class=xl34 x:num><? if ($male_average_age) {printf("%01.2f", (time() - $male_average_age) / AYEAR );}?></td>
+
+  <td class=xl28 x:num><? if ($male_average_tenure){ printf("%01.2f", (time() - $male_average_tenure) / AYEAR );}?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>RI</td>
+
+  <td class=xl28 x:num><?=$RI_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl24 style='height:12.0pt'></td>
+
+  <td class=xl33>&nbsp;</td>
+
+  <td class=xl34></td>
+
+  <td class=xl28>&nbsp;</td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>SC</td>
+
+  <td class=xl28 x:num><?=$SC_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl24 style='height:12.0pt'></td>
+
+  <td class=xl47>Gender</td>
+
+  <td class=xl48>Max Age</td>
+
+  <td class=xl49>Max Tenure</td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>SD</td>
+
+  <td class=xl28 x:num><?=$SD_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl24 style='height:12.0pt'></td>
+
+  <td class=xl33>Female</td>
+
+  <td class=xl34 x:num><? if ($female_max_age) {printf("%01.2f", (time() - $female_max_age) / AYEAR );}?></td>
+
+  <td class=xl28 x:num><? if ($female_max_tenure) {printf("%01.2f", (time() - $female_max_tenure) / AYEAR );}?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>TN</td>
+
+  <td class=xl28 x:num><?=$TN_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl24 style='height:12.0pt'></td>
+
+  <td class=xl33>Male</td>
+
+  <td class=xl34 x:num><? if ($male_max_age) {printf("%01.2f", (time() - $male_max_age) / AYEAR );}?></td>
+
+  <td class=xl28 x:num><? if ($male_max_tenure) {printf("%01.2f", (time() - $male_max_tenure) / AYEAR );}?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>TX</td>
+
+  <td class=xl28 x:num><?=$TX_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl24 style='height:12.0pt'></td>
+
+  <td class=xl40>&nbsp;</td>
+
+  <td class=xl24></td>
+
+  <td class=xl39>&nbsp;</td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>UT</td>
+
+  <td class=xl28 x:num><?=$UT_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl24 style='height:12.0pt'></td>
+
+  <td class=xl47>Gender</td>
+
+  <td class=xl48>Min Age</td>
+
+  <td class=xl49>Min Tenure</td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>VA</td>
+
+  <td class=xl28 x:num><?=$VA_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl24 style='height:12.0pt'></td>
+
+  <td class=xl33>Female</td>
+
+  <td class=xl34 x:num><? if ($female_min_age) {printf("%01.2f", (time() - $female_min_age) / AYEAR );}?></td>
+
+  <td class=xl28 x:num><? if ($female_min_tenure) {printf("%01.2f", (time() - $female_min_tenure) / AYEAR );}?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>VT</td>
+
+  <td class=xl28 x:num><?=$VT_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 class=xl24 style='height:12.0pt'></td>
+
+  <td class=xl53>Male</td>
+
+  <td class=xl42 x:num><? if ($male_min_age) {printf("%01.2f", (time() - $male_min_age) / AYEAR );}?></td>
+
+  <td class=xl54 x:num><? if ($male_min_tenure) {printf("%01.2f", (time() - $male_min_tenure) / AYEAR );}?></td>
+
+  <td class=xl24></td>
+
+  <td class=xl27>WA</td>
+
+  <td class=xl28 x:num><?=$WA_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 colspan=5 class=xl24 style='height:12.0pt;mso-ignore:colspan'></td>
+
+  <td class=xl27>WI</td>
+
+  <td class=xl28 x:num><?=$WI_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 colspan=5 class=xl24 style='height:12.0pt;mso-ignore:colspan'></td>
+
+  <td class=xl27>WV</td>
+
+  <td class=xl28 x:num><?=$WV_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 colspan=5 class=xl24 style='height:12.0pt;mso-ignore:colspan'></td>
+
+  <td class=xl55>WY</td>
+
+  <td class=xl54 x:num><?=$WY_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 colspan=5 class=xl24 style='height:12.0pt;mso-ignore:colspan'></td>
+
+  <td class=xl53>Total</td>
+
+  <td class=xl56 x:num><?=$ST_number;?></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 colspan=5 class=xl24 style='height:12.0pt;mso-ignore:colspan'></td>
+
+  <td colspan=2 style='mso-ignore:colspan'></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+
+  <td height=16 colspan=5 class=xl24 style='height:12.0pt;mso-ignore:colspan'></td>
+
+  <td colspan=2 style='mso-ignore:colspan'></td>
+
+  <td class=xl24></td>
+
+ </tr>
+
+ <![if supportMisalignedColumns]>
+
+ <tr height=0 style='display:none'>
+
+  <td width=149 style='width:112pt'></td>
+
+  <td width=99 style='width:74pt'></td>
+
+  <td width=76 style='width:57pt'></td>
+
+  <td width=94 style='width:71pt'></td>
+
+  <td width=23 style='width:17pt'></td>
+
+  <td width=50 style='width:38pt'></td>
+
+  <td width=50 style='width:38pt'></td>
+
+  <td width=40 style='width:30pt'></td>
+
+ </tr>
+
+ <![endif]>
+
+</table>
+
+
+
+</body>
+
+
+
+</html>

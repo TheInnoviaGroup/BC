@@ -1,0 +1,20 @@
+<div class='loginbox'>
+<? if ($user->loggedIn): ?>
+Welcome back, <?=$user->gn;?>.<br>
+<a href="?logout=1">Log out</a>
+<? elseif ($badlogin): ?>
+Login failed. Please try again.
+<form action="userauthtest.php" method=POST>
+Username: <input type=text name="username"><br>
+Password: <input type=password name="password"><br>
+<input type=submit>
+</form>
+<? else: ?>
+<form action="userauthtest.php" method=POST>
+Username: <input type=text name="username"><br>
+Password: <input type=password name="password"><br>
+<input type=submit>
+</form>
+Please login or <a href="create.php">create an account</a>:<br>
+<? endif; ?>
+</div>

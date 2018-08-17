@@ -1,0 +1,33 @@
+;; Object templates/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "templates/"
+  :tables (list 
+   (semanticdb-table "index.ihtml"
+    :major-mode 'php-mode
+    :tags '(("$title" variable (:type "int") nil [27 34]) ("endforeach" variable (:type "int") nil [232 243]) ("endforeach" variable (:type "int") nil [431 442]) ("endif" variable (:type "int") nil [470 476]) ("endforeach" variable (:type "int") nil [648 659]) ("endif" variable (:type "int") nil [668 674]) ("BLANK_IMAGE_URL" variable (:default-value "'ext/resources/images/default/s.gif'" :type "int") nil [2076 2131]) ("App" variable (:default-value "{}" :type "int") nil [2138 2147]) ("layout" variable (:default-value "{}" :type "int") nil [2158 2170]) ("function" function (:type "int") nil [2188 5268]) ("onDocumentReady" function (:prototype-flag t :arguments (("" variable (:type ("App" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5311 5315]) ("" variable (:type ("init" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5315 5320]) ("" variable (:type ("App" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5321 5325]) ("" variable (:type ("true" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5326 5331])) :type "int") nil [5295 5332]) ("onDocumentReady" function (:prototype-flag t :arguments (("" variable (:type ("Ext" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5366 5370]) ("" variable (:type ("ux" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5370 5373]) ("" variable (:type ("CascadingDialogs" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5373 5390]) ("" variable (:type ("scanHrefs" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5390 5400]) ("" variable (:type ("App" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5401 5405]) ("" variable (:type ("true" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5406 5411])) :type "int") nil [5350 5412]) ("endif" variable (:type "int") nil [6634 6640]) ("endif" variable (:type "int") nil [7170 7176]) ("var_export" function (:prototype-flag t :arguments (("" variable (:type ("$user" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7378 7384])) :type "int") nil [7367 7385]) ("user" function (:prototype-flag t :arguments (("" variable (:type ("$import" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7624 7640])) :type ("new" type (:type "class") nil nil)) nil [7615 7642]) ("$config" variable (:default-value "unserialize($import['config'])" :type "int") nil [7655 7696]) ("ucfirst" function (:prototype-flag t :arguments (("" variable (:type ("$import" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7746 7761])) :type "int") nil [7738 7763]) ("endif" variable (:type "int") nil [7838 7844]) ("$import" variable (:dereference 1 :type "int") nil [7944 7967]) ("gmdate" function (:prototype-flag t :arguments (("" variable (:type ("PAITDATE" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7987 7996]) ("" variable (:type ("$import" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7997 8012])) :type "int") nil [7980 8014]) ("sn" variable (:type "int") nil [8080 8083]) ("nbsp" variable (:type "int") nil [8090 8095]) ("nbsp" variable (:type "int") nil [8096 8101]) ("nbsp" variable (:type "int") nil [8102 8107]) ("nbsp" variable (:type "int") nil [8108 8113]) ("endforeach" variable (:type "int") nil [8405 8416]) ("endif" variable (:type "int") nil [8438 8444]) ("gmdate" function (:prototype-flag t :arguments (("" variable (:type ("PAITDATE" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8757 8766]) ("" variable (:type ("$upload" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8767 8782])) :type "int") nil [8750 8784]) ("$upload" variable (:dereference 1 :type "int") nil [8851 8865]) ("nbsp" variable (:type "int") nil [8872 8877]) ("nbsp" variable (:type "int") nil [8878 8883]) ("nbsp" variable (:type "int") nil [8884 8889]) ("nbsp" variable (:type "int") nil [8890 8895]) ("endforeach" variable (:type "int") nil [9124 9135]) ("endif" variable (:type "int") nil [9147 9153]) ("$name" variable (:type "int") nil [9445 9451]) ("endforeach" variable (:type "int") nil [9783 9794]))
+    :file "index.ihtml"
+    :pointmax 9907
+    )
+   (semanticdb-table "welcomeScreen.ihtml"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "welcomeScreen.ihtml"
+    :pointmax 8829
+    )
+   (semanticdb-table "login.ihtml"
+    :major-mode 'php-mode
+    :tags '(("$debug" variable (:type ("global" type (:type "class") nil nil)) nil [4 18]) ("variable" function (:prototype-flag t :arguments (("" variable (:type ("$badlogin" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [39 49])) :type "int") nil [30 53]) ("gn" variable (:type "int") nil [138 141]) ("endif" variable (:type "int") nil [425 431]) ("endif" variable (:type "int") nil [1144 1150]))
+    :file "login.ihtml"
+    :pointmax 1153
+    )
+   (semanticdb-table "container.ihtml"
+    :major-mode 'php-mode
+    :tags '(("$body" variable (:type "int") nil [4 10]))
+    :file "container.ihtml"
+    :pointmax 12
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

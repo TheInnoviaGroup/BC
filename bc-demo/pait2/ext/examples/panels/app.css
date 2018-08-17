@@ -1,0 +1,253 @@
+/*
+ * Ext JS Library 1.0.1
+ * Copyright(c) 2006-2007, Ext JS, LLC.
+ * licensing@extjs.com
+ * 
+ * http://www.extjs.com/license
+ */
+
+html, body {
+    font: normal 12px tahoma, arial, verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+    overflow: hidden;
+    height: 100%;
+}
+
+.plugin {
+    background-image: url( ../shared/icons/fam/plugin.gif );
+}
+
+#dpanels {
+    width:250px;
+    float:right;
+}
+#dpanels .x-panel {
+    margin:15px;
+}
+#dpanels .x-date-picker {
+    border: 0 none;
+    border-top:0 none;
+    background:transparent;
+}
+#dpanels .x-date-picker td.x-date-active {
+    background:#fff;
+}
+#dpanels .x-date-picker {
+    width:100% !important;
+}
+#desktop {
+    width: 100%;
+    height: 100%;
+    border: 0 none;
+    position:relative;
+    zoom:1;
+    background: #396bb4 url( images/desktop.gif ) no-repeat fixed top left;
+}
+
+#desktop-bg {
+    width: 100%;
+    height: 100%;
+    border: 0 none;
+}
+
+#taskbar {
+    width: 100%;
+    background: #cddef3 url( images/top-bar-bg.gif ) repeat-x left -10px;
+    padding: 0 0 0 0;
+    border-bottom:1px solid #346cbc;
+}
+
+#taskbar .x-toolbar {
+    border: 0 none;
+    background: 0 none;
+}
+
+#winbar .x-btn {
+    float: left;
+    margin: 2px 0 0 2px;
+}
+
+#winbar .x-btn-left {
+    background: url( images/app-win-btn-sprite.gif ) no-repeat 0 0;
+}
+
+#winbar .x-btn-right {
+    background: url( images/app-win-btn-sprite.gif ) no-repeat 0 -21px;
+}
+
+#winbar .x-btn-center {
+    background: url( images/app-win-btn-sprite.gif ) repeat-x 0 -42px;
+}
+
+#winbar .x-btn-over .x-btn-left {
+    background-position: 0 -126px;
+}
+
+#winbar .x-btn-over .x-btn-right {
+    background-position: 0 -147px;
+}
+
+#winbar .x-btn-over .x-btn-center {
+    background-position: 0 -168px;
+}
+
+#winbar .active-win .x-btn-left {
+    background-position: 0 -63px !important;
+}
+
+#winbar .active-win .x-btn-right {
+    background-position: 0 -84px !important;
+}
+
+#winbar .active-win .x-btn-center {
+    background-position: 0 -105px !important;
+}
+
+#winbar button {
+    width: 150px;
+    overflow: hidden;
+    text-align: left;
+    background-image: url( ../shared/icons/fam/plugin.gif );
+    background-position: 0 2px;
+    color: white;
+}
+
+#title-bar {
+    padding:7px 5px;
+    font:bold 13px tahoma,arial,verdana,sans-serif;
+    color:white;
+    display:none;
+}
+#windows {
+    background: #14418a url( images/windows-bg.gif ) repeat-x;
+    padding-top:5px;
+}
+
+#qlaunch {
+    background: #99bbe8 url( images/qlaunch-bg.gif ) repeat-x left top;
+    padding:4px 4px 4px 4px;
+}
+#qlaunch .x-toolbar {
+    padding:0;
+    margin:0;
+    border:0 none;
+}
+
+#qlaunch button {
+    color: #ddebfd;
+    padding-left:4px;
+    padding-right:4px;
+}
+#qlaunch .x-btn-with-menu button, #qlaunch .x-btn-menu-text-wrap button {
+    padding-right:0;
+}
+#qlaunch .x-btn {
+    margin-right:2px;
+}
+#qlaunch .x-btn-left {
+    background: url( images/appbar-btn-sprite.gif ) no-repeat 0 0;
+}
+
+#qlaunch .x-btn-right {
+    background: url( images/appbar-btn-sprite.gif ) no-repeat 0 -21px;
+}
+
+#qlaunch .x-btn-center {
+    background: url( images/appbar-btn-sprite.gif ) repeat-x 0 -42px;
+}
+
+#qlaunch .x-btn-over .x-btn-left {
+    background-image: url( images/task-btn-sprite.gif );
+    background-position: 0 -126px;
+}
+
+#qlaunch .x-btn-over .x-btn-right {
+    background-image: url( images/task-btn-sprite.gif );
+    background-position: 0 -147px;
+}
+
+#qlaunch .x-btn-over .x-btn-center {
+    background-image: url( images/task-btn-sprite.gif );
+    background-position: 0 -168px;
+}
+
+#qlaunch .x-btn-click .x-btn-left, #qlaunch .x-btn-menu-active .x-btn-left {
+    background-image: url( images/appbar-btn-sprite.gif );
+    background-position: 0 -126px;
+}
+
+#qlaunch .x-btn-click .x-btn-right, #qlaunch .x-btn-menu-active .x-btn-right {
+    background-image: url( images/appbar-btn-sprite.gif );
+    background-position: 0 -147px;
+}
+
+#qlaunch .x-btn-click .x-btn-center, #qlaunch .x-btn-menu-active .x-btn-center {
+    background-image: url( images/appbar-btn-sprite.gif );
+   background-position: 0 -168px;
+}
+
+#spacer {
+    height: 25px;
+    float: left;
+    width: 0;
+    overflow: hidden;
+    margin-top: 2px;
+}
+.x-window-body p,.x-panel-body p {
+    padding:10px;
+    margin:0;
+}
+
+#qlaunch .x-btn-menu-arrow-wrap .x-btn-center button {
+    background-image:url(../../resources/images/default/toolbar/btn-arrow-light.gif);
+}
+#qlaunch .x-btn-text-icon .x-btn-menu-arrow-wrap .x-btn-center button {
+    background-image:url(../../resources/images/default/toolbar/btn-arrow-light.gif);
+}
+#qlaunch .x-btn-with-menu .x-btn-center em {
+    background-image:url(../../resources/images/default/toolbar/btn-arrow-light.gif);
+}
+
+
+
+/* toolbar buttons */
+.details .x-btn-text {
+    background-image: url(images/details.gif);
+}
+.preview .x-btn-text {
+    background-image: url(images/preview-panel.gif);
+}
+.new-ticket .x-btn-text {
+    background-image: url(images/new-ticket.gif);
+}
+.save-ticket .x-btn-text {
+    background-image: url(images/save-ticket.gif);
+}
+.cancel-ticket .x-btn-text {
+    background-image: url(images/cancel-ticket.gif);
+}
+
+
+
+#tickets .x-grid-col .x-grid-cell-inner {
+    padding-top:3px;
+}
+#tickets .x-grid-td-summary .x-grid-cell-inner {
+    padding-top:0;
+}
+.x-grid-col-summary b {
+    font-family:tahoma, verdana;
+    color:#333;
+    display:block;
+    padding-left:18px;
+    line-height:18px;
+    vertical-align:middle;
+    background:transparent url(/xbug/ticket.gif) no-repeat left 1px;
+}
+.x-grid-col-summary b i {
+    font-weight:normal;
+    font-style: normal;
+    color:#000;
+}

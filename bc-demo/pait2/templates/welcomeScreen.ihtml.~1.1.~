@@ -1,0 +1,234 @@
+<? if ($user->access_lv > 0 && $user->access_lv != 5): ?>
+<div class="uploadbox">
+<h2>Admin</h2>
+<ul>
+<li><a href="<?=$self;?>?mode=Upload">Import an excel spreadsheet</a></li>
+<li><a href="<?=$self;?>?mode=planDesign&action=add">Add a Plan Design</a></li>
+<li><a href="<?=$self;?>?mode=planDesign&action=List">List Plan Designs</a></li>
+<li><a href="<?=$self;?>?mode=Admin&action=User">List System Users</a></li>
+<li><a href="leadTracker/">Lead Tracker</a></li>
+<? if ($user->access_lv > 1): ?>
+<li><a href="<?=$self;?>?mode=Admin&action=addUser">Add a System User</a></li>
+<li><a href="<?=$self;?>?mode=Company&action=addCompany">Add a Company</a></li>
+<li><a href="<?=$self;?>?mode=Carrier&action=addCarrier">Add a Carrier</a></li>
+</ul>
+<?  endif; ?>
+<? if (is_array($importList) && count($importList) > 0): ?>
+<h2>Pending Imports</h2>
+<ul>
+<? foreach ($importList as $import): ?>
+<? $user = new user($import['owner']);
+$config = unserialize($import['config']); ?>
+<li><div style="clear: both;"><?=ucfirst($import['type']);?> <? if ($config['worksheetName']): ?>[<?=$config['worksheetName'];?>] <? endif;?>for <a href="<?=$self;?>?mode=Company&action=showCompany&companyID=<?=$import['companyID'];?>"><?=$import['companyName'];?></a> on <?=gmdate(PAITDATE, $import['time']);?> by <a href="mailto:<?=$user->email;?>"><?=$user->gn." ".$user->sn;?></a>&nbsp;&nbsp;&nbsp;&nbsp;<small>[Status: <?=($import['status']%2 == 0)?"":"<a href=\"".$self."?mode=Importer&importID=".$import['importID']."\">";?><?=$uploadStatus[$import['status']];?></a>] [<a href="<?=$self;?>?mode=Importer&action=delete&importID=<?=$import['importID'];?>">Delete</a>]</small></div></li>
+<? endforeach;?>
+</ul>
+<? endif; ?>
+<? if (is_array($uploadList) && count($uploadList) > 0): ?>
+<h2>Pending Uploads</h2>
+<ul>
+<? foreach ($uploadList as $upload): ?>
+<li><div style="clear: both;"><a href="<?=$uploadPath;?>/<?=$upload['filename'];?>">File</a> uploaded on <?=gmdate(PAITDATE, $upload['time']);?> by <a href="mailto:<?=$upload['email'];?>"><?=$upload['gn']." ".$upload['sn'];?></a>&nbsp;&nbsp;&nbsp;&nbsp;<small>[<a href="<?=$self;?>?mode=Import&action=pending&uploadID=<?=$upload['uploadID'];?>">Import</a>] [<a href="<?=$self;?>?mode=Import&action=deletepending&uploadID=<?=$upload['uploadID'];?>">Delete</a>]</small></div></li>
+<? endforeach;?>
+</ul>
+<? endif; ?>
+</div>
+<? endif; ?>
+<div class="searchbox">
+<form action="<?=$self;?>" method="post">
+<fieldset><h2>Search</h2>
+<? if ($searchtype == "compensation"): ?>
+<div class="notes"><h4>Search by Compensation</h4><p>Enter a compensation amount to search for. You may optionally limit the results returned below.</p><p class="searchlinks last">Click here to:<br />
+<a href="<?=$self;?>?searchtype=policy">Search by Policy</a><br />
+<a href="<?=$self;?>?mode=Search&action=searchCompany">Find a Company</a><br />
+<a href="<?=$self;?>?mode=Search&action=searchCarrier">Find a Carrier</a><br />
+<a href="<?=$self;?>">Search by person's name</a>
+</p>
+</div>
+<input type="hidden" name="action" value="searchCompensation">
+<input type="hidden" name="mode" value="Search">
+<div class="required">
+<div class="required"><label for="compcomparer">Compensation
+that is: </label>
+  <select size="1" name="compcomparer">
+  <option selected="selected">More than</option>
+  <option>Less than</option>
+  <option>Equal to</option>
+  </select>
+<input type="text" name="searchcomp" tabindex="1" />
+</div>
+<div class="submit"><input type="submit" value="Search" name="Search"/></div>
+<div class="optional"><br /><label for="sortby">Sort by: </label><select name="sortby">
+<option>Compensation Amount</option>
+<option>Last Name</option>
+<option>State</option>
+<option>Date of Birth</option>
+<option>Status</option>
+</select>
+</div>
+</fieldset>
+<fieldset><h2>Limit your search</h2>
+  <table border="0" width="100%">
+    <tbody>
+      <tr>
+        <td><label for="limitcomptype">By
+compensation type:</label>
+        <select name="limitcomptype">
+<option value="0">All Compensation Types</option>
+<option value="-1">Total Annual Compensation</option>
+<? foreach ($compList as $id => $compType): ?>
+<option value="<?=$id;?>"><?=$compType;?></option>
+<? endforeach; ?>
+        </select>
+        </td>
+        <td>
+<label for="limitstatus">To a specific status:</label><select name="limitstatus">
+<option value="Any" SELECTED>Any Status</option>
+<? foreach ($statusList as $id => $status): ?>
+<option value="<?=$id;?>"><?=$status;?></option>
+<? endforeach; ?>
+</select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+<label for="limitcompany">To a specific company:</label><select name="limitcompany">
+<option value="0">All Companies</option>
+<? foreach ($companyList as $id => $company): ?>
+<option value="<?=$id;?>"><?=$company;?></option>
+<? endforeach; ?>
+</select>
+        </td>
+        <td><label for="limitresults">Number
+of results:</label>
+        <select name="limitresults">
+        <option value="0">All Results</option>
+        <option>10</option>
+        <option>25</option>
+        <option>50</option>
+        <option>100</option>
+        </select>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</fieldset>
+<? elseif ($searchtype == "policy"): ?>
+<div class="notes"><h4>Search for a person by policy</h4><p>Enter the policy number. </p><p class="searchlinks last">Click here to:<br />
+<a href="<?=$self;?>">Search by Name</a><br />
+<a href="<?=$self;?>?searchtype=compensation">Search by Compensation</a><br />
+<a href="<?=$self;?>?mode=Search&action=searchCompany">Find a Company</a><br />
+<a href="<?=$self;?>?mode=Search&action=searchCarrier">Find a Carrier</a>
+</p>
+</div>
+<input type="hidden" name="action" value="searchPerson">
+<input type="hidden" name="mode" value="Search">
+<div class="required">
+<label for="searchperson">Policy Number:</label><input type="text" name="searchpolicy" tabindex="1" />
+</div>
+<div class="submit"><input type="submit" value="Search" name="Search"/></div>
+<div class="optional"><br /><label for="sortby">Sort by: </label><select name="sortby">
+<option>Last Name</option>
+<option>State</option>
+<option>Date of Birth</option>
+<option>Status</option>
+</select>
+</div>
+</fieldset>
+<fieldset><h2>Limit your search</h2>
+<div class="optional">
+<label for="limitcompany">To a specific company:</label><select name="limitcompany">
+<option value="0">All Companies</option>
+<? foreach ($companyList as $id => $company): ?>
+<option value="<?=$id;?>"><?=$company;?></option>
+<? endforeach; ?>
+</select>
+</div>
+<div class="optional">
+<label for="limitstatus">To a specific status:</label><select name="limitstatus">
+<option value="Any" SELECTED>Any Status</option>
+<? foreach ($statusList as $id => $status): ?>
+<option value="<?=$id;?>"><?=$status;?></option>
+<? endforeach; ?>
+</select>
+</div>
+<div class="optional"><label for="limitresults">Number of results:</label><select name="limitresults">
+<option value="0">All Results</option>
+<option>10</option>
+<option>25</option>
+<option>50</option>
+<option>100</option>
+</select>
+</div>
+</fieldset>
+<? else: ?>
+<div class="notes"><h4>Search for a person</h4><p>Enter text to search for a person. You may optionally limit the results returned below.</p><p class="searchlinks last">Click here to:<br />
+<a href="<?=$self;?>?searchtype=policy">Search by Policy</a><br />
+<a href="<?=$self;?>?searchtype=compensation">Search by Compensation</a><br />
+<a href="<?=$self;?>?mode=Search&action=searchCompany">Find a Company</a><br />
+<a href="<?=$self;?>?mode=Search&action=searchCarrier">Find a Carrier</a>
+</p>
+</div>
+<input type="hidden" name="action" value="searchPerson">
+<input type="hidden" name="mode" value="Search">
+<div class="required">
+<label for="searchperson">Find a Person:</label><input type="text" name="searchperson" tabindex="1" /><br />
+</div>
+<div class="optional"><small><label for="limitname" style="text-align:middle">Search by name only</label></small><input class="inputCheckbox" type="checkbox" name="limitname" checked>
+</div>
+<div class="submit"><input type="submit" value="Search" name="Search"/></div>
+<div class="optional"><br /><label for="sortby">Sort by: </label><select name="sortby">
+<option>Last Name</option>
+<option>State</option>
+<option>Date of Birth</option>
+<option>Status</option>
+</select>
+</div>
+</fieldset>
+<fieldset><h2>Limit your search</h2>
+<div class="optional">
+<label for="limitcompany">To a specific company:</label><select name="limitcompany">
+<option value="0">All Companies</option>
+<? foreach ($companyList as $id => $company): ?>
+<option value="<?=$id;?>"><?=$company;?></option>
+<? endforeach; ?>
+</select>
+</div>
+<div class="optional">
+<label for="limitstatus">To a specific status:</label><select name="limitstatus">
+<option value="Any" SELECTED>Any Status</option>
+<? foreach ($statusList as $id => $status): ?>
+<option value="<?=$id;?>"><?=$status;?></option>
+<? endforeach; ?>
+</select>
+</div>
+<div class="optional"><label for="limitresults">Number of results:</label><select name="limitresults">
+<option value="0">All Results</option>
+<option>10</option>
+<option>25</option>
+<option>50</option>
+<option>100</option>
+</select>
+</div>
+</fieldset>
+<? endif; ?>
+<fieldset><h2>Saved Searches</h2>
+<ul>
+<? foreach ($saveList as $id => $name): ?>
+<li><a href="<?=$self;?>?mode=Search&action=showSaveSearch&saveID=<?=$id;?>"><?=$name;?></a> <small>[Export to: <a href="<?=$self;?>?mode=Search&action=exportXLS&saveID=<?=$id;?>">Excel or Mail Merge</a>] [<a href="labelPrint.php5?saveID=<?=$id;?>">Show Mailing Labels</a>] [<a href="" onClick="confirmDelete('<?=$self;?>?mode=Search&action=deleteSearch&saveID=<?=$id;?>');return false;">Delete</a>] </small> </li>
+<? endforeach; ?>
+</ul>
+</fieldset>
+</form>
+</div>
+<? if ($user->access_lv > 0 && $user->access_lv != 5): ?>
+<div class="reportbox">
+<h2>Reports</h2>
+<ul>
+<li><a href="<?=$self;?>?mode=Report&action=companyDemographics">Company Demographics</a></li>
+<li><a href="<?=$self;?>?mode=Report&action=missingData">Missing Data Reconciliation</a></li>
+<li><a href="<?=$self;?>?mode=Report&action=eligibleIncreases">Eligibility</a></li>
+<!-- <li><a href="<?=$self;?>?mode=Report&action=missingPersons">Missing Persons</a></li>
+<li><a href="<?=$self;?>?mode=Report&action=HCA">HCA SIP Reports</a></li> -->
+</ul>
+</div>
+<? endif; ?>

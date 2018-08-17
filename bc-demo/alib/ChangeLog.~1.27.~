@@ -1,0 +1,194 @@
+2006-04-17    <bpjohnson@gmail.com>
+
+	* debug.inc (backtrace): Added backtraces to debug output!
+	  (dump_template): Added option to dump to a template.
+
+2005-11-30    <bpjohnson@gmail.com>
+
+	* template.inc (push): Added.
+
+	* formhandler.inc (reparse):  Added.
+
+2005-11-15    <norbert.taylor@gmail.com>
+	* xmlsimple.inc: now utf8_encodes data before adding it to an element. I might want to utf8_encode the tagnames too. Hmmm.
+
+2005-11-14    <bpjohnson@gmail.com>
+
+	* time.inc (addBusinessDays): Added.
+
+2005-10-24    <norbert.taylor@gmail.com>
+	* xmlsimple.inc: Fixed a silly oversight with data type checking. This new approach may be too forgiving. (Thanks John!)
+
+2005-09-28    <bpjohnson@gmail.com>
+
+	* user.inc: Fixed a problem with multiple user objects.
+
+	* sort.inc (sortLinkedList): Added a new sort.
+
+	* time.inc: Removed last vestiges of pmLibs.
+
+2005-09-23    <bpjohnson@gmail.com>
+
+	* db.inc(allRecords): added a method to get all results.
+
+2005-08-04    <bpjohnson@gmail.com>
+
+	* mail.inc: Fixed a problem that didn't break when testing on
+	Windows, even though it should have. Stupid Windows.
+
+	* user.inc: Dumbass $uid.
+
+	* mail.inc: General fixes.
+
+	* db.inc (prepare): Fixed using numeric indexes.
+
+2005-07-19    <bpjohnson@gmail.com>
+
+	* user.inc (addUser): added. Docs to follow.
+
+	* db.inc (prepare): UPDATE table not UPDATE INTO table.
+
+	* formhandler.inc (validate): fixed improperly assigned array
+
+2005-07-19		<ndt@onebabyzebra.com>
+
+	* mail.inc: Fixed small parse errors revealed by testing. 
+
+2005-07-18		<ndt@onebabyzebra.com>
+
+	* xmlsimple.inc: Added the saveToString function I'd forgotten to put in originally.
+
+2005-07-18    <bpjohnson@gmail.com>
+
+	* user.inc (_loaduser): Serious and very embarassing bug fix. Thanks Norbert!
+
+2005-06-30    <bpjohnson@gmail.com>
+
+	* user.inc: $_COOKIE instead of $HTTP_COOKIE_VARS
+
+	* misc.inc: Stupid perl habits. Bug fix.
+
+2005-06-28    <bpjohnson@gmail.com>
+
+	* sort.inc: Added.
+
+	* misc.inc: Added.
+
+2005-06-22    <bpjohnson@gmail.com>
+
+	* ajax.inc: Added.
+
+2005-06-20    <bpjohnson@gmail.com>
+
+	* template.inc: Made AGLOBAL available within templates.
+
+2005-06-07    <bpjohnson@gmail.com>
+
+	* debug.inc: Hopefully that recursion thing is now fixed.
+
+	* user.inc: Changed references from global $debug to global $AGLOBAL.
+
+	* mail.inc: Changed references from $this->debug to $debug
+
+	* formhandler.inc: Changed references from $this->debug to $debug
+
+	* db.inc: Changed references from $this->debug to $debug
+
+	* alib.inc: Doesn't assign the debug object to $this->debug
+	anymore. Was causing recursion problems with protected variables.
+
+2005-05-26    <bpjohnson@gmail.com>
+
+	* aniterator.inc: Added variable noLoop that keeps next and prev
+	from looping.
+
+2005-05-13    <bpjohnson@gmail.com>
+
+	* aniterator.inc: Changed $this->data to $this->_data to avoid
+	possible name collision.
+
+2005-05-09    <bpjohnson@gmail.com>
+
+	* upload.inc: Added.
+
+	* mail.inc: Added. Entirely untested.
+	(_generateBody): wordwrap at 70
+	(_generateHeaders): wordwrap at 70
+
+	* xmlsimple.inc: Fluff.
+
+	* user.inc (commit): Updated with cache functionality.
+	
+	* dbcache.inc: Added. Woo!
+
+	* db.inc (query): Added Caching.
+	(__set): Caching functionality.
+
+2005-05-08    <strangepowers@onebabyzebra.com>
+
+	* xmlsimple.inc: Added.
+
+2005-05-02    <bpjohnson@gmail.com>
+
+	* db.inc (nextRecord): use nextRecord instead of next_record.
+
+2005-05-01    <bpjohnson@gmail.com>
+
+	* db.inc (__construct): Fixed to call parent::__construct at end.
+	(__set): Created. Checks to see if we're setting "login" and if so
+	runs setup. Otherwise passes through to parent::__set
+
+	* template.inc: Fixed bug with parse if there are no template
+	variables.
+
+2005-04-27    <bpjohnson@gmail.com>
+
+	* user.inc: Removed friend thingies. That's for aWebCF.
+
+	* time.inc (getNextMonth): modified John's function to use
+	timestamps and allow for cycles of over 12 months. Fixed
+	documentation bug as well.
+	(currentBillingMonth): Changed name from CurrBillMonth. Fixed to
+	use timezones.
+	(parseTimeString): Changed name from pmParseTime. Fixed to use
+	timezones. Added documentation. Made it use global debug instead
+	of echoes.
+
+	* time.inc: Added. Use it.
+
+	* template.inc: Fixed subpackage in docs.
+
+2005-03-28    <bpjohnson@gmail.com>
+
+	* formhandler.inc: Added form security handling + validation
+
+	* debug.inc: Changed $this->variable to use var_export instead of
+	var_dump.
+
+2005-03-22    <bpjohnson@gmail.com>
+
+	* template.inc: Made global $debug available within templates.
+
+	* db.inc: Doc update for next_record().
+
+2005-03-22    <strange.powers@onebabyzebra.com>
+
+        * db.inc: Added return result to connect() method. Also added
+        ability to select kind of array returned by next_record()  
+
+2005-03-22    <bpjohnson@gmail.com>
+
+	* user.inc: Created.
+
+	* template.inc: Shiny.
+
+	* objfac.inc: Created. Hate it.
+
+	* debug.inc: Created.
+
+	* db.inc: Created.
+
+	* aniterator.inc: Created.
+
+	* alib.inc: Created. Love it.
+

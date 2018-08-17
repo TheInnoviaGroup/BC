@@ -1,0 +1,47 @@
+<?PHP
+
+include_once('../alib.inc');
+global $debug, $AGLOBAL;
+$debug->level = 11; // 0 to turn off, higher for more output. alib
+		   // objects do a lot of chatter at level 11 and higher.
+$debug->output = 'pretty';
+$debug->line('aLib init complete', 1);
+
+$AGLOBAL['USERDBURL'] = 'mysql://user:password@host/db';
+
+
+$user = new User();
+//print_v($user, 5);
+$badlogin = 0;
+
+if ($HTTP_GET_VARS['logout'] == 1) {
+  $user->CookieLogout();
+ }
+
+if (! $user->CookieAuth()) {
+  if (isset($HTTP_POST_VARS['username']) && isset($HTTP_POST_VARS['password'])) {
+    if (! $user->CookieAuth($HTTP_POST_VARS['username'], $HTTP_POST_VARS['password'])) {
+      $badlogin = 1;
+    }
+  }
+}
+
+//This is just showing off a bit of the anObject and debug object.
+$someArray = array('item1' => 'val1', 'foo');
+$user->IamUndefined($someArray, 'just a string');
+
+$debug->variable($user, 1);
+$debug->line("does this work?", 1);
+// .ihtml is a standard naming convention for templates.
+$header = new template('header.ihtml');
+$body = new template('login.ihtml');
+$body->set('user', $user);
+$body->set('badlogin', $badlogin);
+$header->set('body', $body->parse());
+$header->set('title', "Login Test");
+$header->set('debuglevel', $debug->level);
+$header->set('debugoutput', $debug->dump(1));
+$html = $header->parse();
+print $html;
+
+?>

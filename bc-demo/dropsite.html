@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Census Drop Site</title>
+
+
+  <script language="JavaScript">
+function validate() {
+var myf = document.forms.fauxlogin;
+if (myf.username.value=='Census' && myf.password.value=='JohnSmith') {
+myf.action="dropsite.html";
+myf.Submit();
+} else {
+myf.action="error2.html";
+myf.Submit();
+}
+}
+  </script>
+</head>
+
+
+<body>
+
+<center>
+<table style="text-align: left; height: 100%;" border="0" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td style="width: 50%; text-align: right; vertical-align: middle;"><img src="pait2/images/lock3.jpg" alt=""></td>
+
+      <td style="text-align: left; vertical-align: middle;"><br>
+
+      <form action="dropsiteconfirm.html" name="fauxlogin"><br>
+
+        <h4>Upload a census file for ABC Company.</h4>
+
+        <p>Type in a file name or click "Browse" to find the
+file. Then click "Upload File" to commence the upload. Do not close the
+browser window until the upload is complete.</p>
+
+        <div class="required"> <label for="filename">File
+to upload:</label><input id="filename" name="mediaFile" type="file"><input value="Upload File" name="upload" type="submit"><br><br><label for="uploadFor">User to upload to: </label><select name="uploadFor">
+
+<option value="Rosalinda Abrego">rosalinda Abrego</option>
+<option value="Cathi-Lynne Ames">Cathi-Lynne Ames</option>
+<option value="Julie Betler">Julie Betler</option>
+<option value="Deon Bills">Deon Bills</option>
+<option value="Rebecca Bowden">Rebecca Bowden</option>
+<option value="Susanne Boyer">Susanne Boyer</option>
+<option value="Betty Burke">Betty Burke</option>
+<option value="MaryAnn Carley">MaryAnn Carley</option>
+<option value="12ftguru">John Clark</option>
+
+<option value="Beverly Folk">Beverly Folk</option>
+<option value="Ari Gwinn">Ari Gwinn</option>
+<option value="Jeannie Hashiguchi">Jeannie Hashiguchi</option>
+<option value="Earle Henn">Earle Henn</option>
+<option value="Eve Horner">Eve Horner</option>
+<option value="Philip Hottel">Philip Hottel</option>
+<option value="John Iezzi">John Iezzi</option>
+<option value="bryan">Bryan Johnson</option>
+<option value="Peter Kavanagh">Peter Kavanagh</option>
+
+<option value="Nancy Lamble">Nancy Lamble</option>
+<option value="Christopher Matz">Christopher Matz</option>
+<option value="Cynthia Maxwell">Cynthia Maxwell</option>
+<option value="Cheri Mays">Cheri Mays</option>
+<option value="Carleen McCarthy">Carleen McCarthy</option>
+<option value="Jeff Mercer">Jeff Mercer</option>
+<option value="Josh Mills">Josh Mills</option>
+<option value="Juanese Moore">Juanese Moore</option>
+<option value="Julie Nye">Julie Nye</option>
+
+<option value="Fran Olson">Fran Olson</option>
+<option value="Ronda Parker">Ronda Parker</option>
+<option value="epresley">Elvis Presley</option>
+<option value="Michael Prince">Michael Prince</option>
+<option value="William Rocchi">William Rocchi</option>
+<option value="Chris Schott">Chris Schott</option>
+<option value="Wendy Sharma">Wendy Sharma</option>
+<option value="Lisa Sisson">Lisa Sisson</option>
+<option value="Ashlea Stanfill">Ashlea Stanfill</option>
+
+<option value="Monte Steen">Monte Steen</option>
+<option value="Amanda Thompson">Amanda Thompson</option>
+<option value="Joan Williams">Joan Williams</option>
+<option value="Tomika Williams">Tomika Williams</option>
+<option value="Dan Wisted">Dan Wisted</option>
+</select><br><br>
+
+Send Email As: <select id="mailTemplate" name="mailTemplate">
+<option label="Todd" value="todd">Todd</option>
+<option label="Innovia" value="innovia">Innovia</option>
+
+<option label="Me" value="me">Me</option>
+</select><br><br>
+Notification Message:<br>
+<textarea id="message" name="message" rows="7" cols="50">I posted&nbsp;a file on PAIT's secure drop site for you to pick up.&nbsp;
+Please let me know if you have any questions.
+</textarea>
+<br>
+</div>
+
+      </form>
+
+      </td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+</center>
+
+<br>
+
+</body>
+</html>

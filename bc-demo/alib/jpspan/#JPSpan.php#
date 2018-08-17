@@ -1,0 +1,13 @@
+<?php
+/**
+* @package JPSpan
+* @version $Id: JPSpan.php,v 1.1 2005/06/28 07:26:10 bryan Exp $
+*/
+/**
+* Set the path constant
+*/
+if ( !defined('JPSPAN') ) {
+    define('JPSPAN', dirname(__FILE__) . '/JPSpan/');
+}
+
+

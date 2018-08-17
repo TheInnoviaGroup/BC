@@ -1,0 +1,403 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Census Drop Site Secure Login</title>
+  <link rel="stylesheet" type="text/css" href="../ext/resources/css/ext-all.css" />
+  <!-- GC --> <link rel="stylesheet" type="text/css" href="../ext/resources/css/xtheme-aero.css" />
+  <link rel="stylesheet" type="text/css" href="../ext/ProgressBar/Ext.ux.ProgressBar.css" />
+  <link rel="stylesheet" type="text/css" href="../ext/UploadDialog/css/Ext.ux.UploadDialog.css" />
+  <link rel="stylesheet" type="text/css" href="../upload-dialog.css" />
+  <!-- LIBS -->
+  <script type="text/javascript" src="../firebug/firebug.js"></script>
+  <script type="text/javascript" src="../ext/adapter/ext/ext-base.js"></script>
+  <!-- ENDLIBS -->
+  <script type="text/javascript" src="../ext/ext-all-debug.js"></script>
+  <!-- Optional Libs -->
+  <script type='text/javascript' src='../ext/ProgressBar/Ext.ux.ProgressBar.js'></script>
+
+ <script type='text/javascript' src='../ext/UploadDialog/Ext.ux.UploadDialog.js'></script>
+ <script type='text/javascript' src='upload-dialog.js'></script>
+  <!-- End Optional Libs -->
+  <style type="text/css">
+    html, body {
+    font:normal 12px verdana;
+    margin:0;
+    padding:0;
+    border:0 none;
+    overflow:hidden;
+      height:100%;
+      }
+      .hide-label label {
+     display:none;
+}
+.hide-label .x-form-element {
+     padding-left: 0 !important;
+}
+      .x-layout-panel-north {
+      border:0px none;
+      padding: 0px;
+	    height: 72px;
+      }
+      #nav {
+      }
+      #autoTabs, #center1, #center2, #west {
+      padding:10px;
+      }
+      #south{
+      font:normal 8pt arial, helvetica;
+	    padding:4px;
+      }
+      #north.x-layout-active-content {
+      font:normal 12pt arial, helvetica;
+	    padding: 0px;
+	    height: 72px;
+      }
+      .x-layout-panel-center p {
+      margin:5px;
+      }
+#props-panel .x-grid-col-0{
+      }
+      #props-panel .x-grid-col-1{
+      }
+
+h1 {
+    font-size: x-large;
+}
+h2 {
+    font-size: large;
+}
+th {
+    font-weight: bold;
+}
+
+    .logo {
+			background: url(<?=$rootDir;?>images/banner_bg.jpg) repeat-x left top;
+			height: 12px;
+			width: 100%;
+			position: absolute;
+			z-index: 1;
+			top: 0px;
+			left: 0px;
+			}
+
+          ul.actionBloc {
+        border-top: 1px solid #99bbe8;
+        margin-right: 1px;
+        background: #d8e6f6;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      
+      ul.actionBloc li {
+        width: 100%;
+        height: 1.5em;
+        position: relative;
+        border-bottom: 2px solid #99bbe8;
+        border-right: 2px solid #99bbe8;
+        border-left: 2px solid #99bbe8;
+        text-align: center;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      
+      ul.actionBloc li.header {
+        background: #c7d5e5;
+      }
+      
+      ul.actionBloc li h2 {
+        font-size: 1.5em;
+        display: block;
+        width: 100%;
+        background: #c7d5e5;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      
+      ul.actionBloc li a{
+        color: #41418b;
+        height: 1.33em;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.33em;
+        line-height: 1em;
+        vertical-align: middle;
+        text-decoration: none;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    ul.actionBloc li a:hover {
+        color: #E2A53C;
+      }
+  
+		.x-layout-panel-hd-text {
+			color: #FFF;
+		}
+		
+		.x-layout-split-h {
+			background:#5080CF none repeat scroll 0%;
+		}
+		.x-layout-split {
+			background-color:#5080CF;
+		}
+		#searchDiv {
+			margin: 10px;
+		}
+		.x-form-item label {
+			width: 150px;
+		}
+		.x-grid-hd-text {
+			color: #FFF;
+		}
+		.x-grid-row-selected a {
+			color:#ECC47E;
+		}
+		.x-grid-row-selected a:visited {
+			color:#ECC47E;
+		}
+		a {
+			color:#316AC5;
+		}
+		a:visited {
+			color:#316AC5;
+		}
+		.centerContent {
+			padding: 10px;
+		}
+		.loggedinbox {
+				background: #D8E6F6;
+				font-size: small;
+				font-weight: bolder;
+				color: black;
+				width: 175px;
+				margin-left: auto;
+				margin-right: auto;
+				text-align: center;
+		}
+		.top {	background-image: url(images/login-ts.gif);
+			background-repeat: repeat-x;
+			background-position: top;}
+		.bottom {background-image: url(images/login-bs.gif);
+					background-repeat: repeat-x;
+					background-position: bottom; }
+		.left {background-image: url(images/login-ls.gif);
+					background-repeat: repeat-y;
+					background-position: left;}
+		.right {background-image: url(images/login-rs.gif);
+					background-repeat: repeat-y;
+					background-position: right; }    
+
+table.sortable { 
+width: 85%;
+margin-left: auto;
+margin-right: auto;
+border-spacing: 0px;
+border-collapse: collapse;
+margin-bottom: 5px;
+margin-top: 5px;
+ }
+
+table.searchresults { 
+width: 85%;
+margin-left: auto;
+margin-right: auto;
+border-spacing: 0px;
+border-collapse: collapse;
+margin-bottom: 5px;
+ }
+
+table.searchresults table.sortable { 
+  width: 100%;
+ }
+
+table.sortable td { 
+  padding: 2px;
+  border: 1px solid #14164D;
+  font-size: small;
+ }
+
+
+table.sortable th { 
+padding: 2px;
+background-color:#316AC5;
+border: 1px solid #14164D;
+font-size: small;
+ }
+ 
+table.sortable a.sortheader {
+    color:#FFFFFF;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 0 2px 0 2px;
+    display: block;
+    font-size: small;
+}
+table.sortable span.sortarrow {
+    color: black;
+    text-decoration: none;
+}
+
+tr.hoverable:hover {
+	background-color: #FF9;
+	color: #000000;
+}
+		.actionBox {
+				display:block;
+        text-align: center;
+        margin-top: 14px;
+        margin-bottom: 14px;
+		}
+		.actionBox a {
+        border: 2px solid #99BBE8;
+        text-align: center;
+        padding: 3px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        background: #EEF4FB;
+		}
+.x-tree-node-leaf .x-tree-node-icon {
+	background-image:url(<?=$rootDir;?>images/folder.gif);
+}
+
+.x-tree-node-leaf .excel-icon {
+	background-image:url(<?=$rootDir;?>images/excel.gif);
+}
+
+.x-tree-node-leaf .report-icon {
+	background-image:url(<?=$rootDir;?>images/report.gif);
+}
+
+.file_blue{
+	background: #DAE7F6;
+}
+.file_green{
+	background: #DAF6DB;
+}
+.file_grey{
+	background: #DDDDDD;
+}
+.file_yellow{
+	background: #F5F6DA;
+}
+.file_red{
+	background: #F6DBDA;
+}
+#form-ct {
+	margin: 10px;
+}
+
+.sheetListTable {
+	border: 1px solid #036;
+}
+
+.sheetListTable tr {
+	border-bottom: 1px solid #036;
+}
+.sheetListTable td {
+	font-size: .8em;
+	padding: 5px;
+}
+.helpText {
+	font-size: .8em;
+	color: #036;
+}
+    </style>
+    
+
+</head>
+<body>
+<center>
+<?=$loginbox;?>
+<table style="text-align: left; height: 100%;" border="0" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td style="width: 50%; text-align: right; vertical-align: middle;"><img src="lock3.jpg" alt=""></td>
+
+      <td style="text-align: left; vertical-align: middle;">
+      <? if ($nodisplay): ?>
+      <?=$body;?>
+      <? else: ?>
+
+
+        <h4>Upload a census file.</h4>
+
+        <p>Please choose who you are uploading file(s) for, then click the "Choose file(s) to upload" button to select and upload your files.</p>
+
+        <div class="required"> <div id='show-dialog-btn'>
+  </div><br><br><? if (count($uploadForUsers) > 0): ?>
+<label for="uploadFor">User to upload to: </label><select name="uploadFor" id="uploadFor">
+<? foreach ($uploadForUsers as $user => $txt): ?>
+<option value="<?=$user;?>"><?=$txt;?></option>
+<? endforeach;?>
+</select><br><br>
+<? else: ?>
+<table border="0" cellspacing="5" cellpadding="0">
+	<tr>
+		<td colspan="2"><b>Upload File For:</b></td>
+	</tr>
+	<tr>
+		<td>&nbsp;&nbsp;&nbsp;Ashlea Stanfill:</td>
+		<td><input type="radio" value="Ashlea Stanfill" name="uploadFor" checked id="uploadAshlea"></td>
+	</tr>
+	<tr>
+		<td>&nbsp;&nbsp;&nbsp;Beverly Folk:</td>
+		<td><input type="radio" value="Beverly Folk" name="uploadFor" id="uploadBev"></td>
+	</tr>
+</table><br>
+<? endif; ?>
+
+<? if ($menuShow): ?>
+Send Email As: <select id="mailTemplate" name="mailTemplate">
+<option label="Todd" value="todd">Todd</option>
+<option label="Innovia" value="innovia">Innovia</option>
+<option label="Me" value="me">Me</option>
+</select><br><br>
+<? endif; ?>
+Notification Message:<br>
+<textarea id="message" name="message" rows="7" cols="50">I posted a file on PAIT's secure drop site for you to pick up. 
+Please let me know if you have any questions.
+</textarea>
+<br>
+</div>
+<div id="fileprogress" style="font-weight: bold;"><?=$message;?></div>
+<div id='demo-panel'>
+
+    <div id='file-list'></div>
+ </div>
+      </form>
+
+      <? if ($done): ?>
+<br />Use the form to upload another or <a href="<?=$self;?>?logout=1">click here to log out.</a></div>
+
+<? endif; ?>
+<? if (count($pending) > 0): ?>
+<hr />
+<p>
+ <h4>Download Files</h4>
+The following files are available for your download:<br />
+<? global $uploadPath; foreach($pending as $id => $upload): ?>
+<a href="<?=$uploadPath;?>/<?=$upload['filename'];?>"><?=$upload['filename'];?></a> uploaded on <?=gmdate(PAITDATE, $upload['time']);?> by <a href="mailto:<?=$upload['email'];?>"><?=$upload['gn']." ".$upload['sn'];?></a><br />
+<? endforeach; ?>
+</p>
+<? endif; ?>
+      <? endif; ?>
+      </td>
+
+    </tr>
+<? if ($backToPait): ?><tr><td colspan=2><center><a href="https://www.pait.info/">Back to PAIT</a></center></td></tr><? endif; ?>
+  </tbody>
+</table>
+</center>
+
+<br>
+
+</body>
+</html>

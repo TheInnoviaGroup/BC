@@ -1,0 +1,553 @@
+<!-- this puts ie6 in quirksmode -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Policy Information and Administration Tracking</title>
+  <? if (is_array($stylesheets)): ?>
+  <? foreach ($stylesheets as $stylesheet => $type): ?>
+  <link rel="stylesheet" href="<?=$stylesheet;?>" type="text/css" media="<?=$type;?>" />
+  <? endforeach; ?>
+  <!--[if lt IE 7]>
+      <? foreach ($stylesheets as $stylesheet => $type): ?>
+      <link rel="stylesheet" href="ie<?=$stylesheet;?>" type="text/css" media="<?=$type;?>" />
+      <? endforeach; ?>
+      <![endif]-->
+  <? endif; ?>
+  <? if (is_array($javascripts)): ?>
+  <? foreach ($javascripts as $javascript): ?>
+  <script src="javascripts/<?=$javascript;?>" type="text/javascript"></script>
+  <? endforeach; ?>
+  <? endif; ?>
+  <link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css" />
+  <!-- GC --> <link rel="stylesheet" type="text/css" href="ext/resources/css/xtheme-aero.css" />
+  <!-- LIBS -->
+  <script type="text/javascript" src="firebug/firebugx.js"></script>
+  <script type="text/javascript" src="ext/adapter/ext/ext-base.js"></script>
+  <!-- ENDLIBS -->
+  <script type="text/javascript" src="ext/ext-all-debug.js"></script>
+  <!-- Optional Libs -->
+  <script type="text/javascript" src="ext/Ext.ux.TableGrid.js"></script>
+<!--  <script type="text/javascript" src="ext/Ext.ux.InfoPanel.js"></script>
+  <script type="text/javascript" src="ext/Ext.ux.Accordion.js"></script> -->
+  <script type="text/javascript" src="ext/Ext.ux.FormBuilder.js"></script>
+  <script type="text/javascript" src="ext/Ext.ux.CascadingDialogs.js"></script>
+  <!-- End Optional Libs -->
+  <style type="text/css">
+    html, body {
+    font:normal 12px verdana;
+    margin:0;
+    padding:0;
+    border:0 none;
+    overflow:hidden;
+      height:100%;
+      }
+      .x-layout-panel-north {
+      border:0px none;
+      padding: 0px;
+	    height: 72px;
+      }
+      #nav {
+      }
+      #autoTabs, #center1, #center2, #west {
+      padding:10px;
+      }
+      #south{
+      font:normal 8pt arial, helvetica;
+	    padding:4px;
+      }
+      #north.x-layout-active-content {
+      font:normal 12pt arial, helvetica;
+	    padding: 0px;
+	    height: 72px;
+      }
+      .x-layout-panel-center p {
+      margin:5px;
+      }
+#props-panel .x-grid-col-0{
+      }
+      #props-panel .x-grid-col-1{
+      }
+
+    .logo {
+			background: url(<?=$rootDir;?>images/banner_bg.jpg) repeat-x left top;
+			height: 12px;
+			width: 100%;
+			position: absolute;
+			z-index: 1;
+			top: 0px;
+			left: 0px;
+			}
+
+          ul.actionBloc {
+        border-top: 1px solid #99bbe8;
+        margin-right: 1px;
+        background: #d8e6f6;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      
+      ul.actionBloc li {
+        width: 100%;
+        height: 2em;
+        position: relative;
+        border-bottom: 2px solid #99bbe8;
+        border-right: 2px solid #99bbe8;
+        border-left: 2px solid #99bbe8;
+        text-align: center;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      
+      ul.actionBloc li.header {
+        background: #c7d5e5;
+      }
+      
+      ul.actionBloc li h2 {
+        font-size: 1.5em;
+        display: block;
+        width: 100%;
+        background: #c7d5e5;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      
+      ul.actionBloc li a{
+        color: #41418b;
+        height: 2em;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.33em;
+        line-height: 1em;
+        vertical-align: middle;
+        text-decoration: none;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    ul.actionBloc li a:hover {
+        color: #E2A53C;
+      }
+  
+		.x-layout-panel-hd-text {
+			color: #FFF;
+		}
+		
+		.x-layout-split-h {
+			background:#5080CF none repeat scroll 0%;
+		}
+		.x-layout-split {
+			background-color:#5080CF;
+		}
+		#searchDiv {
+			margin: 10px;
+		}
+		.x-form-item label {
+			width: 150px;
+		}
+		.x-grid-hd-text {
+			color: #FFF;
+		}
+		.x-grid-row-selected a {
+			color:#ECC47E;
+		}
+		.x-grid-row-selected a:visited {
+			color:#ECC47E;
+		}
+		a {
+			color:#316AC5;
+		}
+		a:visited {
+			color:#316AC5;
+		}
+		.centerContent {
+			padding: 10px;
+		}
+                .loggedinbox {
+                    background: #EBEADB url(ext/resources/images/aero/grid/grid-hrow.gif) repeat-x scroll 0%;
+                    font-size: small;
+                    font-weight: bolder;
+                    color: white;
+                    width: 175px;
+                    margin-left: auto;
+                    margin-right: auto;
+                    text-align: center;
+                }
+    </style>
+    <script type="text/javascript">
+      Ext.BLANK_IMAGE_URL = 'ext/resources/images/default/s.gif';
+
+var FormPanel = function(formObject, config) {
+		var config = config || {};
+		FormPanel.superclass.constructor.call(this, Ext.id(), Ext.apply({autoCreate: true}, config));
+		formObject.render(this.getId());
+};
+Ext.extend(FormPanel, Ext.ContentPanel);
+
+Ext.namespace('Ext.PAIT');
+Ext.PAIT.companyList = [
+			<? $count = 0; ?>
+			<? foreach ($companyList as $id => $company): ?>
+			<?=($count>0)?',':'';?>['<?=$id;?>', '<?=$company;?>']
+			<? $count++; ?>
+			<? endforeach; ?>
+			];
+Ext.PAIT.statusList = [
+			<? $count = 0; ?>
+			<? foreach ($statusList as $id => $company): ?>
+			<?=($count>0)?',':'';?>['<?=$id;?>', '<?=$company;?>']
+			<? $count++; ?>
+			<? endforeach; ?>
+			];
+
+App = {};
+App.layout = {};
+      App.init = function(){
+	  var southConf;
+	  if (Ext.get('debugtable')) {
+		      var grid = new Ext.grid.TableGrid("debugtable");
+		      southConf = {
+	                        split:true,
+	                        initialSize: 250,
+	                        minSize: 250,
+	                        maxSize: 300,
+	                        titlebar: true,
+	                        collapsible: true,
+                            animate: true
+	                    };
+		      } else {
+	    southConf = {
+	                        split:true,
+	                        initialSize: 100,
+	                        minSize: 100,
+	                        maxSize: 200,
+	                        titlebar: true,
+	                        collapsible: true,
+                            animate: true
+	    };
+		      }
+		       
+	               App.layout = new Ext.BorderLayout(document.body, {
+	                    north: {
+	                        split:false,
+	                        initialSize: 72,
+	                        titlebar: false
+	                    },
+			    east: {
+	                        split:true,
+	                        initialSize: 220,
+	                        minSize: 175,
+	                        maxSize: 400,
+	                        titlebar: true,
+	                        collapsible: true,
+                            animate: true,
+                            autoScroll: true
+	                    },
+	                    //south: southConf,
+	                    center: {
+	                        titlebar: true,
+	                        autoScroll:true,
+			       closeOnTab: false
+			       }
+	                });
+
+                    App.layout.beginUpdate();
+	  var searchForm = new Ext.ux.FormBuilder('searchDiv', {url: '<?=$self;?>?mode=ajax&module=searchPersonForm'});
+	  searchForm.fetchData();
+	  App.layout.add('north', new Ext.ContentPanel('north', 'North'));
+	  App.layout.add('east', new Ext.ContentPanel('east', {title: 'Actions', closable: false}));
+	  App.layout.add('center', new Ext.ContentPanel('searchDiv', {title: 'Search'}));
+           App.layout.add('center', new Ext.ContentPanel('savedSearches', {title: 'Saved Searches'}));
+            App.layout.add('center', new Ext.ContentPanel('imports', {title: 'Imports'}));
+             App.layout.add('center', new Ext.ContentPanel('uploads', {title: 'Uploads'}));
+	  //        App.layout.add('center', new Ext.ContentPanel('savedSearches', {title: 'Saved Searches'}));
+	  //            App.layout.add('center', new Ext.ContentPanel('imports', {title: 'Pending Imports'}));
+	  //            App.layout.add('center', new Ext.ContentPanel('uploads', {title: 'Uploaded Files'}));
+	  App.layout.getRegion('center').showPanel('searchDiv');
+	  
+		
+
+	  App.layout.endUpdate();
+      };
+
+	    
+	Ext.EventManager.onDocumentReady(App.init, App, true);
+Ext.EventManager.onDocumentReady(Ext.ux.CascadingDialogs.scanHrefs, App, true);
+
+Ext.PAIT.handleSearchSubmit = function(f) {
+    console.log('DLG Submit: %o', f);
+  var form = f.scope.form;
+  form.on('actioncomplete', Ext.PAIT.handleSubmitComplete, form);
+  form.on('actionfailed', Ext.PAIT.handleSubmitComplete, form);
+  console.log('Submitting!');
+  if (Ext.isIE) {
+  form.submit(); 
+  } else {
+  form.submit({waitMsg: 'Please wait...'}); 
+  }
+};
+
+Ext.PAIT.handleSubmitComplete = function(f,r,q) {
+  console.log('hSC: %o %o %o', f,q,r);
+  if (r.response) {
+  var resp = Ext.util.JSON.decode(r.response.responseText);
+  } else {
+  var resp = Ext.util.JSON.decode(r.responseText);
+  }
+  if (resp.success) {
+    if (resp.openSearchGrid){
+      Ext.PAIT.openSearchGrid(resp.openSearchGrid, App);
+    }
+  } else {
+    Ext.MessageBox.alert(resp.errorTitle, resp.errorText);
+  }
+
+};
+
+    // pluggable renders
+    Ext.PAIT.renderCompany = function (value, p, record){
+        return String.format('<a href="{1}" class="centerTarget">{0}</a>', value, record.data['companyURL']);
+    };
+
+Ext.PAIT.openSearchGrid = function(config, scope) {
+  var layout = scope.layout;
+  console.log('Got Config: %o', config);
+  layout.beginUpdate();
+  // create the Data Store
+    var ds = new Ext.data.Store({
+        // load using script tags for cross domain, if the data in on the same domain as
+        // this page, an HttpProxy would be better
+        proxy: new Ext.data.HttpProxy({
+            url: config.url
+        }),
+
+        // create reader that reads the Topic records
+        reader: new Ext.data.JsonReader({
+            root: 'results',
+            totalProperty: 'totalCount',
+            id: 'personID'
+        }, [
+            {name: 'name', mapping: 'name'},
+            {name: 'personID', mapping: 'personID'},
+            {name: 'companyID', mapping: 'companyID'},
+	    {name: 'personURL', mapping: 'personURL'},
+            {name: 'companyName', mapping: 'companyName'},
+            {name: 'companyURL', mapping: 'companyURL'},
+            {name: 'city', mapping: 'city'},
+            {name: 'state', mapping: 'state'},
+            {name: 'dob', mapping: 'dob'},
+            {name: 'status', mapping: 'status'}
+        ]),
+
+        // turn on remote sorting
+        remoteSort: true
+    });
+
+
+    // the column model has information about grid columns
+    // dataIndex maps the column to the specific data field in
+    // the data store
+    var cm = new Ext.grid.ColumnModel([{
+           id: 'name', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+           header: "Name",
+           dataIndex: 'name',
+           css: 'white-space:normal;',
+	   sortable: true
+        },{
+           id: 'companyName',
+           header: "Company",
+           dataIndex: 'companyName',
+           renderer: Ext.PAIT.renderCompany
+        }
+	,{
+           id: 'city', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+           header: "City",
+           dataIndex: 'city',
+           css: 'white-space:normal;',
+	   sortable: true
+        }
+	,{
+           id: 'state', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+           header: "State",
+           dataIndex: 'state',
+           width: 40,
+           css: 'white-space:normal;',	   
+	   sortable: true
+        }
+	,{
+           id: 'dob', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+           header: "Date of Birth",
+           dataIndex: 'dob',
+           css: 'white-space:normal;',
+	   sortable: true
+        }
+	,{
+           id: 'status', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+           header: "Status",
+           dataIndex: 'status',
+           css: 'white-space:normal;',
+           width: 125,
+	   sortable: true
+        }
+
+]);
+
+  var gridE = Ext.DomHelper.append(document.body,{tag: 'div', id:Ext.id()});
+
+    // create the editor grid
+  var grid = new Ext.grid.Grid(gridE, {
+        ds: ds,
+        cm: cm,
+        selModel: new Ext.grid.RowSelectionModel({singleSelect:true}),
+        enableColLock:true,
+        loadMask: true,
+	autoSizeColumns: false,
+        autoExpandColumn: 'name',
+	monitorWindowResize: false
+    });
+  
+var cdrType = 'search';
+// handler for context menu items
+function onGridContextMenuClick(item, e) {
+// row data or handle to grid or row id is not available in item or e
+//only the id and text of the selected contextmenu
+  switch  (item.id) {
+      case cdrType+'-person':
+	console.log('Opening %o', {href: grid.rowRecord.data.personURL, title: grid.rowRecord.data.personID+'Person'});
+	Ext.ux.CascadingDialogs.openWindow({target: {href: grid.rowRecord.data.personURL, title: grid.rowRecord.data.personID+'Person'}});
+      break;
+  case cdrType+'-company':
+	Ext.ux.CascadingDialogs.openWindow({target: {href: grid.rowRecord.data.companyURL, title: grid.rowRecord.data.companyID+'Company'}});
+      break;
+  }
+}
+
+var gridContextMenu = new Ext.menu.Menu(cdrType+'-cm');
+gridContextMenu.add({ id: cdrType+'-person', text: 'Open Person', handler: onGridContextMenuClick});
+gridContextMenu.add({ id: cdrType+'-company', text: 'Open Company', handler: onGridContextMenuClick});
+
+  grid.doRowContextMenu = function (grid, rowIndex, e) {
+    //row data is available here
+    e.stopEvent();
+    var coords = e.getXY();
+    
+    var rowRecord = grid.getDataSource().getAt(rowIndex);
+    grid.rowRecord = rowRecord;
+    gridContextMenu.showAt([coords[0], coords[1]]);
+    
+  }
+  grid.addListener('rowcontextmenu', grid.doRowContextMenu);
+grid.on('rowdblclick', function(grid, rowIndex, e) {
+    grid.rowRecord = grid.getDataSource().getAt(rowIndex);
+    onGridContextMenuClick({id:cdrType+'-person'});
+
+});
+
+    // render it
+    grid.render();
+
+    var gridFoot = grid.getView().getFooterPanel(true);
+
+    // add a paging toolbar to the grid's footer
+    var paging = new Ext.PagingToolbar(gridFoot, ds, {
+        pageSize: 50,
+        displayInfo: true,
+        displayMsg: 'Displaying results {0} - {1} of {2}',
+        emptyMsg: "No results to display."
+    });
+
+  var gpanel = new Ext.GridPanel(grid, {title:config.title, closable: true});
+  layout.add('center', gpanel);  
+  layout.endUpdate();
+    // trigger the data store load
+  console.log('Grid: %o', grid);
+    ds.load({params:{start:0, limit:50}});
+
+
+
+}
+
+
+	</script>
+</head>
+<body>
+<div id ="container">
+  <div id="west" class="x-layout-inactive-content">
+    West
+  </div>
+  <div id="north" class="x-layout-inactive-content">
+<table border="0" width="100%" height="72" cellspacing="0" cellpadding="0" align="center" class="logo">
+	<tr>
+		<td><img src="<?=$rootDir;?>images/lr.jpg" alt="" width="400" height="72" hspace="0" vspace="0" border="0" align="left" /></td>
+		<td><?=$loginbox;?></td>
+	</tr>
+</table>
+  </div>
+  <div id="east" class="x-layout-inactive-content">
+	  <? if ($user->access_lv > 0 && $user->access_lv != 5): ?>
+	    
+	       <ul class="actionBloc">
+	       	<li class="header"><h2>Navigation</h2></li>
+	       	<li><a href="<?=$self;?>?mode=Search&action=searchCompany" class="centerTarget" id="companies" title="Companies">Companies</a></li>
+	       	<li><a href="<?=$self;?>?mode=Search&action=searchCarrier" class="centerTarget" id="carriers" title="Carriers">Carriers</a></li>
+	       	<li><a href="<?=$rootDir;?>dropsite/" class="centerTarget" id="dropsite" title="Drop Site">Drop Site</a></li>
+               <li class="header"><h2>Admin</h2></li>
+	       <li><a href="<?=$self;?>?mode=Upload" class="centerTarget" id="import" title="import">Import from Excel</a></li>
+	       <li><a href="<?=$self;?>?mode=planDesign&action=add" class="centerTarget" id="planDesign" title="Add Plan Design">Add a Plan Design</a></li>
+	       <li><a href="<?=$self;?>?mode=planDesign&action=List" class="centerTarget" id="planDesign" title="Plan Design List">List Plan Designs</a></li>
+	       <li><a href="<?=$self;?>?mode=Admin&action=User" class="centerTarget" id="users" title="System Users">List System Users</a></li>
+	       <li><a href="leadTracker/" target="New">Lead Tracker</a></li>
+	       <? if ($user->access_lv > 1): ?>
+	       <li><a href="<?=$self;?>?mode=Admin&action=addUser" class="centerTarget" id="addUser" title="Add User">Add a System User</a></li>
+	       <li><a href="<?=$self;?>?mode=Company&action=addCompany" class="centerTarget" id="addCompany" title="Add Company">Add a Company</a></li>
+	       <li><a href="<?=$self;?>?mode=Carrier&action=addCarrier" class="centerTarget" id="addCarrier" title="Add Carrier">Add a Carrier</a></li>
+	       <? endif; ?>
+	       <li class="header"><h2>Reports</h2></li>
+	       <li><a href="<?=$self;?>?mode=Report&action=companyDemographics" class="centerTarget" id="companyDemographics" title="Demographics">Company Demographics</a></li>
+	  <li><a href="<?=$self;?>?mode=Report&action=missingData" class="centerTarget" id="missingData" title="Missing Data">Missing Data</a></li>
+	  <li><a href="<?=$self;?>?mode=Report&action=eligibleIncreases" class="centerTarget" id="eligibleIncreases" title="Eligibility">Eligibility</a></li>
+	  <!-- <li><a href="<?=$self;?>?mode=Report&action=missingPersons">Missing Persons</a></li>
+	  <li><a href="<?=$self;?>?mode=Report&action=HCA">HCA SIP Reports</a></li> -->
+	  </ul>
+<?  endif; ?>
+  </div>
+  <div id="searchDiv" class="x-layout-inactive-content">
+  </div>
+  <div id="imports" class="x-layout-inactive-content">
+	  <? if (is_array($importList) && count($importList) > 0): ?>
+      <h2>Pending Imports</h2>
+	 <ul>
+	 <? foreach ($importList as $import): ?>
+	 <? $user = new user($import['owner']);
+            $config = unserialize($import['config']); ?>
+	    <li><div style="clear: both;"><?=ucfirst($import['type']);?> <? if ($config['worksheetName']): ?>[<?=$config['worksheetName'];?>] <? endif;?>for <a href="<?=$self;?>?mode=Company&action=showCompany&companyID=<?=$import['companyID'];?>"><?=$import['companyName'];?></a> on <?=gmdate(PAITDATE, $import['time']);?> by <a href="mailto:<?=$user->email;?>"><?=$user->gn." ".$user->sn;?></a>&nbsp;&nbsp;&nbsp;&nbsp;<small>[Status: <?=($import['status']%2 == 0)?"":"<a href=\"".$self."?mode=Importer&importID=".$import['importID']."\">";?><?=$uploadStatus[$import['status']];?></a>] [<a href="<?=$self;?>?mode=Importer&action=delete&importID=<?=$import['importID'];?>">Delete</a>]</small></div></li>
+	    <? endforeach;?>
+	    </ul>
+	    <? endif; ?>
+  </div>
+  <div id="uploads" class="x-layout-inactive-content">
+<? if (is_array($uploadList) && count($uploadList) > 0): ?>
+<h2>Pending Uploads</h2>
+<ul>
+<? foreach ($uploadList as $upload): ?>
+<li><div style="clear: both;"><a href="<?=$uploadPath;?>/<?=$upload['filename'];?>">File</a> uploaded on <?=gmdate(PAITDATE, $upload['time']);?> by <a href="mailto:<?=$upload['email'];?>"><?=$upload['gn']." ".$upload['sn'];?></a>&nbsp;&nbsp;&nbsp;&nbsp;<small>[<a href="<?=$self;?>?mode=Import&action=pending&uploadID=<?=$upload['uploadID'];?>">Import</a>] [<a href="<?=$self;?>?mode=Import&action=deletepending&uploadID=<?=$upload['uploadID'];?>">Delete</a>]</small></div></li>
+<? endforeach;?>
+</ul>
+<? endif; ?>
+  </div>
+<div id="savedSearches" class="x-layout-inactive-content">
+<h2>Saved Searches</h2>
+<ul>
+<? foreach ($saveList as $id => $name): ?>
+<li><a class="centerTarget" id="savedsearch-<?=$id;?>" title="<?=$name;?>" href="<?=$self;?>?mode=Search&action=showSaveSearch&saveID=<?=$id;?>"><?=$name;?></a> <small>[Export to: <a href="<?=$self;?>?mode=Search&action=exportXLS&saveID=<?=$id;?>">Excel or Mail Merge</a>] [<a href="labelPrint.php5?saveID=<?=$id;?>">Show Mailing Labels</a>] [<a href="" onClick="confirmDelete('<?=$self;?>?mode=Search&action=deleteSearch&saveID=<?=$id;?>');return false;">Delete</a>] </small> </li>
+<? endforeach; ?>
+</ul>
+</div>
+  <div id="south" class="x-layout-inactive-content">
+    South
+  </div>
+</div>
+ </body>
+</html>

@@ -1,0 +1,168 @@
+/*
+ * Ext JS Library 1.0.1
+ * Copyright(c) 2006-2007, Ext JS, LLC.
+ * licensing@extjs.com
+ * 
+ * http://www.extjs.com/license
+ */
+
+.x-tab-panel {
+    overflow:hidden;
+}
+.x-tab-panel-header {
+	overflow:hidden;
+}
+.x-tab-panel-footer {
+	overflow:hidden;
+}
+.ext-ie .x-tab-panel-header, .ext-ie .x-tab-panel-footer {
+    zoom:1;
+}
+.x-tab-strip-wrap {
+	width:100%;
+    overflow:hidden;
+    position:relative;
+}
+ul.x-tab-strip {
+	display:block;
+    width:2000px;
+}
+
+ul.x-tab-strip-top {
+	border-bottom:1px solid #6593cf;
+	padding-top:2px;
+
+}
+ul.x-tab-strip-bottom {
+	border-top:1px solid #6593cf;
+	padding-bottom:2px;
+}
+
+ul.x-tab-strip li {
+    float:left;
+    margin-right:2px;
+}
+
+.x-tab-strip a, .x-tab-strip span, .x-tab-strip em {
+	display:block;
+}
+
+.x-tab-strip a {
+	text-decoration:none !important;
+	-moz-outline: none;
+	outline: none;
+	cursor:pointer;
+}
+
+.x-tab-strip-inner {
+    overflow:hidden;
+	text-overflow: ellipsis;
+}
+
+.x-tab-strip span.x-tab-strip-text {
+	font:bold 11px tahoma,arial,helvetica;
+	color:#666;
+	white-space: nowrap;
+	cursor:pointer;
+    padding:4px 0;
+}
+
+.x-tab-strip .x-tab-left {
+    padding:0 10px;
+}
+
+.x-tab-strip-active span.x-tab-strip-text {
+	cursor:default;
+	color:#083772;
+}
+
+.x-tab-strip-disabled .x-tabs-text {
+	cursor:default;
+	color:#aaaaaa;
+}
+
+.x-tab-panel-body {
+    overflow:hidden;
+}
+.x-tab-panel-bwrap {
+    overflow:hidden;
+}
+.x-tab-strip-top .x-tab-strip-active .x-tab-right {
+    position:relative;
+	margin-bottom:-1px;
+}
+
+.x-tab-strip-top .x-tab-strip-active .x-tab-right span.x-tab-strip-text {
+    padding-bottom:5px;
+}
+
+.x-tab-strip-bottom .x-tab-strip-active .x-tab-right {
+    position:relative;
+	margin-top:-1px;
+}
+.x-tab-strip-bottom .x-tab-strip-active .x-tab-right span.x-tab-strip-text {
+    padding-top:5px;
+}
+
+
+.x-tab-strip-top .x-tab-strip-active .x-tab-right {
+	 background: url(../images/default/tabs/tab-sprite.gif) no-repeat right 0;
+}
+.x-tab-strip-top .x-tab-strip-active .x-tab-left {
+	 background: url(../images/default/tabs/tab-sprite.gif) no-repeat 0 -100px;
+}
+.x-tab-strip-top .x-tab-right {
+	 background: url(../images/default/tabs/tab-sprite.gif) no-repeat right -50px;
+}
+.x-tab-strip-top .x-tab-left {
+	 background: url(../images/default/tabs/tab-sprite.gif) no-repeat 0 -150px;
+}
+
+
+.x-tab-strip-bottom .x-tab-right {
+	 background: url(../images/default/tabs/tab-btm-inactive-right-bg.gif) no-repeat bottom left;
+}
+.x-tab-strip-bottom .x-tab-left {
+	 background: url(../images/default/tabs/tab-btm-inactive-left-bg.gif) no-repeat bottom right;
+}
+.x-tab-strip-bottom .x-tab-strip-active .x-tab-right {
+	 background: url(../images/default/tabs/tab-btm-right-bg.gif) no-repeat bottom left;
+}
+.x-tab-strip-bottom .x-tab-strip-active .x-tab-left {
+	 background: url(../images/default/tabs/tab-btm-left-bg.gif) no-repeat bottom right;
+}
+
+.x-tab-strip .x-tab-strip-close {
+    display:none;
+}
+.x-tab-strip-closable {
+    position:relative;
+}
+.x-tab-strip-closable .x-tab-left {
+    padding-right:16px;
+}
+.x-tab-strip .x-tab-strip-closable a.x-tab-strip-close {
+	background-image:url(../images/default/layout/tab-close.gif);
+    background-repeat:no-repeat;
+    display:block;
+	width:11px;height:11px;
+    position:absolute;
+    top:3px;
+    right:3px;
+    cursor:pointer;
+    z-index:2;
+}
+.x-tab-strip .x-tab-strip-closable a.x-tab-strip-close:hover{
+	background-image:url(../images/default/layout/tab-close-on.gif);
+}
+
+.x-tab-panel-body {
+    border:1px solid #6593cf;
+    background:#fff;
+}
+.x-tab-panel-body-top {
+    border-top:0 none;
+}
+.x-tab-panel-body-bottom {
+    border-bottom:0 none;
+}

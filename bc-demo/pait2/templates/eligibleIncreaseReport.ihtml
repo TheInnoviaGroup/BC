@@ -1,0 +1,87 @@
+<? if ($picker == 1): ?>
+	<form action="<?=$self;?>?mode=Report&action=eligibleIncreases&create=1&companyID=<?=$companyID;?>" method="post">
+	   <fieldset><legend>Plan Design Report Creation for <?=companyName($companyID);?></legend>
+	   <table width=100%><tr><th>Individual Designs</th><th>Group Designs</th></tr>
+	   <tr><td>Please choose one:<br />
+	   <? foreach ($individualDesigns as $design): ?>
+	   <p><input type="radio" name="planDesignID" value="<?=$design['planDesignID'];?>"><?=planDesignID2Text($design['planDesignID']);?><br /></p>
+	   <? endforeach; ?>
+	   </td>
+	   <td>Please choose one:<br />
+	   <? foreach ($groupDesigns as $design): ?>
+	   <p><input type="radio" name="groupDesignID" value="<?=$design['planDesignID'];?>"><?=planDesignID2Text($design['planDesignID']);?><br /></p>
+	   <? endforeach; ?>
+	   </td>
+	   </tr>
+	   <tr><td align="right">Please choose a year for<br />which we have compensation data:</td><td><input type="text" name="year" value="<?=date('Y', time());?>" /></td></tr>
+<tr><td colspan=2 width=100% align="center"><input style="width:50%;" type="submit" value="Save" /></td></tr>
+</table>
+</fieldset>
+    
+</form>
+<? elseif ($picker == 2): ?>
+    <? $statuses = array('Pending', 'Ready', 'Processing'); ?>
+<h2>Eligible Increase Reports</h2>
+<? if ($message): ?>
+<h3><?=$message;?></h3>
+<? endif; ?>
+<p align="center"><a href="<?=$self;?>?mode=Report&action=eligibleIncreases&create=1&companyID=<?=$companyID;?>">Create a new report for <?=companyName($companyID);?></a></p>
+<? if (is_array($reportList) && count($reportList) > 0): ?>
+<table class="sortable" width="100%">
+<tr><th>Status</th><th>Plan Designs</th><th>Run by</th><th>Date Run</th></tr>
+   <? foreach ($reportList as $report): ?>
+<? $config = unserialize($report['config']); ?>
+<tr class="hoverable"><td>
+<?=$statuses[$report['status']];?>
+<? if ($report['status'] == 1): ?>
+<br />
+   <a href="<?=$self;?>?mode=Report&action=eligibleIncreases&reportID=<?=$report['reportID'];?>&view=1">View</a>&nbsp;|&nbsp;<a href="<?=$self;?>?mode=Report&action=eligibleIncreases&reportID=<?=$report['reportID'];?>&delete=1&companyID=<?=$companyID;?>">Delete</a>
+   <? endif; ?>
+</td>
+<td>
+      <table><tr>
+<th>Individual</th><td><?=planDesignID2Text($config->planDesignID);?></td></tr>
+<th>Group</th><td><?=planDesignID2Text($config->groupDesignID);?></td></tr>
+</table></td>
+<td><? $runUser = new user($report['creator']); ?><?=$runUser->gn." ".$runUser->sn;?></td>
+<td><?=($report['status'] == 1)?"":"Pending... <br />Created on ";?><?=gmdate(PAITDATE, $report['time']);?></td>
+</tr>
+   <? endforeach; ?>
+</table>
+<? endif; ?>
+    <? else: ?>
+	 <h2><?=$eligible;?> Eligible Increase<?=($eligible == 1)?"":"s"?> for <?=companyName($config->companyID);?></h2>
+<a href="<?=$self;?>?mode=Report&action=eligibleIncreases&reportID=<?=$reportID;?>&view=1&format=xls">Export to Excel</a><br />
+<table width=80% class="sortable"><tr><th>Individual Plan:</th><td><?=planDesignID2Text($config->planDesignID);?></td></tr>
+<tr><th>Group Design</th><td><?=planDesignID2Text($config->groupDesignID);?></td></tr>
+</table>
+<table width=100% class="sortable">
+<tr><th>Name</th><th>Eligible Monthly Compensation</th><th>Available Group Monthly Benefit</th><th>Current Group Monthly Benefit</th><th>Available Individual Benefit</th><th>Current Individual Benefit</th><th>Eligible Increase</th><th>Percent Coverage<br />after Increases</th></tr>
+<? $count = 0;
+ foreach ($results as $array):
+ if (($array['min'] > 0 && $array['individualTotalComp'] < $array['min']) || 
+       ($array['max'] > 0 && $array['individualTotalComp'] > $array['max'])) {
+   if ($count == 0) {
+     ?>
+     <tr><td colspan=8 align="center"><b>Top five ineligible employees:</td></tr>
+     <?
+   }
+   $count++;
+
+ }
+if ($count > 5) {
+  break;
+ }
+?>
+<tr<?=($count > 0)?" style=\"background: #cc9999;\"":"";?> class="hoverable"><td><a href="<?=$self;?>?mode=Person&action=showPerson&personID=<?=$array['personID'];?>"><?=$array['name'];?></a></td>
+<td><?=formatMoney(intval($array['individualTotalComp']));?></td>
+<td><?=formatMoney(intval($array['groupPercent']));?></td>
+<td><?=formatMoney(intval($array['groupCurrent']));?></td>
+<td><?=formatMoney(intval($array['individualPercent']));?></td>
+<td><?=formatMoney(intval($array['individualCurrent']));?></td>
+<td><?=formatMoney(intval($array['individualPercent'] - $array['individualCurrent']));?></td>
+<td><?=intval(100 * ($array['groupPercent'] + $array['individualPercent']) / (($array['individualTotalComp'])?$array['individualTotalComp']:1));?></td>
+</tr>
+<? endforeach; ?>
+</table>
+<? endif; ?>

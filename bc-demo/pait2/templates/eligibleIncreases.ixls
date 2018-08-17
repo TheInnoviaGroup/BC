@@ -1,0 +1,31 @@
+<?  header('HTTP/1.1 200 OK');
+  header('Date: ' . date("D M j G:i:s T Y"));
+  header('Last-Modified: ' . date("D M j G:i:s T Y"));
+  header("Content-type: application/octet-stream");
+header("Content-Disposition: attachment; filename=\"".urlencode(companyName($config->companyID))."-eligibilityReport.csv\"");
+  header("Cache-Control: no-store, no-cache, no-transform, must-revalidate, private");
+  header("Expires: 0");?>
+"<?=$eligible;?> Eligible Increase<?=($eligible == 1)?"":"s"?> for <?=companyName($config->companyID);?>",
+Name,Eligible Monthly Compensation,Available Group Monthly Benefit,Current Group Monthly Benefit,Available Individual Benefit,Current Individual Benefit,Eligible Increase,Percent Coverage after Increases
+<? $count = 0;
+ foreach ($results as $array):
+ if (($array['min'] > 0 && $array['individualTotalComp'] < $array['min']) || 
+       ($array['max'] > 0 && $array['individualTotalComp'] > $array['max'])) {
+   if ($count == 0) {
+     ?>
+
+
+Top five ineligible employees:
+
+
+     <?
+   }
+   $count++;
+
+ }
+if ($count > 5) {
+  break;
+ }
+?>
+"<?=$array['name'];?>","<?=formatMoney(intval($array['individualTotalComp']));?>","<?=formatMoney(intval($array['groupPercent']));?>","<?=formatMoney(intval($array['groupCurrent']));?>","<?=formatMoney(intval($array['individualPercent']));?>","<?=formatMoney(intval($array['individualCurrent']));?>","<?=formatMoney(intval($array['individualPercent'] - $array['individualCurrent']));?>","<?=intval(100 * ($array['groupPercent'] + $array['individualPercent']) / (($array['individualTotalComp'])?$array['individualTotalComp']:1));?>",
+<? endforeach; ?>

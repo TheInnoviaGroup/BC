@@ -1,0 +1,27 @@
+<html>
+<body>
+<div style=3D"padding: 5px; font-face: Arial; margin-bottom: 5px; font-size: 1em;"><?=$eMailMessage;?></div>
+
+<div style=3D"padding: 5px; font-face: Garamond; margin-bottom: 5px; font-size: 1em;">
+<p>
+<a href=3D"https://www.pait.info/">Login To PAIT</a>
+</p>
+<p align="left">
+Regards,<br>
+Ashlea
+</p>
+</div>
+
+<div style=3D"padding: 5px; font-face: Garamond; margin-bottom: 5px; font-size: 1em;">
+Ashlea A. Stanfill LUTCF, CLTC<br>
+Director of Case Management
+</div>
+
+<div style=3D"padding: 5px; font-face: Garamond; margin-bottom: 5px; font-size: .9em;"><center>
+<b>The Innovia Group</b><br>
+Atlanta Plaza Suite 2300 &bull; 950 East Paces Ferry Road &bull; Atlanta GA 30326<br>
+Direct: 404.846.3075 &bull; Fax: 404.846.3153 
+</center>
+</div>
+</body>
+</html>

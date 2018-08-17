@@ -1,0 +1,15 @@
+;; Object layout/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "layout/"
+  :tables (list 
+   (semanticdb-table "ContentPanels.js"
+    :major-mode 'java-mode
+    :tags 'nil
+    :file "ContentPanels.js"
+    :pointmax 16245
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

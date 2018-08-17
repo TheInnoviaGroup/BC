@@ -1,0 +1,53 @@
+
+<table id="searchresults"><thead>
+<tr><th><?=$type;?></th><th>Address</th><th>Main Phone</th><th>Alternate Phone</th><?=($type == "Company")?"<th>Insureds</th>":"";?></tr>
+</thead>
+<tbody>
+<? foreach ($results as $row): ?>
+<tr>
+<td><a href="<?=$self;?>?mode=<?=$type;?>&action=show<?=$type;?>&<?=strtolower($type);?>ID=<?=$row[strtolower($type).'ID'];?>"  class="centerTarget" id="<?=$type.$row[strtolower($type).'ID'];?>" title="<?=$type;?>: <?=$row['name'];?>"><?=$row['name'];?></a></td>
+<td><?=$row['address'];?>&nbsp;</td>
+<td><?=formatPhone($row['phone1']);?>&nbsp;</td>
+<td><?=formatPhone($row['phone2']);?>&nbsp;</td>
+<? if ($type == "Company"): ?>
+<td><?=$counts[$row['companyID']];?>&nbsp;</td>
+<? endif; ?>
+</tr>
+<? endforeach; ?>
+</tbody>
+</table>
+<script type="text/javascript">
+Ext.onReady(function() {
+    
+    function onCGridClick(item, e, rowIndex) {
+   var link;
+    var ele = Ext.get(e.getTarget());
+    var par = ele.findParent('tr.x-grid-row', 10, true)
+    link = par.child('a.centerTarget');
+    console.log(item, e,ele,link.dom.attributes.href,link);
+    console.log('TabID: ',link.dom.attributes.id.nodeValue);
+    Ext.ux.CascadingDialogs.openCenter({target:
+                                        {title: link.dom.attributes.title.nodeValue,
+                                        href: link.dom.attributes.href.nodeValue,
+                                        id:link.dom.attributes.id.nodeValue}}, App);
+};
+    
+// create the grid
+  var companygrid = new Ext.grid.TableGrid('searchresults');
+  companygrid.on('rowdblclick', function(companygrid, rowIndex, e) {
+    companygrid.rowRecord = companygrid.getDataSource().getAt(rowIndex);
+    onCGridClick(companygrid, e, rowIndex);
+
+});
+  companygrid.on('rowclick', function(companygrid, rowIndex, e) {
+    e.stopEvent();
+    if (Ext.fly(e.getTarget()).dom.tagName == 'A') {
+    companygrid.rowRecord = companygrid.getDataSource().getAt(rowIndex);
+    onCGridClick(companygrid, e, rowIndex);
+    }
+
+});
+	companygrid.render();
+     
+});
+</script>

@@ -1,0 +1,90 @@
+<div class="personData">
+<form action="<?=$self;?>" method="POST" target="_parent" id="personForm">
+<input type="hidden" name="personID" value="<?=$personData['personID'];?>" />
+<input type="hidden" name="mode" value="Person" />
+<input type="hidden" name="action" value="editPerson" />
+<? if($isSpouse): ?>
+<input type="hidden" name="isSpouse" value="TRUE" />
+<input type="hidden" name="spouseID" value="<?=$personData['spouseID'];?>" />
+<? else: ?>
+<input type="hidden" name="isSpouse" value="FALSE" />
+<? endif; ?>
+<fieldset><legend>Editing <? if (preg_match("/[A-Za-z]/",$personData['gn']) && preg_match("/[A-Za-z]/",$personData['sn'])): ?>
+        <?=$personData['salutation'];?> <?=$personData['gn'];?><?=($personData['mn'])?" ".$personData['mn']:"";?> <?=$personData['sn'];?><?=($personData['suffix'])?", ".$personData['suffix']:"";?>
+        <? else: ?>
+        <?=$personData['cn'];?><? endif; ?></legend>
+<center>
+<table><tr><td align="left" rowspan=2 valign="top">
+<fieldset><legend>Personal Info</legend>
+<div class="x-form-item"><label for="salutation">Salutation (eg Mr., Ms., Mrs.): </label><input allowBlank="true" tabindex="101" type="text" id="salutation" name="salutation" value="<?=$personData['salutation'];?>" /></div>
+<div class="x-form-item"><label for="gn">First Name: </label><input type="text" tabindex="102" id="gn" name="gn" value="<?=$personData['gn'];?>" /></div>
+<div class="x-form-item"><label for="mn">Middle Name or Initial: </label><input allowBlank="true" type="text" tabindex="103" id="mn" name="mn" value="<?=$personData['mn'];?>" /></div>
+<div class="x-form-item"><label for="sn">Last Name: </label><input type="text" tabindex="104" id="sn" name="sn" value="<?=$personData['sn'];?>" /></div>
+<div class="x-form-item"><label for="suffix">Suffix (eg. Jr., Sr.): </label><input allowBlank="true" tabindex="105" type="text" id="suffix" name="suffix" value="<?=$personData['suffix'];?>" /></div>
+<div class="x-form-item"><label for="cn">Full Name: </label><textarea allowBlank="true" tabindex="119" id="cn" name="cn"><?=$personData['cn'];?></textarea></div>
+<div class="x-form-item"><label for="status">Status: </label><select class="Combobox" tabindex="107" name="status" id="status">
+<? foreach($statuses as $id => $status): ?>
+<option<?=($status == $personData['status'])?" SELECTED":"";?>><?=$status;?></option>
+<? endforeach; ?>
+</select></div>
+<div class="x-form-item"><label for="birthdate">Date of Birth: </label><input allowBlank="true" class="DateField" tabindex="108" type="text" id="birthdate" name="birthdate" value="<?=(!preg_match("/^\-*\d+$/", $personData['birthdate']))?$personData['birthdate']:(($personData['birthdate'] != 0)?gmdate(PAITDATE,$personData['birthdate']):"");?>" /></div>
+<div class="x-form-item"><label for="ssn">Social Security Number: </label><input vtype="ssn" tabindex="109" type="text" id="ssn" name="ssn" value="<?=($personData['ssn'] != "")?formatSocial($personData['ssn']):"";?>" /></div>
+<div class="x-form-item"><label for="gender">Gender: </label><select tabindex="110" name="gender" class="Combobox" id="gender">
+<option value="0"<?=($personData['gender'] == 0)?" SELECTED":"";?>>------</option>
+<option value="1"<?=($personData['gender'] == 1)?" SELECTED":"";?>>Female</option>
+<option value="2"<?=($personData['gender'] == 2)?" SELECTED":"";?>>Male</option>
+</select></div>
+<div class="x-form-item"><label for="workphone">Work Phone: </label><input type="text" vtype="phone" allowBlank="true" tabindex="115" id="workphone" name="workphone" value="<?=$personData['workphone'];?>" /></div>
+<div class="x-form-item"><label for="homephone">Home Phone: </label><input type="text" vtype="phone" allowBlank="true" tabindex="116" id="homephone" name="homephone" value="<?=$personData['homephone'];?>" /></div>
+<div class="x-form-item"><label for="cellphone">Cell Phone: </label><input type="text" vtype="phone" allowBlank="true" tabindex="117" id="cellphone" name="cellphone" value="<?=$personData['cellphone'];?>" /></div>
+<div class="x-form-item"><label for="email">E-mail: </label><input vtype="email" allowBlank="true" type="text" tabindex="118" id="email" name="email" value="<?=$personData['email'];?>" /></div>
+</fieldset></td><td align="left" valign="top">
+<fieldset><legend>Home Address</legend>
+<div class="x-form-item"><label for="address">Address Line 1: </label><textarea allowBlank="true" tabindex="111" id="address" name="address"><?=$personData['address'];?></textarea></div>
+<div class="x-form-item"><label for="address2">Address Line 2: </label><textarea allowBlank="true" tabindex="111" id="address2" name="address2"><?=$personData['address2'];?></textarea></div>
+<div class="x-form-item"><label for="city">City: </label><input allowBlank="true" type="text" tabindex="112" id="city" name="city" value="<?=$personData['city'];?>" /></div>
+<div class="x-form-item"><label for="state">State: </label><input allowBlank="true" type="text" tabindex="113" id="state" name="state" value="<?=$personData['state'];?>" size="2" maxlength="2"/></div>
+<div class="x-form-item"><label for="postal">Postal or Zip Code: </label><input allowBlank="true" tabindex="114" type="text" id="postal" name="postal" value="<?=$personData['postal'];?>" /></div>
+</fieldset></td></tr>
+<tr><td align="left" valign="top">
+<? if($isSpouse): ?>
+<fieldset><legend>Marital Status</legend>
+<div class="x-form-item"><label for="maritalStatus">Marital Status: </label><select class="Combobox" tabindex="106" id="maritalStatus" name="maritalStatus">
+<option value="0"<?=($personData['maritalStatus'] == 0)?" SELECTED":"";?>>Married</option>
+<option value="2"<?=($personData['maritalStatus'] == 2)?" SELECTED":"";?>>Domestic Partner</option>
+<option value="1"<?=($personData['maritalStatus'] == 1)?" SELECTED":"";?>>Divorced</option>
+</select></div>
+</fieldset>
+
+<? else: ?>
+<fieldset><legend>Company Info</legend>
+<div class="x-form-item"><label for="companyID">Company: </label><select class="Combobox" tabindex="106" id="companyID" name="companyID">
+<? foreach($companyList as $id => $company): ?>
+<option value="<?=$id;?>"<?=($id == $companyID)?" SELECTED":"";?>><?=$company;?></option>
+<? endforeach; ?>
+</select></div>
+<div class="x-form-item"><label for="title">Title: </label><input tabindex="105" type="text" allowBlank="true" id="title" name="title" value="<?=$companyData['title'];?>" /></div>
+<div class="x-form-item"><label for="department">Department/Division: </label><input tabindex="105" allowBlank="true" type="text" id="department" name="department" value="<?=$companyData['department'];?>" /></div>
+<div class="x-form-item"><label for="hiredate">Hire Date: </label><input class="DateField" tabindex="108" allowBlank="true" type="text" id="hiredate" name="hiredate" value="<?=(!preg_match("/^\-*\d+$/", $companyData['hiredate']))?$companyData['hiredate']:(($companyData['hiredate'] != 0)?gmdate(PAITDATE,$companyData['hiredate']):"");?>" /></div>
+<div class="x-form-item"><label for="additionalBenefits">Additional Benefits: </label><textarea class="HtmlEditor" allowBlank="true" tabindex="119" id="additionalBenefits" name="additionalBenefits"><?=$personData['additionalBenefits'];?></textarea></div>
+</fieldset>
+<? endif; ?>
+
+</td></tr>
+<tr><td colspan=2 align=center>
+<div class="x-form-item"><input type="submit" class="inputSubmit" tabindex="219" name="submit" value="Submit" /><input tabindex="120" type="submit" class="inputSubmit" name="cancel" value="Cancel" /></div>
+</td></tr></table>
+</center>
+</fieldset>
+</form>
+</div>
+<script type="text/javascript">
+Ext.QuickTips.init();
+<? if($isSpouse && $spouseID == 0): ?>
+Ext.ux.HTMLForm('personForm', Ext.PAIT.addSpouse);
+<? elseif($isSpouse): ?>
+Ext.ux.HTMLForm('personForm', Ext.PAIT.editSpouse);
+<? else: ?>
+Ext.ux.HTMLForm('personForm', Ext.PAIT.editPerson);
+<? endif; ?>
+</script>

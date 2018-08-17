@@ -1,0 +1,13 @@
+<div class="centerContent">
+<table border=0 width="85%"><caption>Please choose a company for this LOB:</caption>
+<? foreach ($companies as $company): ?>
+<tr><td align=center><a href="<?=$self;?>?mode=LOB&action=<?=$action;?>&companyID=<?=$company['companyID'];?>" onClick="javascript:Ext.ux.CascadingDialogs.openCenter({target:{href: '<?=$self;?>?mode=LOB&action=<?=$action;?>&companyID=<?=$company['companyID'];?>', id: '<?=$action;?>', title: '<?=$title?>: <?=$company['name'];?>'}});return false;" id="<?=$action;?>" title="<?=$title?>: <?=$company['name'];?>"><?=$company['name'];?></a></td></tr>
+<? endforeach;?>
+</table>
+</div>
+
+<script type="text/javascript">
+    Ext.onReady(function() {
+       Ext.ux.CascadingDialogs.scanHrefs(); 
+    });
+    </script>

@@ -1,0 +1,12 @@
+<? if ($list): ?>
+<table border=0 width="85%"><caption>Please choose a company to list Plan Designs for:</caption>
+<? foreach ($companies as $company): ?>
+<tr><td align=center><a href="<?=$self;?>?mode=planDesign&action=List&companyID=<?=$company['companyID'];?>" class="centerTarget" id="planDesign" title="Plan Design: <?=$company['name'];?>"><?=$company['name'];?></a></td></tr>
+<? endforeach;?>
+<? else: ?>
+<table border=0 width="85%"><caption>Please choose a company for this Plan Design:</caption>
+<? foreach ($companies as $company): ?>
+<tr><td align=center><a href="<?=$self;?>?mode=planDesign&companyID=<?=$company['companyID'];?>" class="centerTarget" id="planDesign" title="Plan Design: <?=$company['name'];?>"><?=$company['name'];?></a></td></tr>
+<? endforeach;?>
+<? endif; ?>
+</table>

@@ -1,0 +1,201 @@
+
+body {
+ margin: 0px;
+ margin-left: 10px;
+	font-size: small;
+	font-family: arial, helvetica;
+	color: #555;
+}
+
+.topNav {
+background: url(images/row_bg.jpg);
+height: 76px;
+}
+
+.mainStage {
+	padding: 10px;
+}
+
+.theNumbers {
+	padding: 10px;
+	text-align:center;
+}
+
+.mainTable {
+	border-left: 1px solid #555555;
+	border-top: 1px solid #555555;
+	border-bottom: 1px solid #555555;
+	margin-left: 10px;
+}
+
+.mainStageTable {
+	margin-right: 10px;
+}
+
+.sideTop {
+background: url(images/side_top.jpg);
+background-repeat: repeat-x;
+}
+
+.sideBottom {
+background: url(images/side_bottom.jpg);
+background-repeat: repeat-x;
+}
+
+.sideLeft {
+background: url(images/side_left.jpg);
+background-repeat: repeat-y;
+}
+
+.sideRight {
+background: url(images/side_right.jpg);
+background-repeat: repeat-y;
+}
+
+a.buttonLink:link {
+	font-size: small;
+	font-family: arial, helvetica;
+	color: #555;
+	text-decoration: none;
+}
+
+a.buttonLink:visited {
+	font-size: small;
+	font-family: arial, helvetica;
+	color: #555;
+	text-decoration: none;
+}
+
+a.buttonLink:hover {
+	color: #0099CC;
+}
+
+a.buttonLink:active {
+	color: #FFFFFF;
+}
+
+a.buttonApplyLink:link {
+	font-size: small;
+	font-family: arial, helvetica;
+	color: #0099CC;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+a.buttonApplyLink:visited {
+	font-size: small;
+	font-family: arial, helvetica;
+	color: #0099CC;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+a.buttonApplyLink:hover {
+	color: #0099CC;
+	font-weight: bold;
+}
+
+a.buttonApplyLink:active {
+	color: #FFFFFF;
+	font-weight: bold;
+}
+
+#welcome {
+	font-size: medium;
+	font-family: arial, helvetica;
+	color: #0099CC;
+	padding-left: 20px; 
+	padding-top: 10px; 
+}
+.numberLabel {
+	font-size: small;
+	font-family: arial, helvetica;
+	color: #555555;
+	padding-left: 20px; 
+	padding-top: 10px;
+}
+.numberAmount {
+	font-size: small;
+	font-family: arial, helvetica;
+	color: #0099CC;
+	padding-left: 20px; 
+	font-weight: bold;
+}
+
+.apply {
+color: #0E2939;
+font-size: 120%;
+font-family: Tahoma, Arial, Helvetica;
+}
+
+.fine_print {
+color: #0E2939;
+font-size: 70%;
+font-family: Tahoma, Arial, Helvetica;
+padding-top: 3em;
+}
+
+.fine_print_blue {
+color: #0099CC;
+font-size: 70%;
+font-family: Tahoma, Arial, Helvetica;
+padding-top: 3em;
+}
+
+.moreInfo {
+border: 1px solid #0E2939;
+padding: 10px;
+margin-left: auto;
+margin-right: auto;
+color: #0E2939;
+font-weight: bold;
+font-size: 1em;
+font-family: Tahoma, Arial, Helvetica;
+margin-top: 15px;
+text-align: center;
+}
+
+.phoneNumber {
+	font-family: arial, helvetica;
+	color: #0099CC;
+
+}
+.fact {
+color: #0E2939;
+font-size: 1em;
+font-family: Tahoma, Arial, Helvetica;
+margin-top:15px;
+}
+
+.source {
+color: #C93;
+font-size: .8em;
+font-family: Tahoma, Arial, Helvetica;
+}
+
+label {
+ font-size: .8em;
+ }
+ 
+.question {
+color: #0099CC;
+font-weight: bold;
+font-size: .9em;
+font-family: Tahoma, Arial, Helvetica;
+margin-top: 15px;
+margin-left: 15px;
+}
+
+.questionHead {
+color: #0099CC;
+font-weight: bold;
+font-size: 1.1em;
+font-family: Tahoma, Arial, Helvetica;
+margin-top: 15px;
+}
+.answer {
+color: #55555;
+font-size: .9em;
+font-family: Tahoma, Arial, Helvetica;
+margin-left: 15px;
+}

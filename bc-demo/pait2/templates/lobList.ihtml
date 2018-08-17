@@ -1,0 +1,7 @@
+<h1>LOBs for <?=$companyName;?></h1>
+<dl>
+    <? foreach ($lobArray as $lob): ?>
+    <dt><a href="<?=$self;?>?mode=LOB&action=editlob&lobID=<?=$lob['lobID'];?>" onClick="javascript:Ext.ux.CascadingDialogs.openCenter({target:{href: '<?=$self;?>?mode=LOB&action=editlob&lobID=<?=$lob['lobID'];?>', id: 'showlob-<?=$lob['lobID'];?>', title: 'Edit LOB: <?=$lob['shortName']?> -- <?=$companyName;?>'}});return false;"><?=$lob['shortName'];?></a></dt>
+    <dd><?=$lob['description'];?></dd>
+    <? endforeach; ?>
+    </dl>

@@ -1,0 +1,141 @@
+<?PHP
+  /**
+   * Alib Master File -- just include_once and forget.
+   * This file inits several variables. So better check
+   * them. (They're documented below). It also defines the anObject
+   * object, the one from which all other alib objects should be
+   * defined.
+   * @package aLib
+   * @author BrYan P. Johnson
+   * @version 0.4
+   */
+  /**
+   * function alib_init -- initializes the alib. Don't worry. Just ignore it.
+   */
+function alib_init(){
+
+
+  /**
+   * This is the include path. Change to suit.
+   */
+  $include_path = ".";
+
+
+  /**
+   * This is where the templates live:
+   */
+  $template_path = $include_path . "templates\\";
+
+  global $AGLOBAL, $debug;
+
+  if (isset($AGLOBAL['include_path'])) {
+    return 1;
+  } // Only need to run this once.
+
+  /** 
+   * The aLibs global array. Use this to pass data around. It is the
+   * only global guaranteed to be used by all library functions.
+   * @global array $AGLOBAL
+   */
+  $AGLOBAL = array('include_path' => $include_path,
+		   'template_path' => $template_path);
+
+  set_include_path(get_include_path() . ":" . $include_path . ":" . $template_path);
+
+  include_once('db.inc'); // because it may break on __autoload
+
+  include_once('debug.inc'); // because I want it now.
+  /** 
+   * The global debug object. Use this in your scripts. Also, all
+   * objects that inherit from anObject should have
+   * <code>$this->debug</code> defined.
+   * @see anObject
+   * @see Debug
+   */
+  $debug = Debug::singleton();
+
+}
+
+/**
+ * We autoload any object someone tries to load. If there is a file by
+ * the same name as the object, we load it. Since object class names
+ * are case insensitive, we downcase the filename. No more including!
+ */
+function __autoload($class_name){
+  if (! include_once(strtolower($class_name) . ".inc")) {
+	include_once($class_name.".inc");
+
+	}
+}
+
+
+/** 
+ * The aLib abstract standard object. 
+ *
+ * This way we ensure that all of our objects have the same
+ * interfaces.
+ * @package aLib
+ * @subpackage Utility
+ * @author BrYan P. Johnson
+ * @version 0.4
+ */
+abstract class anObject {
+  
+public function __construct () {
+  
+}
+
+
+  public function __get($name) {
+    global $AGLOBAL;
+    $debug = $AGLOBAL['DEBUG'];
+    if ($debug->level >= 10) {
+      $debug->line("Want $name. Is:", 10);
+      $debug->variable($this->$name, 10);
+    }
+    return $this->$name;
+  }
+
+  /**
+   * This catches any calls to undefined functions. 
+   *
+   * Yum. With debuglevel of 0, it's silent.
+   */
+  public function __call($f, $a) {
+    global $AGLOBAL;
+    $debug = $AGLOBAL['DEBUG'];
+    if ($debug->level >= 1) {
+      $c = get_class($this);
+      $m = get_class_methods($this);
+      $debug->line("Undefined function call: ".$f." from class ".$c." with args:", 1);
+      $debug->variable($a, 1);
+      $debug->line("Actual allowed methods for ".$c.":", 1);
+      $debug->variable($m, 1);
+
+    }
+  }
+
+  public function __set($name, $value) {
+    global $AGLOBAL;
+    $debug = $AGLOBAL['DEBUG'];
+    if ($debug->level >= 10) {
+      if (isset($this->$name)) {
+	$debug->line("Changing $name. Was:", 10);
+	$debug->variable($this->$name, 10);
+	$debug->line("Changing $name. To:", 10);
+	$debug->variable($value);
+      } else {
+	$debug->line("Setting ".$name, 10);
+	$debug->variable($value, 10);
+      }
+    }
+    $this->$name = $value;
+  }
+
+}
+
+// Now I do the alib_init because why wouldn't you? And why should I make you?
+
+alib_init();
+
+?>

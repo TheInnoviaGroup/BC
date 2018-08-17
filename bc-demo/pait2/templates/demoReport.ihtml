@@ -1,0 +1,348 @@
+<h2>Demographics Report for: <?=$companyName;?></h2>
+<a href="<?=$self;?>?mode=Report&action=companyDemographics&companyID=<?=$companyID;?>&format=xls">Export to Excel</a><br />
+
+
+
+<br />
+<center><h3>Compensation Statistics</h3>
+
+<table border="1" cellspacing="0" cols="5" frame="void" rules="groups">
+
+
+  <tbody>
+
+
+    <tr>
+
+
+      <td width="33%" valign="top" height="17"><table class="sortable" width="100%"><caption>By Annual Compensation</caption><tr>
+<th valign="top"><b>Total Compensation</b></th><th valign="top"><b>Executives</b></th><th valign="top"><b>Avg. Age</b></th><th valign="top"><b>Avg. Tenure</b></th>
+    </tr>
+<? foreach ($totals as $myyear => $array): ?>
+<tr><td colspan=2 align=right style="border-right: 0;">Year: </td><td colspan=2 align=left  style="border-left: 0;"><?=$myyear;?></tr>
+<?
+$now = time();
+$totals = array();;
+   foreach ($array as $title => $data) { ?>
+    <tr>
+    <td align="right"><b><?=$title;?></b></td>
+					 <td align="right"><?=$data['total'];?><? $totals['total'] += $data['total'];?></td>
+															 <td align="right"><? if($data['age'] != 0): ?><?=(sprintf("%01.2f", ($now - $data['age']) / AYEAR));?><?$totals['age']['age'] += ($now - $data['age']) * $data['total'] / AYEAR; $totals['age']['total'] += $data['total'];?><? else: ?>No data<?endif;?></td>
+<td align="right"><? if($data['tenure'] != 0): ?><?=(sprintf("%01.2f", ($now - $data['tenure']) / AYEAR));?><?$totals['tenure']['tenure'] += ($now - $data['tenure']) * $data['total'] /  AYEAR; $totals['tenure']['total'] += $data['total'];?><? else: ?>No data<?endif;?></td>
+    </tr>
+<? }  ?>
+<td  align="right"><b>Total:</b></td><td  align="right"><?=$totals['total'];?></td><td  align="right"><?=($totals['age']['total'] > 0)?(sprintf("%01.2f", $totals['age']['age'] / $totals['age']['total'])):'No Data';?></td><td  align="right"><?=($totals['tenure']['total'] > 0)?(sprintf("%01.2f", $totals['tenure']['tenure'] / $totals['tenure']['total'])):'No Data';?></td></tr>
+<? endforeach; ?>
+</table></td>
+
+
+
+      <td valign="top" width="33%" >
+<table class="sortable" width="100%"><caption>By State:</caption><tr><th>State</th><th>Count</th></tr>
+    <? foreach ($states as $state): ?>
+    <tr><td><?=$state['myState'];?></td><td><?=$state['total'];?></td></tr>
+    <? endforeach;?>
+    </table>
+</td>
+
+
+
+    <td valign="top" height="17" width="33%" ><? // pre($average); ?>
+    <table class="sortable" width="100%"><caption>Average Compensations</caption>
+    <tr><th>Type</th><th>Year</th><th>Average</th></tr>
+    <? foreach ($averages as $avg): ?>
+    <tr><td><?=$avg['category'];?></td><td><?=$avg['year'];?></td><td><?=formatMoney($avg['avg']);?></td></tr>
+    <? endforeach;?>
+</table>
+
+      </td>
+</tr>
+</table></center>
+<br />
+<center>
+<h3>Gender Statistics</h3>
+
+<table border="1" cellspacing="0" cols="5" frame="void" rules="groups" class="sortable">
+
+
+
+    <tr>
+
+
+
+
+      <td align="right"><b>Gender</b></td>
+
+
+      <td align="center"><b>Count</b></td>
+
+
+      <td align="center"><b>Percentage</b></td>
+
+
+
+
+    </tr>
+
+
+    <tr>
+
+
+
+
+      <td align="right"><b>Female</b></td>
+
+
+      <td align="center"><?=$age[1]['total'];?></td>
+
+
+      <td align="center"><? printf("%01.2f", $age[1]['total'] * 100 / ($age[2]['total']+$age[1]['total']));?>%</td>
+
+
+
+
+    </tr>
+
+
+    <tr>
+
+
+
+      <td align="right"><b>Male</b></td>
+
+      <td align="center"><?=$age[2]['total'];?></td>
+
+
+      <td align="center"><? printf("%01.2f", $age[2]['total'] * 100 / ($age[2]['total']+$age[1]['total']));?>%</td>
+
+
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td align="center" height="17" colspan=3>
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+    <tr>
+
+
+
+      <td align="right"><b>Gender</b></td>
+
+
+      <td align="center"><b>Average Age</b></td>
+
+
+      <td align="center"><b>Average Tenure</b></td>
+
+
+
+
+    </tr>
+
+
+    <tr>
+
+
+
+
+      <td align="right"><b>Female</b></td>
+
+
+      <td align="center"><? if ($age[1]['avgAge']) {printf("%01.2f", (time() - $age[1]['avgAge']) / AYEAR );}?></td>
+
+
+      <td align="center"><? if ($tenure[1]['avgTenure']){ printf("%01.2f", (time() - $tenure[1]['avgTenure']) / AYEAR );}?></td>
+
+
+
+
+    </tr>
+
+
+    <tr>
+
+
+
+      <td align="right"><b>Male</b></td>
+
+
+      <td align="center"><? if ($age[2]['avgAge']) {printf("%01.2f", (time() - $age[2]['avgAge']) / AYEAR );}?></td>
+
+
+      <td align="center"><? if ($tenure[2]['avgTenure']){ printf("%01.2f", (time() - $tenure[2]['avgTenure']) / AYEAR );}?></td>
+
+
+
+
+
+
+
+    </tr>
+
+
+    <tr>
+
+
+
+
+      <td align="center" colspan=3><br />
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+    <tr>
+
+
+
+
+      <td align="right"><b>Gender</b></td>
+
+
+      <td align="center"><b>Max Age</b></td>
+
+
+      <td align="center"><b>Max Tenure</b></td>
+
+
+
+
+    </tr>
+
+
+    <tr>
+
+
+
+
+      <td align="right"><b>Female</b></td>
+      <td align="center"><? if ($age[1]['maxAge']) {printf("%01.2f", (time() - $age[1]['maxAge']) / AYEAR );}?></td>
+
+
+      <td align="center"><? if ($tenure[1]['maxTenure']){ printf("%01.2f", (time() - $tenure[1]['maxTenure']) / AYEAR );}?></td>
+
+
+
+
+
+    </tr>
+
+
+    <tr>
+
+
+
+      <td align="right"><b>Male</b></td>
+      <td align="center"><? if ($age[2]['maxAge']) {printf("%01.2f", (time() - $age[2]['maxAge']) / AYEAR );}?></td>
+
+
+      <td align="center"><? if ($tenure[2]['maxTenure']){ printf("%01.2f", (time() - $tenure[2]['maxTenure']) / AYEAR );}?></td>
+
+
+
+
+    </tr>
+
+
+    <tr>
+
+
+
+
+<td colspan=3><br />
+</td>
+
+
+
+
+
+
+
+    </tr>
+
+
+    <tr>
+
+
+
+      <td align="right"><b>Gender</b></td>
+
+
+      <td align="center"><b>Min Age</b></td>
+
+
+      <td align="center"><b>Min Tenure</b></td>
+
+
+
+
+    </tr>
+
+
+    <tr>
+
+
+
+
+      <td align="right"><b>Female</b></td>
+      <td align="center"><? if ($age[1]['minAge']) {printf("%01.2f", (time() - $age[1]['minAge']) / AYEAR );}?></td>
+
+
+      <td align="center"><? if ($tenure[1]['minTenure']){ printf("%01.2f", (time() - $tenure[1]['minTenure']) / AYEAR );}?></td>
+
+
+ 
+
+
+
+    </tr>
+
+
+    <tr>
+
+
+
+      <td align="right"><b>Male</b></td>
+      <td align="center"><? if ($age[2]['minAge']) {printf("%01.2f", (time() - $age[2]['minAge']) / AYEAR );}?></td>
+
+
+      <td align="center"><? if ($tenure[2]['minTenure']){ printf("%01.2f", (time() - $tenure[2]['minTenure']) / AYEAR );}?></td>
+
+
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+<br />

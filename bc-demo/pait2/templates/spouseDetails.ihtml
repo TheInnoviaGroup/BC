@@ -1,0 +1,159 @@
+<div id="newPersonDiv">
+<table border=0 style="width:90%;margin-left:auto;margin-right:auto;margin-top:0.35em;"><tr><td align=left valign="top">
+        <h1><font color="#5080CF">Spouse: </font>
+        <? if ($personData['cn']): ?>
+    <?=$personData['cn'];?>
+    <? elseif (preg_match("/[A-Za-z]/",$personData['gn']) && preg_match("/[A-Za-z]/",$personData['sn'])): ?>
+        <?=$personData['salutation'];?> <?=$personData['gn'];?><?=($personData['mn'])?" ".$personData['mn']:"";?> <?=$personData['sn'];?><?=($personData['suffix'])?", ".$personData['suffix']:"";?>
+        <? else: ?>
+        <?=$personData['cn'];?><? endif; ?></h1></td>
+<td valign="top"><h2>Status: <?=$personData['status'];?></h2></td></tr>
+<tr><td colspan=2 align=center valign="top"><table width=100% border="0"><tr><th>Home Address:</th><th align="center">Personal Info:</th></tr>
+<tr><td valign="top"><?=($personData['address'])?multiline($personData['address'])."<br />":"";?><?=($personData['address2'])?multiline($personData['address2'])."<br />":"";?>
+<?=($personData['city'])?$personData['city'].", ":"";?><?=$personData['state']." ".$personData['postal'];?></td>
+<td rowspan="4" valign="top"><table>
+<tr><td align="right">Social:</td><td align="left"><? if ($personData['ssn']): ?>
+<?=formatSocial($personData['ssn']);?><br />
+<? endif; ?>
+</td></tr>
+<tr><td align="right">Gender:</td><td align="left"><? global $genders; ?>
+<?=$genders[$personData['gender']];?><br />
+</td></tr>
+<tr><td align="right">Birthdate:</td><td align="left"><? if ($personData['birthdate']): ?>
+<?=gmdate(PAITDATE,$personData['birthdate']);?><br />
+<? endif; ?>
+</td></tr>
+<tr><td align="right">Work Phone:</td><td align="left"><? if ($personData['workphone']): ?>
+<?=formatPhone($personData['workphone']);?><br />
+<? endif; ?>
+</td></tr>
+<tr><td align="right">Home Phone:</td><td align="left"><? if ($personData['homephone']): ?>
+<?=formatPhone($personData['homephone']);?><br />
+<? endif; ?>
+</td></tr>
+<tr><td align="right">Cell Phone:</td><td align="left"><? if ($personData['cellphone']): ?>
+<?=formatPhone($personData['cellphone']);?><br />
+<? endif; ?>
+</td></tr>
+<tr><td align="right">E-mail:</td><td align="left"><? if ($personData['email']): ?>
+<a href="mailto:<?=$personData['email'];?>"><?=$personData['email'];?></a><br />
+<? endif; ?>
+</td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td colspan="2" align="center" valign="middle">
+<div class="actionBox"><? if ($allowed): ?>
+<a href="javascript:void(0);" onclick="javascript:Ext.ux.CascadingDialogs.openCenter({target:{href:'<?=$self;?>?mode=Person&action=editPerson&spouseID=<?=$personData['spouseID'];?>&module=editperson', title: 'Edit Spouse', id:'editspouse'}}); return false;">Edit Spouse</a> <a href="javascript:void(0);" onclick="Ext.MessageBox.confirm('Confirm Delete', 'Are you sure you want to delete this spouse?', Ext.PAIT.confirmDeleteSpouse, this); return false;" id="deletespouse" class="centerTarget" title="Delete Spouse">Delete Spouse</a>
+<? endif; ?>
+</div>
+</td>
+</tr>
+<tr><td colspan="2" align="center" valign="bottom"><div style="position:relative;">
+<!-- in case they want the policy info later
+<table width="600">
+<tr><td align="center"><h2>Policy Summary</h2></td></tr>
+<tr><td align="left" style="text-align: left;"><div style="position:relative;" id="policySummaryGrid">Policy Summary Grid goes here</div></td></tr>
+</table>
+-->
+</div></td></tr>
+</table>
+
+</div>
+<script type="text/javascript">
+//Start Policy Summary Grid
+/*	  we comment this out in case they want it later...
+	    var ds = new Ext.data.Store({
+        // load using script tags for cross domain, if the data in on the same domain as
+        // this page, an HttpProxy would be better
+        proxy: new Ext.data.HttpProxy({
+            url: '<?=$self;?>?mode=ajax&module=policySummary&personID=<?=$personID;?>'
+        }),
+
+        // create reader that reads the Topic records
+        reader: new Ext.data.JsonReader({
+            root: 'policyTypes',
+            id: 'type'
+        }, [
+            {name: 'type', mapping: 'type'},
+            {name: 'term', mapping: 'term'},
+            {name: 'paidBy', mapping: 'paidBy'},
+            {name: 'benefit', mapping: 'benefit'},
+	    {name: 'premium', mapping: 'premium'}
+            ]
+        ),
+
+        // turn on remote sorting
+        remoteSort: false
+    });
+
+
+    // the column model has information about grid columns
+    // dataIndex maps the column to the specific data field in
+    // the data store
+    var cm = new Ext.grid.ColumnModel([{
+           id: 'type', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+           header: "Policy Type",
+           dataIndex: 'type',
+           css: 'white-space:normal;',
+	   sortable: true
+        }
+        ,{
+           id: 'paidBy',
+           header: "Paid By",
+           dataIndex: 'paidBy',
+           sortable: true
+        }
+	,{
+           id: 'benefit', 
+           header: "Total Benefit",
+           dataIndex: 'benefit',
+           css: 'white-space:normal;',
+	   sortable: true,
+           renderer: Ext.util.Format.usMoney
+        }
+	,{
+           id: 'premium', 
+           header: "Total Premium",
+           dataIndex: 'premium',
+           css: 'white-space:normal;',
+	   sortable: true,
+           renderer: Ext.util.Format.usMoney
+        }
+        ,{
+           id: 'term',
+           header: "Premium Term",
+           dataIndex: 'term',
+           width: 95
+        }
+]);
+
+var el = Ext.get('policySummaryGrid')
+el._mask = null;
+el._maskMsg = null; 
+
+    // create the editor grid
+  var grid = new Ext.grid.Grid('policySummaryGrid', {
+        ds: ds,
+        cm: cm,
+        selModel: new Ext.grid.RowSelectionModel({singleSelect:true}),
+        enableColLock:true,
+        loadMask: Ext.PAIT.myLoadMask,
+        autoExpandColumn: 'type',
+	autoSizeColumns: false,
+        height: 150,
+        minHeight: 175,
+	monitorWindowResize: false
+    });
+grid.render();
+
+var gridFoot = grid.getView().getFooterPanel(true);
+
+    // add a paging toolbar to the grid's footer
+    
+grid.bottomToolbar = new Ext.Toolbar(gridFoot);
+grid.bottomToolbar.addText(' ');
+Ext.fly(grid.bottomToolbar.addSpacer().getEl().parentNode).setStyle('width', '100%');
+ds.on('load', Ext.PAIT.addBeneTotals, grid);
+ds.load();
+*/
+</script>

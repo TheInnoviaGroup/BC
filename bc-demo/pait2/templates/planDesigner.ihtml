@@ -1,0 +1,246 @@
+<script LANGUAGE="JavaScript">
+
+function addExclusionElement() {
+  var ni = document.getElementById('myDivExclusion');
+  var numi = document.getElementById('theExclusionValue');
+  var num = (document.getElementById('theExclusionValue').value -1)+ 2;
+  numi.value = num;
+  var newdiv = document.createElement('div');
+  var divIdName = 'my'+num+'DivExclusion';
+  newdiv.setAttribute('id',divIdName);
+  newdiv.setAttribute('class',"formRow");
+  newdiv.innerHTML = '<input name=\"eRiskNumber['+num+']\" type=\"text\" size=\"12\" maxlength=\"24\" /><!-- <select id=\"eRiskRelative['+num+']\" name=\"eRiskRelative['+num+']\"><option label=\">\" value=\"gt\" selected=\"selected\">&gt;</option><option label=\"<\" value=\"lt\">&lt;</option><option label=\"=\" value=\"eq\">=</option></select><input name=\"eRiskValue['+num+']\" type=\"text\" size=\"12\" maxlength=\"24\" />--><a href=\'#\' onclick=\"javascript:removeExclusionElement(\''+divIdName+'\')\">[ - ]</a>';
+  ni.appendChild(newdiv);
+}
+
+function removeExclusionElement(divNum) {
+  var d = document.getElementById('myDivExclusion');
+  var olddiv = document.getElementById(divNum);
+  d.removeChild(olddiv);
+}
+
+
+function addInclusionElement() {
+  var ni = document.getElementById('myDivInclusion');
+  var numi = document.getElementById('theInclusionValue');
+  var num = (document.getElementById('theInclusionValue').value -1)+ 2;
+  numi.value = num;
+  var newdiv = document.createElement('div');
+  var divIdName = 'my'+num+'DivInclusion';
+  newdiv.setAttribute('id',divIdName);
+  newdiv.setAttribute('class',"formRow");
+  newdiv.innerHTML = '<input name=\"iRiskNumber['+num+']\" type=\"text\" size=\"12\" maxlength=\"24\" /><!-- <select id=\"iRiskRelative['+num+']\" name=\"iRiskRelative['+num+']\"><option label=\">\" value=\"gt\" selected=\"selected\">&gt;</option><option label=\"<\" value=\"lt\">&lt;</option><option label=\"=\" value=\"eq\">=</option></select><input name=\"iRiskValue['+num+']\" type=\"text\" size=\"12\" maxlength=\"24\" />--><a href=\'#\' onclick=\"javascript:removeInclusionElement(\''+divIdName+'\')\">[ - ]</a>';
+  ni.appendChild(newdiv);
+}
+
+function removeInclusionElement(divNum) {
+  var d = document.getElementById('myDivInclusion');
+  var olddiv = document.getElementById(divNum);
+  d.removeChild(olddiv);
+}
+
+
+
+
+function toggleBascAdv(currDiv) {
+var advancedDiv = document.getElementById('advancedComp');
+var basicDiv = document.getElementById('basicComp');
+var currVal = document.getElementById('compensationBascAdv');
+
+if(currDiv == 'basicComp') {
+	basicDiv.style.display = "none";
+	advancedDiv.style.display = "block";
+	currVal.value = '1';
+} else {
+	basicDiv.style.display = "block";
+	advancedDiv.style.display = "none";
+	currVal.value = '0';
+}
+
+}
+
+
+function toggleIndTot(currVal) {
+
+formOBJ = document.getElementById('pdForm');
+	var elem = formOBJ.elements;
+	if(currVal == 'on') {
+		for(var i = 0; i < elem.length; i++)
+		{
+			if (elem[i].name == 'compType[]') {
+				elem[i].disabled = true;
+			}
+		}
+	} else {
+		for(var i = 0; i < elem.length; i++)
+		{
+			if (elem[i].name == 'compType[]') {
+				elem[i].disabled = false;
+			}
+		}
+	}			
+}
+
+</script>
+
+<? if (!$planDesignID || $edit): ?>
+<form action="<?=$self;?>" name="plandesigner" method="POST" id="pdForm">
+<input type="hidden" name="mode" value="planDesign" />
+<input type="hidden" name="companyID" value="<?=$companyID;?>" />
+<? if ($planDesignID): ?>
+<input type="hidden" name="action" value="add" />
+<input type="hidden" name="planDesignID" value="<?=$planDesignID;?>" />
+<? endif; ?>
+<h2>Create a new Plan Design for: <?=$companyName;?></h2>
+<table border="0" width="100%" cellspacing="0" cellpadding="0" align="center" class="outerTable">
+      <tr>
+        <td align="center"><label for="title">Plan
+Design Title: </label><input size="65" tabindex="1"
+ name="title" value="<?=($edits['title'])?$edits['title']:"Plan design for $companyName";?>">&nbsp;&nbsp;&nbsp; <br>
+        <label for="cap">Maximum Monthly Benefit Cap: </label><input
+ size="65" tabindex="2" name="cap" value="<?=($edits['maxBenefit'])?sprintf("%01.2f",$edits['maxBenefit']):""?>">
+        <br>
+<? if ($edits['active'] < 0) { $edits['active'] += 5; }?>
+        <label for="active">Active <input name="active"
+ value="1" type="radio" tabindex="3" <?=($edits['active']==1)?"CHECKED":"";?>></label>
+&nbsp; &nbsp; <label for="testing">Testing <input
+ name="active" value="0" <?=($edits['active']==1)?"":"CHECKED";?>
+ type="radio" tabindex="4"></label> &nbsp; &nbsp;<label for="policyType">Policy
+Type: &nbsp;</label>
+
+        <select name="policyType" tabindex=7>
+        <option value="1" <?=($edits['policyType']==1)?"SELECTED":"";?>>Group LTD</option>
+        <option value="2" <?=($edits['policyType']==2)?"SELECTED":"";?>>Individual LTD</option>
+        </select>
+        <br>
+        </td>
+      </tr>
+
+	<tr>
+		<td colspan="2" class="pdFormHead">Compensation
+		</td>
+	</tr>
+	<tr>
+		<td>
+<div id="basicComp"  <?=($showAdvanced)?"style=\"display:none;\"":"";?>>
+<table border="0" width="100%" cellspacing="0" cellpadding="10" align="center" class="innerTable">
+	<tr>
+		<td valign="top" align="left">
+		<div class="formRow"><input name="compensation" id="compensation" type="radio" value="individual" <?=($percents['Total Compensation'] || $percents['total'])?"":"checked=\"checked\"";?> onclick="toggleIndTot('off');"/> Individual Compensation</div>
+		
+<div class="formRowIndent"><input name="compType[]" id="compType[]" type="checkbox" value="salary" <?=($percents['Salary'])?"checked=\"checked\"":"";?> /> Salary</div>
+		<div class="formRowIndent"><input name="compType[]" id="compType[]" type="checkbox" value="bonus" <?=($percents['Bonus'])?"checked=\"checked\"":"";?> /> Bonus</div>
+		<div class="formRowIndent"><input name="compType[]" id="compType[]" type="checkbox" value="commission" <?=($percents['Commission'])?"checked=\"checked\"":"";?> /> Commission</div>
+		<div class="formRowIndent"><input name="compType[]" id="compType[]" type="checkbox" value="other" <?=($percents['Other'])?"checked=\"checked\"":"";?> /> Other</div>
+		
+		<div class="formRow"><input name="compensation" id="compensation" type="radio" value="individual" onclick="toggleIndTot('on');" <?=($percents['Total Compensation'] || $percents['total'])?"checked=\"checked\"":"";?> /> Total Compensation
+		<? if ($percents['Total Compensation'] || $percents['total']): ?>
+<script type="text/javascript">
+   toggleIndTot('on');
+</script>
+<? endif; ?>
+</div>
+		</td>
+		<td valign="top" align="left">
+					   
+        	<div class="formRow">% Of Selected Compensation <input id="percentComp" type="text" size="12" maxlength="8" name="percent[total]" value="<?=$percents['total'];?>" /></div>
+		
+		<div class="formRow">Monthly Minimum <input id="monthMin" type="text" size="24" maxlength="18"  name="min[total]"  value="<?=$minimums[$showMinMax];?>" /></div>
+		
+		<div class="formRow">Monthly Maximum <input id="monthMax" type="text" size="24" maxlength="18" name="max[total]"  value="<?=$maximums[$showMinMax];?>" /></div>
+		
+		<div class = "helpText">Select the advanced view to assign
+individual percentages for each 
+type of compensation.<p>
+<a href="#" onclick="toggleBascAdv('basicComp');">Advanced View</a>
+</p>
+</div>
+
+		</td>
+	</tr>
+</table>
+</div>
+
+<div id="advancedComp" <?=(! $showAdvanced)?"style=\"display:none;\"":"";?>>
+<table style="text-align: left; width: 100%;"
+ border="0" cellpadding="0" cellspacing="0" class="innerTable">
+<caption>Please enter the percentage of each compensation type to include in the calculations, or leave blank to exclude.</caption>
+          <tbody>
+            <tr>
+              <th style="border-bottom: 1px solid black; padding-bottom: 5px; padding-top: 5px;">Compensation Type</td>
+              <th style="border-bottom: 1px solid black; padding-bottom: 5px; padding-top: 5px;">Percentage</td>
+              <th style="border-bottom: 1px solid black; padding-bottom: 5px; padding-top: 5px;">Minimum Eligibility</td>
+
+              <th style="border-bottom: 1px solid black; padding-bottom: 5px; padding-top: 5px;">Maximum for Eligiblility</td>
+            </tr>
+<? foreach ($compTypes as $type => $id) : ?>
+            <tr>
+              <th style="border-bottom: 1px solid black; padding-bottom: 5px; padding-top: 5px;"><?=$type;?></td>
+              <td style="border-bottom: 1px solid black; padding-bottom: 5px; padding-top: 5px;"><input name="percent[<?=$type;?>]" value="<?=$percents[$type];?>">%</td>
+              <td style="border-bottom: 1px solid black; padding-bottom: 5px; padding-top: 5px;">$<input name="min[<?=$type;?>]"  value="<?=$minimums[$type];?>"></td>
+              <td style="border-bottom: 1px solid black; padding-bottom: 5px; padding-top: 5px;">$<input name="max[<?=$type;?>]" value="<?=$maximums[$type];?>"></td>
+            </tr>
+<? endforeach; ?>
+            <tr>
+              <th style="border-bottom: 1px solid black; padding-bottom: 5px; padding-top: 5px;">Total Compensation</td>
+              <td style="border-bottom: 1px solid black; padding-bottom: 5px; padding-top: 5px;"><input name="percent[Total Compensation]" value="<?=$percents['Total Compensation'];?>">%</td>
+              <td style="border-bottom: 1px solid black; padding-bottom: 5px; padding-top: 5px;">$<input name="min[Total Compensation]"  value="<?=$minimums['Total Compensation'];?>"></td>
+              <td style="border-bottom: 1px solid black; padding-bottom: 5px; padding-top: 5px;">$<input name="max[Total Compensation]"  value="<?=$maximums['Total Compensation'];?>"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class = "helpText">Select the Basic view to assign percentages for the 
+total compensation.<p>
+<a href="#" onclick="toggleBascAdv('advancedComp');">Basic View</a>
+</p>
+</div>
+</div>
+<input type="hidden" value="0" id="compensationBascAdv" />
+		</td>
+	</tr>          
+	<tr>
+		<td><table border="0" width="100%" cellspacing="0" cellpadding="10" align="center" class="innerTable">
+		<tr>
+		<td colspan="2" class="pdFormHead">Considerations
+		</td>
+	</tr>
+	<tr>
+<? $exclusions = count($config->eRiskNumber);
+$inclusions = count($config->iRiskNumber);
+ ?>
+		<td valign="top" align="left" width="50%"><input type="hidden" value="<?=$exclusions;?>" id="theExclusionValue" />
+<p><a href="javascript:;" onclick="addExclusionElement();">Add Exclusion</a></p>
+<div id="myDivExclusion">Exclude Risk Numbers: (Format: <i>Risk Number &gt;=&lt; Benefit</i>)
+  <? if ($exclusions > 0): 
+		   for ($i = 1; $i <= $exclusions; $i++) : ?>
+		     <div class="formRow" id="my<?=$i;?>DivExclusion"><input name="eRiskNumber[<?=$i;?>]" size="12" maxlength="24" type="text" value="<?=$config->eRiskNumber[$i];?>"><!-- <select id="eRiskRelative[<?=$i;?>]" name="eRiskRelative[<?=$i;?>]"><option label="&gt;" value="gt" <?=($config->eRiskRelative[$i] == "gt")?"selected=\"selected\"":"";?>>&gt;</option><option label="&lt;" value="lt"  <?=($config->eRiskRelative[$i] == "lt")?"selected=\"selected\"":"";?>>&lt;</option><option label="=" value="eq"  <?=($config->eRiskRelative[$i] == "eq")?"selected=\"selected\"":"";?>>=</option></select><input name="eRiskValue[<?=$i;?>]"  value="<?=$config->eRiskValue[$i];?>" size="12" maxlength="24" type="text">--><a href="#" onclick="javascript:removeExclusionElement('my<?=$i;?>DivExclusion')">[ - ]</a></div></div>
+<? endfor;
+endif; ?>
+</div></td>
+		<td valign="top" align="left" width="50%"><input type="hidden" value="<?=$inclusions;?>" id="theInclusionValue" />
+<p><a href="javascript:;" onclick="addInclusionElement();">Add Inclusion</a></p>
+<div id="myDivInclusion">Include Risk Numbers: (Format: <i>Risk Number &gt;=&lt; Benefit</i>)
+  <? if ($inclusions > 0): 
+		   for ($i = 1; $i <= $inclusions; $i++) : ?>
+		     <div class="formRow" id="my<?=$i;?>DivInclusion"><input name="iRiskNumber[<?=$i;?>]" size="12" maxlength="24" type="text" value="<?=$config->iRiskNumber[$i];?>"><!-- <select id="iRiskRelative[<?=$i;?>]" name="iRiskRelative[<?=$i;?>]"><option label="&gt;" value="gt" <?=($config->iRiskRelative[$i] == "gt")?"selected=\"selected\"":"";?>>&gt;</option><option label="&lt;" value="lt"  <?=($config->iRiskRelative[$i] == "lt")?"selected=\"selected\"":"";?>>&lt;</option><option label="=" value="eq"  <?=($config->iRiskRelative[$i] == "eq")?"selected=\"selected\"":"";?>>=</option></select><input name="iRiskValue[<?=$i;?>]"  value="<?=$config->iRiskValue[$i];?>" size="12" maxlength="24" type="text">--><a href="#" onclick="javascript:removeInclusionElement('my<?=$i;?>DivInclusion')">[ - ]</a></div></div>
+<? endfor;
+endif; ?>
+ </div></td>
+	</tr>
+</table></td>
+	</tr>
+</table>
+  <input value="Next &rarr;" name="Submit" type="submit" style="width: 100%;"><br>
+</form>
+<? else: ?>
+<h2>Your plan design:</h2>
+<? if ($message): ?>
+<h3><?=$message;?></h3>
+<? endif; ?>
+<p><?=$designText;?></p>
+<? if (!$noAction) : ?>
+<a href="<?=$self;?>?mode=planDesign&companyID=<?=$companyID;?>&planDesignID=<?=$planDesignID;?>&action=save">Save</a> | <a href="<?=$self;?>?mode=planDesign&companyID=<?=$companyID;?>&planDesignID=<?=$planDesignID;?>&action=Edit">Edit</a> | <a href="<?=$self;?>?mode=planDesign&companyID=<?=$companyID;?>&planDesignID=<?=$planDesignID;?>&action=Delete">Delete</a><br />
+<? else: ?>
+<a href="<?=$self;?>?mode=Report&action=newlyEligible&companyID=<?=$companyID;?>&planDesignID=<?=$planDesignID;?>">View Newly Eligible Persons</a> | <a href="<?=$self;?>?mode=Report&action=eligibleIncreases&companyID=<?=$companyID;?>&planDesignID=<?=$planDesignID;?>">View Eligible Increases</a>
+<? endif; ?>
+<? endif;?>

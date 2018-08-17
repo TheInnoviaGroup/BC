@@ -1,0 +1,66 @@
+<?=$data;?>
+<h2>Debug Info</h2>
+<table style="text-align: left; width:800px;" class="debugInfo">
+<colgroup>
+<col class="debugTime" />
+<col class="debugElapsed" />
+<col class="debugLevel" />
+<col class="debugFile" />
+<col class="debugLine" />
+<col class="debugData" />
+</colgroup>
+<thead>
+    <tr>
+      <th>Time</th>
+      <th>Elapsed</th>
+      <th>#</th>
+      <th>File</th>
+      <th>Line</th>
+      <th>Data</th>
+    </tr>
+</thead> 
+<tbody>
+<? $start = 0; $last = 0; foreach ($debugData as $debugLine): ?>
+    <tr>
+      <td class="debugTime"><?=date('G:i:s', $debugLine['time']);?></td>
+      <td class="debugElapsed"><?
+      if ($start == 0) {
+      $elapsed = "--";
+} else {
+$elapsed = $debugLine['time'] - $last;
+}
+      $start = $debugLine['time'];
+print $elapsed;
+?></td>
+      <td class="debugLevel"><?=$debugLine['level'];?></td>
+      <td class="debugFile"><?=$debugLine['file'];?></td>
+      <td class="debugLine"><?=$debugLine['line'];?></td>
+      <td class="debugData"><? switch($debugLine['type']) {
+      case "var":
+      $string = $debug->_colorSource($debugLine['string']);
+      print "Variable:<pre>\n$string</pre>";
+      break;
+      case "bt":
+      print "Backtrace:<pre>\n";
+      print $debugLine['string'];
+      print "</pre>";
+      break;
+      default:
+      print $debugLine['string'];
+      break;
+}
+?></td>
+    </tr>
+<? endforeach; ?>
+  </tbody>
+<tfoot>
+    <tr>
+      <th>Time</th>
+      <th>Elapsed</th>
+      <th>#</th>
+      <th>File</th>
+      <th>Line</th>
+      <th>Data</th>
+    </tr>
+</tfoot>
+</table>

@@ -1,0 +1,43 @@
+
+  	<form id="sheetList">
+  		<table align="center" class="sheetListTable">
+<? $count = 0; ?>
+<? foreach ($sheets as $sheet): 
+switch($sheet['status']) {
+			case "-1":
+				$css_color = "file_red";
+				$qtText = "Error";
+				break;
+			case "0":
+				$css_color = "file_grey";
+				$qtText = "Not Finished Importing";
+				break;
+			case "1":
+				$css_color = "file_yellow";
+				$qtText = "No Headers Assigned";
+				break;
+			case "2":
+				$css_color = "file_green";
+				$qtText = "Headers Assigned";
+				break;
+			case "3":
+				$css_color = "file_blue";
+				$qtText = "Imported Into PAIT";
+				break;
+		
+		}
+?> 	
+	<tr class="<?=$css_color;?>">
+		<td><input name="sheets[<?=$sheet['sheetID'];?>]" class="Checkbox" type="checkbox" value="<?=$sheet['sheetID'];?>" id="box_<?=$sheet['sheetID'];?>" stateGroup="workspace"></td>
+		<td><?=$qtText;?></td>
+		<td><?=$sheet['type'].":".$sheet['filename'];?></td>
+		<td><?=date ("m/j/Y", $sheet['time']);?></td>
+		<td><?=gimmeUserFullName($sheet['owner']);?></td>
+	</tr>
+	<? $count++ ; ?>
+<? endforeach; ?>
+
+</table>
+
+</form>
+  	

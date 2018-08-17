@@ -1,0 +1,15 @@
+;; Object grid/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "grid/"
+  :tables (list 
+   (semanticdb-table "Grid.js"
+    :major-mode 'java-mode
+    :tags 'nil
+    :file "Grid.js"
+    :pointmax 17544
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

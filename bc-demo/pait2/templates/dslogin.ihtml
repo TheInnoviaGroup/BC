@@ -1,0 +1,29 @@
+<? global $debug;
+   $debug->variable($badlogin, 1);
+?>
+<? if ($user->loggedIn): ?>
+<div class='loggedinbox'>
+<p>Welcome back, <?=$user->gn;?>.<br>
+<span class="inlineaction">[<a href="/index.php5">Home</a>] 
+<? if ($user->access_lv != 3): ?>
+[<a href="/index.php5?mode=Search&action=searchCompany">Companies</a>] [<a href="/index.php5?mode=Search&action=searchCarrier">Carriers</a>] [<a href="/dropsite/">Drop Site</a>] 
+<? endif; ?>
+[<a href="<?$self;?>?logout=1">Log Out</a>]</span>
+</p>
+
+<? elseif ($badlogin): ?><p>Login failed. Please try again.
+<div class='loginbox'>
+<form action="<?=$PHP_SELF;?>" method=POST>
+<label for="username">Username:</label><input type=text name="username" /><br>
+<label for="password">Password:</label><input type=password name="password" /><br>
+<input type="submit" value="Log In" />
+</form></p>
+<? else: ?>
+<div class='loginbox'>
+<p><form action="<?=$PHP_SELF;?>" method=POST>
+<label for="username">Username:</label><input type=text name="username" /><br>
+<label for="password">Password:</label><input type=password name="password" /><br>
+<input type="submit" value="Log In" />
+</form></p>
+<? endif; ?>
+</div>

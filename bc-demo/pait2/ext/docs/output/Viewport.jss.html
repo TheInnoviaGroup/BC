@@ -1,0 +1,22 @@
+<html><head><title>Viewport.js</title><link rel="stylesheet" type="text/css" href="../resources/style.css" media="screen"/></head><body><h1>Viewport.js</h1><pre class="highlighted"><code>Ext.Viewport = Ext.extend(Ext.Container, {
+    initComponent : <b>function</b>() {
+        Ext.Viewport.superclass.initComponent.call(<b>this</b>);
+        <b>this</b>.el = Ext.get(document.body);
+        <b>this</b>.el.setStyle({
+            overflow:'hidden',
+            margin:'0',
+            border:'0 none'
+        });
+        <b>this</b>.el.dom.scroll = 'no';
+        <b>this</b>.allowDomMove = false;
+        <b>this</b>.autoWidth = true;
+        <b>this</b>.autoHeight = true;
+        Ext.EventManager.onWindowResize(<b>this</b>.fireResize, <b>this</b>);
+        <b>this</b>.renderTo = <b>this</b>.el;
+    },
+
+    fireResize : <b>function</b>(w, h){
+        <b>this</b>.fireEvent('resize', w, h);
+    }
+});</code></pre><hr><div style="font-size:10px;text-align:center;color:gray;">Ext - Copyright &copy; 2006-2007 Ext JS, LLC<br />All rights reserved.</div>
+    </body></html>

@@ -1,0 +1,40 @@
+<!-- begin searchperson.ihtml -->
+<table id="searchresults" class="searchresults"><caption>Search results for: <?=$for;?></caption>
+<tr><td colspan=4 align="left">
+<? if ($max > 50): ?>
+<? if ($companyID): ?>
+<a href="<?=$self;?>?mode=Search&action=showCompanyPeople&companyID=<?=$companyID;?><?=($sn)?"&sn=".$sn:"";?>&start=0">First</a> <? if ($start+50 <= $max): ?>| <a href="<?=$self;?>?mode=Search&action=showCompanyPeople&companyID=<?=$companyID;?><?=($sn)?"&sn=".$sn:"";?>&start=<?=$start+50;?>">Next</a><? endif; ?><? if ($start-50 >= 0): ?> | <a href="<?=$self;?>?mode=Search&action=showCompanyPeople&companyID=<?=$companyID;?><?=($sn)?"&sn=".$sn:"";?>&start=<?=$start-50;?>">Prev</a><? endif; ?><? if ($max - 50 > 50): ?> | <a href="<?=$self;?>?mode=Search&action=showCompanyPeople&companyID=<?=$companyID;?><?=($sn)?"&sn=".$sn:"";?>&start=<?=$max - 50;?>">Last</a><? endif; ?>
+<? else: ?>
+<a href="<?=$self;?>?mode=Search&action=searchPerson&urlish=<?=urlencode($urlIsh);?>&start=0">First</a> <? if ($start+50 <= $max): ?>| <a href="<?=$self;?>?mode=Search&action=searchPerson&urlish=<?=urlencode($urlIsh);?>&start=<?=$start+50;?>">Next</a><? endif; ?><? if ($start-50 >= 0): ?> | <a href="<?=$self;?>?mode=Search&action=searchPerson&urlish=<?=urlencode($urlIsh);?>&start=<?=$start-50;?>">Prev</a><? endif; ?><? if ($max - 50 > 50): ?> | <a href="<?=$self;?>?mode=Search&action=searchPerson&urlish=<?=urlencode($urlIsh);?>&start=<?=$max - 50;?>">Last</a><? endif; ?>
+<? endif; ?>
+<? endif; ?>
+</td><td colspan="2" align="right"><form name="savesearch" action="<?=$self;?>" method="POST"><input type="hidden" name="mode" value="Search" /><input type="hidden" name="action" value="saveSearch" /><label for="savesearchname">Save this search as: </label><input type="text" name="savesearchname"><input type="submit" value="Save" name="Submit"><input type="hidden" name="saveit" value="<?=$saveit;?>" /></form></td></tr>
+<tr><td colspan="6">
+<table class="sortable" id="searchresults"><thead>
+<tr><th>Name</th><th>Company</th><th>City</th><th>State</th><th>Date of Birth</th><th>Status</th></tr>
+</thead>
+<tbody>
+<? foreach ($results as $row): ?>
+<tr class="hoverable">
+<td><a href="<?=$self;?>?mode=Person&action=showPerson&personID=<?=$row['personID'];?>"><?=($row['cn'])?$row['cn']:$row['gn'].'&nbsp;'.$row['sn'];?></a></td>
+<td><a href="<?=$self;?>?mode=Company&action=showCompany&companyID=<?=$row['companyID'];?>"><?=$row['companyName'];?></a></td>
+<td><?=$row['city'];?></td>
+<td><?=$row['state'];?></td>
+<td><?=gmdate(PAITDATE, $row['birthdate']);?></td>
+<td><?=$row['status'];?></td>
+</tr>
+<? endforeach; ?>
+</table></td></tr>
+<tr><td colspan=4 align="left">
+<? if ($max > 50): ?>
+<? if ($companyID): ?>
+<a href="<?=$self;?>?mode=Search&action=showCompanyPeople&companyID=<?=$companyID;?><?=($sn)?"&sn=".$sn:"";?>&start=0">First</a> <? if ($start+50 <= $max): ?>| <a href="<?=$self;?>?mode=Search&action=showCompanyPeople&companyID=<?=$companyID;?><?=($sn)?"&sn=".$sn:"";?>&start=<?=$start+50;?>">Next</a><? endif; ?><? if ($start-50 >= 0): ?> | <a href="<?=$self;?>?mode=Search&action=showCompanyPeople&companyID=<?=$companyID;?><?=($sn)?"&sn=".$sn:"";?>&start=<?=$start-50;?>">Prev</a><? endif; ?><? if ($max - 50 > 50): ?> | <a href="<?=$self;?>?mode=Search&action=showCompanyPeople&companyID=<?=$companyID;?><?=($sn)?"&sn=".$sn:"";?>&start=<?=$max - 50;?>">Last</a><? endif; ?>
+<? else: ?>
+<a href="<?=$self;?>?mode=Search&action=searchPerson&urlish=<?=urlencode($urlIsh);?>&start=0">First</a> <? if ($start+50 <= $max): ?>| <a href="<?=$self;?>?mode=Search&action=searchPerson&urlish=<?=urlencode($urlIsh);?>&start=<?=$start+50;?>">Next</a><? endif; ?><? if ($start-50 >= 0): ?> | <a href="<?=$self;?>?mode=Search&action=searchPerson&urlish=<?=urlencode($urlIsh);?>&start=<?=$start-50;?>">Prev</a><? endif; ?><? if ($max - 50 > 50): ?> | <a href="<?=$self;?>?mode=Search&action=searchPerson&urlish=<?=urlencode($urlIsh);?>&start=<?=$max - 50;?>">Last</a><? endif; ?>
+<? endif; ?>
+<? endif; ?>
+</td><td colspan="2" align="right"><form name="savesearch" action="<?=$self;?>" method="POST"><input type="hidden" name="mode" value="Search" /><input type="hidden" name="action" value="saveSearch" /><label for="savesearchname">Save this search as: </label><input type="text" name="savesearchname"><input type="submit" value="Save" name="Submit"><input type="hidden" name="saveit" value="<?=$saveit;?>" /></form></td></tr>
+</tbody>
+
+</table>
+<!-- end searchperson.ihtml -->

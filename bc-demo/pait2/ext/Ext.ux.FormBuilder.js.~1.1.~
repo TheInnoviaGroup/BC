@@ -1,0 +1,243 @@
+Ext.namespace('Ext.ux.FormBuilder');
+
+Ext.ux.FormBuilder = function(el, config) {
+    this.el = el;
+    this.config = config;
+    this.addEvents({
+	    "preprocess" : true,
+		"postprocess" : true,
+		"invaliddata" : true
+		});
+    Ext.ux.FormBuilder.superclass.constructor.call(this, {});
+    console.log('This: %o', this);
+    
+};
+
+Ext.extend(Ext.ux.FormBuilder, Ext.util.Observable, {
+	fetchData: function() {
+	    this.conn = new Ext.data.Connection();
+	    this.conn.request({
+		    url: this.config.url
+			, callback: this.processData
+			, scope: this
+			});
+	},
+	    processData: function(o, s, f) {
+	    this.fireEvent('preprocess', f.responseText);
+	    this.formConfig = Ext.util.JSON.decode(f.responseText);
+	    console.log('Got json: %o', this.formConfig);
+	    if (this.formConfig.console) {
+		for (var i in this.formConfig.console) {
+		    console.log(this.formConfig.console[i]);
+		}
+	    }
+	    if (!this.formConfig.success || !this.formConfig.form || !this.formConfig.form.options || !this.formConfig.form.children) {
+		this.fireEvent('invaliddata', this.formConfig);
+		return;
+	    }
+       
+	    /* Okay. We've got good data. Let's boogie! */
+	    this.form = new Ext.form.Form(this.formConfig.form.options);
+	    var i;
+	    for (i in this.formConfig.form.children) {
+		if (this.formConfig.form.children[i].type) {
+		    console.log('Child: %o', this.formConfig.form.children[i]);
+		    var call = "this.build"+this.formConfig.form.children[i].type+"(this.formConfig.form.children[i])";
+		    console.log('Calling %s', call);
+		    eval(call);
+		}
+	    }
+	    for (i in this.formConfig.form.buttons) {
+		if (this.formConfig.form.buttons[i].name) {
+		    console.log('Button: %o', this.formConfig.form.buttons[i]);
+		    var call = 'this.form.addButton(this.formConfig.form.buttons[i].name, '+this.formConfig.form.buttons[i].handler+', this)';
+		    console.log('Calling %s', call);
+		    eval(call);
+		}
+	    }
+	    console.log('Form: %o', this.form);
+	    this.form.render(this.el);
+	    
+    	
+	},
+	    buildHTML : function(f) {
+	    this.form.add(
+			  new Ext.Element(f.content)
+			  );
+	},
+
+	    buildBookCombo : function(f) {
+	    var defaults = {
+		loadingText:'Searching...',
+		typeAhead:true,
+		width:250,
+		hideTrigger: false,
+		fieldLabel: 'Search',
+		forceSelection: false,
+		tpl: new Ext.Template('<div class="search-item"><h3>{name}</h3><span>{moddate}<br />by {creator}</span></div>'),
+		displayField: 'name',
+		valueField: 'bookID'
+	    }
+	    var ds = new Ext.data.Store({
+		    proxy: new Ext.data.HttpProxy({
+			    url: f.remotestore.proxy
+			}),
+		    reader: new Ext.data.JsonReader({root:"items",totalProperty:"totalCount",id:"bookID"},
+						     [{name:"name",mapping:"name"},
+							  {name:"bookID",mapping:"bookID"},
+							  {name:"creator",mapping:"creator"},
+	                                                  {name:"moddate",mapping:"moddate"}
+                                                   ])
+		});
+		    f.options.store = ds;
+		    Ext.apply(defaults, f.options);
+		    var tf = new Ext.form.ComboBox(defaults);
+		    
+		    console.log('Adding %o', tf);
+		    this.form.add(tf);
+		    this.form.lastID = tf;	    
+		    
+		    
+	},
+	    buildContactCombo : function(f) {
+	    var defaults = {
+		loadingText:'Searching...',
+		typeAhead:true,
+		width:250,
+		hideTrigger: false,
+		forceSelection: false,
+		displayField: 'name',
+		valueField: 'id'
+	    }
+	    var ds = new Ext.data.Store({
+		    proxy: new Ext.data.HttpProxy({
+			    url: f.remotestore.proxy
+			}),
+		    reader: new Ext.data.JsonReader({root:"items",totalProperty:"totalCount",id:"id"},
+						     [{name:"name",mapping:"name"},
+							  {name:"id",mapping:"id"},
+                                                   ])
+		});
+		    f.options.store = ds;
+		    Ext.apply(defaults, f.options);
+		    var tf = new Ext.form.ComboBox(defaults);
+		    
+		    console.log('Adding %o', tf);
+		    this.form.add(tf);
+		    this.form.lastID = tf;	    
+		    
+		    
+	},
+
+	    buildComboBox : function(f) {
+	    var ds;
+	    if (f.simplestore) {
+		if (f.simplestore.data) {
+		    eval('var mydata = '+f.simplestore.data);
+		    f.simplestore.data = mydata;
+		}
+		ds = new Ext.data.SimpleStore(f.simplestore);
+	    }
+	    if (f.remotestore) {
+		ds = new Ext.data.Store({
+			proxy: new Ext.data.HttpProxy({
+				url: f.remotestore.proxy
+			    }),
+			reader: new Ext.data.JsonReader(f.remotestore.reader, f.remotestore.map)
+		    });
+		
+	    }
+	    f.options.store = ds;
+	    var tf = new Ext.form.ComboBox(f.options);
+
+	    console.log('Adding %o', tf);
+	    this.form.add(tf);
+	    this.form.lastID = tf;	    
+	
+	},
+	    buildTextField:  function(f) {
+	
+	    var tf = new Ext.form.TextField(f.options);
+	    console.log('Adding %o', tf);
+	    this.form.add(tf);
+	    	    this.form.lastID = tf;
+	
+	},
+	    buildHtmlEditor:  function(f) {
+	
+	    var tf = new Ext.form.HtmlEditor(f.options);
+	    console.log('Adding %o', tf);
+	    this.form.add(tf);
+	    	    this.form.lastID = tf;
+	    
+	},
+	    buildDateField:  function(f) {
+	
+	    var tf = new Ext.form.DateField(f.options);
+	    console.log('Adding %o', tf);
+	    this.form.add(tf);
+	    	    this.form.lastID = tf;
+	    
+	},
+	    buildTextArea: function(f) {
+	
+	    var tf = new Ext.form.TextArea(f.options);
+	    console.log('Adding %o', tf);
+	    this.form.add(tf);
+	    	    this.form.lastID = tf;
+	    
+	},
+	    buildCheckbox:  function(f) {
+	
+	    var tf = new Ext.form.Checkbox(f.options);
+	    console.log('Adding %o', tf);
+	    this.form.add(tf);
+	    	    this.form.lastID = tf;
+	    
+	},
+	    buildRadio:  function(f) {
+	
+	    var tf = new Ext.form.Radio(f.options);
+	    console.log('Adding %o', tf);
+	    this.form.add(tf);
+	    	    this.form.lastID = tf;
+	
+	},
+	    buildFieldSet: function(f) {
+	    var fs = this.form.fieldset(f.options);
+	    this.form.lastID = fs;
+	    for (i in f.children) {
+		if (f.children[i].type) {
+		    console.log('FS Child: %o', f.children[i]);
+		    var call = "this.build"+f.children[i].type+"(f.children[i])";
+		    console.log('FS Calling %s', call);
+		    eval(call);
+		}
+	    }
+	    this.form.end(fs);
+	},
+	    buildColumn: function(f) {
+	    var col = new Ext.form.Column();
+	    this.form.start(col);
+	    this.form.lastID = col;
+	    for (i in f.children) {
+		if (f.children[i].type) {
+		    console.log('FS Child: %o', f.children[i]);
+		    var call = "this.build"+f.children[i].type+"(f.children[i])";
+		    console.log('FS Calling %s', call);
+		    eval(call);
+		}
+	    }
+	    this.form.end(col);
+	},
+    
+	    Submit: function(f) {
+	    console.log('Submit called with %o', f);
+	    this.form.submit();
+	},
+	    Reset: function(f) {
+	    console.log('Reset called with %o', f);
+	    this.form.reset();
+	}
+	
+    });

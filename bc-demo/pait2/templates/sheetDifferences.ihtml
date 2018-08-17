@@ -1,0 +1,18 @@
+<table width=100%>
+    <tr><th style="background: #ffcccc;">Columns unique to <?=ucfirst($sheet1);?></th><th   style="background: #ccccff;">Columns unique to <?=ucfirst($sheet2);?></th></tr>
+    <tr><td  style="background: #ffcccc;"><dl>
+    <? foreach ($sheet1Cols as $col): ?>
+    <? if (!stristr($col, 'ignore')): ?>
+    <dd><?=$col;?></dd>
+    <? endif;
+    endforeach; ?></dl></td>
+    <td   style="background: #ccccff;"><dl>
+    <? foreach ($sheet2Cols as $col): ?>
+    <? if (!stristr($col, 'ignore')): ?>
+    <dd><?=$col;?></dd>
+    <? endif;
+    endforeach; ?></dl></td>
+    </tr>
+    <tr><th colspan=2>Data Differences</th></tr>
+    <tr><td colspan=2><?=$diffGrid;?></td></tr>
+</table>

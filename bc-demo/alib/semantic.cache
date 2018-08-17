@@ -1,0 +1,119 @@
+;; Object alib/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "alib/"
+  :tables (list 
+   (semanticdb-table "db.inc"
+    :major-mode 'php-mode
+    :tags '(("remove" function (:prototype-flag t :arguments (("" variable (:type ("$query" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4425 4432])) :type "int") nil [4418 4433]) ("query" function (:arguments (("" variable (:type ("$q" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4718 4721]) ("" variable (:type ("$name" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4721 4728]) ("" variable (:type ("$unbuffered" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4740 4753]) ("" variable (:type ("FALSE" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4754 4760])) :type ("function" type (:type "class") nil nil)) nil [4703 5774]) ("free" function (:arguments (("" variable (:type ("$name" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5981 5988])) :type ("function" type (:type "class") nil nil)) nil [5967 6050]) ("next_record" function (:arguments (("" variable (:type ("$name" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6593 6600]) ("" variable (:type ("$result_type" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6612 6625]) ("" variable (:type ("MYSQL_BOTH" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6625 6636])) :type ("function" type (:type "class") nil nil)) nil [6572 6774]) ("nextRecord" function (:arguments (("" variable (:type ("$name" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7280 7287]) ("" variable (:type ("$result_type" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7299 7312]) ("" variable (:type ("MYSQL_BOTH" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7312 7323])) :type ("function" type (:type "class") nil nil)) nil [7260 7461]) ("allRecords" function (:arguments (("" variable (:type ("$name" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7673 7680]) ("" variable (:type ("$result_type" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7692 7705]) ("" variable (:type ("MYSQL_BOTH" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7705 7716])) :type ("function" type (:type "class") nil nil)) nil [7653 7840]) ("affected_rows" function (:type ("function" type (:type "class") nil nil)) nil [7933 8007]) ("affectedRows" function (:type ("function" type (:type "class") nil nil)) nil [8016 8086]) ("getField" function (:arguments (("" variable (:type ("$f" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8353 8356]) ("" variable (:type ("$name" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8356 8363])) :type ("function" type (:type "class") nil nil)) nil [8335 8417]) ("ChangeDb" function (:arguments (("" variable (:type ("$db" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8451 8455])) :type ("function" type (:type "class") nil nil)) nil [8433 8507]) ("Size" function (:arguments (("" variable (:type ("$name" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8676 8683])) :type ("function" type (:type "class") nil nil)) nil [8662 8871]) ("sizeOf" function (:arguments (("" variable (:type ("$name" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8898 8905])) :type ("function" type (:type "class") nil nil)) nil [8882 8973]) ("_error" function (:type ("function" type (:type "class") nil nil)) nil [8989 9180]) ("isError" function (:type ("function" type (:type "class") nil nil)) nil [9193 9271]) ("getError" function (:type ("function" type (:type "class") nil nil)) nil [9284 9367]) ("insertID" function (:type ("function" type (:type "class") nil nil)) nil [9380 9446]) ("prepare" function (:type ("function" type (:type "class") nil nil)) nil [10299 11119]) ("f" function (:type ("function" type (:type "class") nil nil)) nil [11326 11366]))
+    :file "db.inc"
+    :pointmax 11377
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "debug.inc"
+    :major-mode 'php-mode
+    :tags '(("print_d" function (:arguments (("" variable (:type ("$string" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [9050 9058]) ("" variable (:type ("$debuglevel" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [9059 9071])) :type ("function" type (:type "class") nil nil)) nil [9032 9419]) ("print_v" function (:arguments (("" variable (:type ("$mixed" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [9626 9633]) ("" variable (:type ("$debuglevel" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [9634 9646])) :type ("function" type (:type "class") nil nil)) nil [9608 10371]) ("aDebugExceptionHandler" function (:arguments (("$e" variable (:type ("Exception" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [10405 10418])) :type ("function" type (:type "class") nil nil)) nil [10373 10477]) ("set_exception_handler" function (:prototype-flag t :type "int") nil [10479 10527]))
+    :file "debug.inc"
+    :pointmax 10532
+    )
+   (semanticdb-table "template.inc"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "template.inc"
+    :pointmax 4382
+    )
+   (semanticdb-table "formhandler.inc"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "formhandler.inc"
+    :pointmax 8509
+    )
+   (semanticdb-table "user.inc"
+    :major-mode 'php-mode
+    :tags '(("include_once" function (:prototype-flag t :type "int") nil [34 57]) ("$AGLOBAL" variable (:type ("global" type (:type "class") nil nil)) nil [228 244]) ("$AGLOBAL" variable (:dereference 1 :default-value "\"alibcookiesalt\"" :type "int") nil [357 403]) ("$AGLOBAL" variable (:dereference 1 :default-value "\"/\"" :type "int") nil [706 739]) ("$AGLOBAL" variable (:dereference 1 :default-value "NULL;" :type "int") nil [879 915]) ("$AGLOBAL" variable (:dereference 1 :default-value "0" :type "int") nil [1035 1068]) ("userData" variable (:dereference 1 :type "int") nil [3518 3534]) ("$AGLOBAL" variable (:type ("global" type (:type "class") nil nil)) nil [3578 3594]) ("$debug" variable (:default-value "$AGLOBAL['DEBUG']" :type "int") nil [3599 3626]) ("userData" variable (:dereference 1 :default-value "$value;" :type "int") nil [4341 4366]) ("changedData" variable (:dereference 1 :default-value "1" :type "int") nil [4378 4401]) ("$AGLOBAL" variable (:type ("global" type (:type "class") nil nil)) nil [4445 4461]) ("$debug" variable (:default-value "$AGLOBAL['DEBUG']" :type "int") nil [4466 4493]) ("line" function (:prototype-flag t :arguments (("" variable (:type ("$this" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4746 4752]) ("" variable (:type ("userData" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4753 4768])) :type "int") nil [4723 4773]) ("variable" function (:prototype-flag t :arguments (("" variable (:type ("$q" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4795 4798])) :type "int") nil [4786 4802]) ("query" function (:prototype-flag t :arguments (("" variable (:type ("$q" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4824 4827])) :type "int") nil [4818 4840]) ("variable" function (:prototype-flag t :arguments (("" variable (:type ("$this" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5036 5042]) ("" variable (:type ("db" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5043 5046])) :type "int") nil [5027 5051]) ("$AGLOBAL" variable (:type ("global" type (:type "class") nil nil)) nil [5449 5465]) ("$debug" variable (:default-value "$AGLOBAL['DEBUG']" :type "int") nil [5468 5495]) ("userData" variable (:type "int") nil [5565 5574]) ("unset" function (:prototype-flag t :arguments (("" variable (:type ("$temp" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5583 5601])) :type "int") nil [5577 5603]) ("$uid" variable (:default-value "$temp['uid']" :type "int") nil [5606 5626]) ("unset" function (:prototype-flag t :arguments (("" variable (:type ("$temp" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5635 5647])) :type "int") nil [5629 5649]) ("$updateMe" variable (:default-value "array()" :type "int") nil [5652 5672]) ("foreach" function (:arguments (("as" variable (:type ("$temp" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5684 5697]) ("" variable (:type ("$key" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5693 5699]) ("" variable (:type ("$val" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5701 5706])) :type "int") nil [5675 5784]) ("prepare" function (:prototype-flag t :arguments (("" variable (:type ("$updateMe" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5833 5843]) ("" variable (:type ("$temp" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5863 5880])) :type "int") nil [5806 5886]) ("$sql" variable (:default-value "preg_replace(\"/passwd = '([^\\']+)'/\", \"passwd = PASSWORD('$1')\", $sql1)" :type "int") nil [5889 5968]) ("line" function (:prototype-flag t :type "int") nil [5980 6007]) ("query" function (:prototype-flag t :arguments (("" variable (:type ("$sql" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6039 6044])) :type "int") nil [6033 6045]) ("updateMe" variable (:default-value "array()" :type "int") nil [6277 6296]) ("$retval" variable (:type "int") nil [6309 6317]) ("$AGLOBAL" variable (:type ("global" type (:type "class") nil nil)) nil [6353 6369]) ("$debug" variable (:default-value "$AGLOBAL['DEBUG']" :type "int") nil [6372 6399]) ("userData" variable (:type "int") nil [6469 6478]) ("unset" function (:prototype-flag t :arguments (("" variable (:type ("$temp" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6487 6505])) :type "int") nil [6481 6507]) ("$uid" variable (:default-value "$temp['uid']" :type "int") nil [6510 6530]) ("unset" function (:prototype-flag t :arguments (("" variable (:type ("$temp" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6539 6551])) :type "int") nil [6533 6553]) ("prepare" function (:prototype-flag t :arguments (("" variable (:type ("$temp" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6602 6608])) :type "int") nil [6575 6609]) ("$sql" variable (:default-value "preg_replace(\"/passwd = '([^\\']+)'/\", \"passwd = PASSWORD('$1')\", $sql1)" :type "int") nil [6612 6691]) ("line" function (:prototype-flag t :type "int") nil [6703 6730]) ("query" function (:prototype-flag t :arguments (("" variable (:type ("$sql" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6750 6755])) :type "int") nil [6744 6771]) ("$retval" variable (:type "int") nil [6933 6941]) ("$debug" variable (:type ("global" type (:type "class") nil nil)) nil [7125 7139]) ("$q" variable (:default-value "\"select * from users where username='$u' and passwd=PASSWORD('$p') AND status >0\"" :type "int") nil [7144 7231]) ("line" function (:prototype-flag t :arguments (("" variable (:type ("$q" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7249 7252])) :type "int") nil [7244 7256]) ("query" function (:prototype-flag t :arguments (("" variable (:type ("$q" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7278 7281])) :type "int") nil [7272 7294]) ("CookieAuth" function (:type ("function" type (:type "class") nil nil)) nil [9301 11616]) ("isAdmin" function (:arguments (("" variable (:type ("$application" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [11834 11848])) :type ("function" type (:type "class") nil nil)) nil [11817 12234]) ("getUserData" function (:type ("function" type (:type "class") nil nil)) nil [12292 12502]))
+    :file "user.inc"
+    :pointmax 12512
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "alib.inc"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "alib.inc"
+    :pointmax 3406
+    )
+   (semanticdb-table "mail.inc"
+    :major-mode 'html-mode
+    :tags 'nil
+    :file "mail.inc"
+    :pointmax 5503
+    )
+   (semanticdb-table "time.inc"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "time.inc"
+    :pointmax 18297
+    )
+   (semanticdb-table "misc.inc"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "misc.inc"
+    :pointmax 2722
+    )
+   (semanticdb-table "debug.ihtml"
+    :major-mode 'html-mode
+    :tags '(("Debug Info" section (:members (\.\.\.)) nil [13 16]))
+    :file "debug.ihtml"
+    :pointmax 1994
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "xmlsimple.inc"
+    :major-mode 'html-mode
+    :tags 'nil
+    :file "xmlsimple.inc"
+    :pointmax 12702
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "mailtest.php"
+    :major-mode 'html-mode
+    :tags 'nil
+    :file "mailtest.php"
+    :pointmax 676
+    )
+   (semanticdb-table "cronutil.inc"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "cronutil.inc"
+    :pointmax 1219
+    )
+   (semanticdb-table "sort.inc"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "sort.inc"
+    :pointmax 5209
+    )
+   (semanticdb-table "ajax.inc"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "ajax.inc"
+    )
+   (semanticdb-table "aniterator.inc"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "aniterator.inc"
+    )
+   (semanticdb-table "dbcache.inc"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "dbcache.inc"
+    )
+   (semanticdb-table "upload.inc"
+    :major-mode 'php-mode
+    :tags '(("upload" variable (:type ("new" type (:type "class") nil nil)) nil [87 98]) ("save_file" function (:arguments (("" variable (:type ("$path" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5817 5823]) ("" variable (:type ("$overwrite_mode" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5824 5840])) :type ("function" type (:type "class") nil nil)) nil [5798 8058]) ("cleanup_text_file" function (:arguments (("" variable (:type ("$file" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8148 8154])) :type ("function" type (:type "class") nil nil)) nil [8121 8654]) ("read_file" function (:type ("function" type (:type "class") nil nil)) nil [8737 9272]) ("__construct" function (:type ("function" type (:type "class") nil nil)) nil [9276 9306]))
+    :file "upload.inc"
+    :pointmax 9317
+    :unmatched-syntax 'nil
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

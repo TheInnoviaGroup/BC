@@ -1,0 +1,11 @@
+<div class="centerContent">
+<table border=0 cellpadding=2 class="sortable" id="plandesignlist">
+<caption>Plan designs for <?=$companyName;?></caption>
+<tr><th>Active?</th><th>Design</th><th colspan=2>Actions</th></tr>
+<? foreach ($list as $pd): ?>
+<tr><td align="right"><?=($pd['active'] == 0 || $pd['active'] == -5)?"Testing":"Active";?></td><td align="right"><?=planDesignID2Text($pd['planDesignID'])?></td><td><a href="<?=$self;?>?mode=planDesign&companyID=<?=$companyID;?>&planDesignID=<?=$pd['planDesignID'];?>&action=Edit">Edit</a> | <a href="<?=$self;?>?mode=planDesign&companyID=<?=$companyID;?>&planDesignID=<?=$pd['planDesignID'];?>&action=Delete">Delete</a><br /></td><td>
+<!-- <a href="<?=$self;?>?mode=Report&action=newlyEligible&companyID=<?=$companyID;?>&planDesignID=<?=$pd['planDesignID'];?>">View Newly Eligible Persons</a><br /><a href="<?=$self;?>?mode=Report&action=eligibleIncreases&companyID=<?=$companyID;?>&planDesignID=<?=$pd['planDesignID'];?>">View Eligible Increases</a>--></td>
+</tr>
+<? endforeach; ?>
+</table>
+</div>

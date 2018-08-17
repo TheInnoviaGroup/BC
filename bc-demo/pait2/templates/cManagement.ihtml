@@ -1,0 +1,276 @@
+<div class="centerContent">
+<? if (preg_match('/show/', $action)): ?>
+<? $type = ($action=="showCompany")?"Company":"Carrier";?>
+<div class="show<?=$type;?>">
+<h3><?=$type;?>: <?=$companyData['name'];?></h3>
+<div class="show<?=$type;?>Info">
+<? if ($type == "Company"): ?>
+<table border=0 cellspacing="5" width="100%"><tr><td align="left" valign="top">
+<? endif; ?>
+<div class="address<?=$type;?>">
+<?=($companyData['address'])?multiline($companyData['address']):"";?></div>
+<div class="phone<?=$type;?>">
+<?=($companyData['phone1'])?formatPhone($companyData['phone1'])."<br />":"";?>
+<?=($companyData['phone2'])?formatPhone($companyData['phone2'])."<br />":"";?>
+</div>
+<? if ($type == "Company"): ?>
+</td><td align="right" valign="top"><table border=0 class="statsTable">
+<? foreach($stats as $stat): ?>
+<tr><td><?=$stat['status'];?>: <?=$stat['total'];?></td></tr>
+<? endforeach; ?>
+</table></td></tr>
+<? if (is_array($rules)): ?><tr>
+<td align="left" colspan=2 valign="top"><table border=0 cellpadding="10" class="rulesbox">
+<tr><td valign="top"><div id="rulesBoxMenu" /></td>
+<td><div id="caserules" class="rule" style="display:none;"><b>Case Rules:</b> <?=$rules['case'];?></div>
+<div id="underwritingrules" class="rule" style="display:none;"><b>Underwriting Rules:</b> <?=$rules['underwriting'];?></div>
+<div id="enrollmentrules" class="rule" style="display:none;"><b>Enrollment Rules:</b> <?=$rules['enrollment'];?></div>
+<div id="increaserules" class="rule" style="display:none;"><b>Increase Rules:</b> <?=$rules['increase'];?></div></td></tr>
+</table></td>
+</tr>
+<? endif; ?>
+</table>
+<? endif;?>
+</div>
+<div class="contactPeople">
+<? if ($companyData['planDesign']): ?>
+<table class="planDesign sortable"><caption>Plan Design for this Company</caption><tr><td><?=$companyData['planDesign'];?></td></tr></table>
+<? endif; ?>
+<? if (is_array($contactData)): ?>
+<div class="contactPeopleList">
+<div class="contactPeopleTitle">Contact Persons</div>
+<table class="sortable companycontacts" id="compcont<?=$companyData[strtolower($type).'ID'];?>">
+<thead><tr><th>Name</th><th>Title</th><th>Work</th><th>Cell</th><th>Fax</th><th>E-mail</th><th>DOB</th><th>Hire Date</th><th>Address</th><th>&nbsp;</th></tr></thead>
+<tbody>
+<? foreach ($contactData as $contact): ?>
+<? if ($contact['cn'] != "None"): ?>
+<tr class="hoverable">
+<td><?=($contact['cn'])?$contact['cn']:$contact['gn']." ".$contact['sn'];?></td>
+<td><?=$contact['title'];?></td>
+<td><?=formatPhone($contact['workphone']);?></td>
+<td><?=formatPhone($contact['cellphone']);?></td>
+<td><?=formatPhone($contact['fax']);?></td>
+<td><a href="mailto:<?=$contact['email'];?>"><?=$contact['email'];?></a></td>
+<td><?=$contact['dob'];?></td>
+<td><?=$contact['hiredate'];?></td>
+<td><?=multiline($contact['address']);?><br />
+<?=$contact['city'].", ".$contact['state']." ".$contact['postal'];?></td>
+<td class="outlineaction">[<a href="<?=$self;?>?mode=<?=$type;?>&action=editContact&companyID=<?=$companyData[strtolower($type).'ID'];?>&contactID=<?=$contact['contactID'];?>">Edit</a> | <a href="<?=$self;?>?mode=<?=$type;?>&action=deleteContact&companyID=<?=$companyData[strtolower($type).'ID'];?>&cn=<?=urlencode(($contact['cn'])?$contact['cn']:$contact['gn']." ".$contact['sn']);?>">Delete</a>]</td>
+</tr>
+<? else: ?>
+<tr><td colspan=10 align="center">None</td>
+<? endif; ?> 
+<? endforeach; ?>
+</tbody></table>
+</div>
+<? endif; ?>
+</div>
+<div class="actionBox"><? if ($allowed): ?><a class="centerTarget" id="editCompany" title="Edit Company: <?=$companyData['name'];?>" href="<?=$self;?>?mode=<?=$type;?>&action=add<?=$type;?>&id=<?=$companyData[strtolower($type).'ID'];?>">Edit <?=$type;?> Info</a> 
+    <a href="<?=$self;?>?mode=<?=$type;?>&action=addContact&<?=strtolower($type);?>ID=<?=$companyData[strtolower($type).'ID'];?>">Add a contact for this <?=$type;?></a> <? endif;?><a href="<?=$self;?>?mode=Log&action=add<?=$type;?>&<?=strtolower($type);?>ID=<?=$companyData[strtolower($type).'ID'];?>">Add Log Entry</a> <? if ($type == "Company"): ?><a href="javascript:Ext.PAIT.openSearchGrid({url: '<?=$self;?>?mode=Search&action=showCompanyPeople&companyID=<?=$companyData['companyID'];?>', title: 'Employees of <?=$companyData['name'];?>'}, App);">Show Employees</a><? global $login;  if ($login->user->access_lv != 5):?> <a href="<?=$self;?>?mode=Person&action=editPerson&companyID=<?=$companyData[strtolower($type).'ID'];?>">Add Employee</a><? endif; ?><? endif; ?>
+</div>
+<? if (is_array($logData)):?>
+<div class="logData">
+<div class="accountHistoryTitle">Account History</div>
+<table width="100%" id="logData<?=$personID;?>" class="sortable log">
+<thead>
+<tr>
+<th>Date</th>
+<th>Created By</th>
+<th>Type</th>
+<th style="width: 50%;">Notes</th>
+</tr>
+</thead>
+<tbody>
+<? foreach ($logData as $record): ?>
+<tr class="hoverable">
+<td><?=date('g:i a\<\b\r \/\>j M, Y', $record['time']);?></td>
+<td><a href="mailto:<?=$record['email'];?>"><?=$record['gn']." ".$record['sn'];?></a></td>
+<td><?=$record['category'];?></td>
+<td style="width: 50%;"><?=$record['notes'];?></td>
+</tr>
+<? endforeach; ?>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">
+Ext.onReady(function(){
+Ext.ux.CascadingDialogs.scanHrefs();
+<? if (is_array($rules)): ?>
+
+    Ext.PAIT.lastRuleBox = false;
+    Ext.PAIT.rulesBoxMenuClick = function(e) {
+    console.log('Rules Box! ', e, this);
+    
+    var newBlock = e.areaBox;
+    if (newBlock != Ext.PAIT.lastRuleBox) {
+        
+        if (Ext.PAIT.lastRuleBox) {
+        Ext.Element.fly(Ext.PAIT.lastRuleBox).setVisibilityMode(Ext.Element.DISPLAY).hide();
+        }
+        Ext.Element.fly(newBlock).setVisibilityMode(Ext.Element.DISPLAY).show();
+        Ext.PAIT.lastRuleBox = newBlock;
+    } 
+    
+}
+    
+
+var ruleBoxMenu = new Ext.menu.Menu({id: 'ruleBoxMenu',
+                                    items: [
+                                           {text: 'Case Rules', areaBox:'caserules', handler: Ext.PAIT.rulesBoxMenuClick},
+                                           {text: 'Underwriting', areaBox:'underwritingrules', handler: Ext.PAIT.rulesBoxMenuClick},
+                                           {text: 'Enrollment', areaBox:'enrollmentrules', handler: Ext.PAIT.rulesBoxMenuClick},
+                                           {text: 'Increase', areaBox:'increaserules', handler: Ext.PAIT.rulesBoxMenuClick}
+                                           ]});
+var tb = new Ext.Toolbar('rulesBoxMenu');
+    tb.add({
+            cls: 'x-btn-text-icon bmenu', // icon and text class
+            text:'Rules',
+            menu: ruleBoxMenu  // assign menu by instance
+        }); 
+<? endif; ?>
+});
+
+
+    </script>
+<? endif; ?>
+</div>
+<? elseif ($action == "addContact"): ?>
+<form action="<?=$self;?>" method="post" class="wide">
+    <? if ($contactInfo['contactID']): ?>
+<input type="hidden" name="contactID" value="<?=$contactInfo['contactID'];?>" />
+   <? endif; ?>
+<fieldset>
+<legend>Add a Contact Person</legend>
+<input type="hidden" name="action" value="addContact">
+<? if ($companyID > 0): ?>
+<input type="hidden" name="mode" value="Company">
+<input type="hidden" name="type" value="company">
+<input type="hidden" name="companyID" value="<?=$companyID;?>">
+<? else: ?>
+<input type="hidden" name="mode" value="Carrier">
+<input type="hidden" name="type" value="carrier">
+<input type="hidden" name="carrierID" value="<?=$carrierID;?>">
+<? endif; ?>
+<div class="x-form-item">
+<label for="name">Contact Name:</label><input type="text" name="name" tabindex="1" value="<?=$contactInfo['cn'];?>" />
+</div>
+<div class="x-form-item">
+<label for="title">Title:</label><input type="text" name="title" tabindex="2"  value="<?=$contactInfo['title'];?>" />
+</div>
+<div class="x-form-item">
+<label for="work">Work Phone:</label><input type="test" name="work" tabindex="3"  value="<?=$contactInfo['workphone'];?>" />
+</div>
+<div class="x-form-item">
+<label for="cell">Cell Phone</label><input type="text" name="cell" tabindex="4"  value="<?=$contactInfo['cellphone'];?>" />
+</div>
+<div class="x-form-item">
+<label for="fax">Fax</label><input type="text" name="fax" tabindex="5"  value="<?=$contactInfo['fax'];?>" />
+</div>
+<div class="x-form-item">
+<label for="email">E-mail:</label><input type="text" name="email" tabindex="6"  value="<?=$contactInfo['email'];?>" />
+</div>
+<div class="x-form-item">
+<label for="dob">Date of Birth:</label><input type="text" name="dob" tabindex="7"  value="<?=$contactInfo['dob'];?>" />
+</div>
+<div class="x-form-item">
+<label for="hiredate">Hire Date:</label><input type="text" name="hiredate" tabindex="8"  value="<?=$contactInfo['hiredate'];?>" />
+</div>
+<div class="x-form-item">
+<label for="address">Address:</label><input type="text" name="address" tabindex="9"  value="<?=$contactInfo['address'];?>" />
+</div>
+<div class="x-form-item">
+<label for="city">City:</label><input type="text" name="city" tabindex="10"  value="<?=$contactInfo['city'];?>" />
+</div>
+<div class="x-form-item">
+<label for="state">State:</label><input type="text" name="state" tabindex="11"  value="<?=$contactInfo['state'];?>" />
+</div>
+<div class="x-form-item">
+<label for="postal">Postal:</label><input type="text" name="postal" tabindex="12"  value="<?=$contactInfo['postal'];?>" />
+</div>
+
+<div class="x-form-item">			<input type="submit" value="Submit" name="Submit"/></div>
+</fieldset>
+</form>
+<? elseif ($action == "addCompany"): ?>
+<form action="<?=$self;?>" method="post" class="wide" id="editCompanyForm">
+<table><tr><td align=left valign=top>
+<? if (is_array($companyData) && $companyData['companyID']): ?>
+<input type="hidden" name="id" value="<?=$companyData['companyID'];?>" />
+<fieldset>
+<legend>Edit a Company</legend>
+<? else: ?>
+<fieldset>
+<legend>Add a Company</legend>
+<? endif; ?>
+<input type="hidden" name="mode" value="Company">
+<input type="hidden" name="action" value="addCompany">
+<div class="x-form-item">
+<label for="name">Company Name:</label><input type="text" id="name" name="name" tabindex="1" value="<?=$companyData['name'];?>" />
+</div>
+<div class="x-form-item">
+<label for="address">Address:</label><textarea id="address" name="address" tabindex="2"><?=$companyData['address'];?></textarea>
+</div>
+<div class="x-form-item">
+<label for="phone1">Main Phone:</label><input id="phone1" type="test" name="phone1" tabindex="3"  value="<?=$companyData['phone1'];?>"/>
+</div>
+<div class="x-form-item">
+<label for="phone2">Alternate Phone</label><input type="text" id="phone2" name="phone2" tabindex="4"  value="<?=$companyData['phone2'];?>"/>
+</div>
+<div class="x-form-item">
+<label for="address">Plan Design:</label><textarea name="planDesign" id="planDesign" tabindex="5"><?=$companyData['planDesign'];?></textarea>
+</div>
+</fieldset></td>
+<td align=left valign=top><fieldset><legend>Rules</legend>
+<div class="x-form-item">
+<label for="case">Case Rules:</label><textarea id="case" name="rules[case]" tabindex="21"><?=$rules['case'];?></textarea>
+</div>
+<div class="x-form-item">
+<label for="underwriting">Underwriting Rules:</label><textarea id="underwriting" name="rules[underwriting]" tabindex="22"><?=$rules['underwriting'];?></textarea>
+</div>
+<div class="x-form-item">
+<label for="enrollment">Enrollment Rules:</label><textarea id="enrollment" name="rules[enrollment]" tabindex="23"><?=$rules['enrollment'];?></textarea>
+</div>
+<div class="x-form-item">
+<label for="increase">Increase Rules:</label><textarea id="increase" name="rules[increase]" tabindex="24"><?=$rules['increase'];?></textarea>
+</div>
+</fieldset></td></tr>
+<tr><td colspan=2 align=center><div class="x-form-item">			<input type="submit" id="submit" value="Submit" name="Submit"/></div>
+</td></tr></table>
+</form>
+<script type="text/javascript">
+Ext.PAIT.editedCompany = '<?=$companyData['companyID'];?>';
+    Ext.ux.HTMLForm('editCompanyForm', Ext.PAIT.editCompany);
+</script>
+<? elseif ($action == "addCarrier"): ?>
+<form action="<?=$self;?>" method="post" class="wide" id="editCompanyForm">
+<? if (is_array($companyData) && $companyData['carrierID']): ?>
+<input type="hidden" name="id" value="<?=$companyData['carrierID'];?>" />
+<fieldset>
+<legend>Edit a Carrier</legend>
+<? else: ?>
+<fieldset>
+<legend>Add a Carrier</legend>
+<? endif; ?>
+<input type="hidden" name="mode" value="Carrier">
+<input type="hidden" name="action" value="addCarrier">
+<div class="x-form-item">
+<label for="name">Carrier Name:</label><input type="text" name="name" tabindex="1"  value="<?=$companyData['name'];?>" />
+</div>
+<div class="x-form-item">
+<label for="address">Address:</label><textarea name="address" tabindex="2"><?=$companyData['address'];?></textarea>
+</div>
+<div class="x-form-item">
+<label for="phone1">Main Phone:</label><input type="test" name="phone1" tabindex="3"  value="<?=$companyData['phone1'];?>" />
+</div>
+<div class="x-form-item">
+<label for="phone2">Alternate Phone</label><input type="text" name="phone2" tabindex="4" value="<?=$companyData['phone2'];?>"  />
+</div>
+<div class="x-form-item">			<input type="submit" value="Submit" name="Submit"/></div>
+</fieldset>
+</form>
+<script type="text/javascript">
+
+    Ext.ux.HTMLForm('editCompanyForm', Ext.PAIT.editCompany);
+</script>
+<? endif;?>
+</div>

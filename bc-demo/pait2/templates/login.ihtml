@@ -1,0 +1,60 @@
+<? global $debug;
+   $debug->variable($badlogin, 1);
+?>
+<? if ($user->loggedIn): 
+global $rootDir;?>
+<table border="0" cellspacing="0" cellpadding="0" align="center">
+	<tr>
+		<td width="8" valign="bottom"><img src="<?=$rootDir;?>images/login-ul.gif" width="8" height="8" hspace="0" vspace="0"></td>
+		<td class="top"></td>
+		<td valign="bottom" width="8"><img src="<?=$rootDir;?>images/login-ur.gif" width="8" height="8" hspace="0" vspace="0"></td>
+	</tr>
+	<tr>
+		<td class="left"></td>
+		<td class="loggedinbox">
+<p>Welcome back, <?=$user->gn;?>.<br>
+<? if($isSubpage == "yes"): ?>
+<span class="inlineaction">[<a href="javascript:window.opener.focus();">Home</a>]
+[<a href="<?$self;?>?logout=1">Log Out</a>]</span>
+<? else: ?>
+<span class="inlineaction">[<a href="<?$self;?>">Home</a>]
+[<a href="<?$self;?>?logout=1">Log Out</a>]</span>
+<? endif; ?>
+</p>
+</td>
+		<td class="right"></td>
+	</tr>
+	<tr>
+		<td valign="bottom" width="8"><img src="<?=$rootDir;?>images/login-ll.gif" width="8" height="8" hspace="0" vspace="0"></td>
+		<td class="bottom"></td>
+		<td valign="bottom" width="8"><img src="<?=$rootDir;?>images/login-lr.gif" width="8" height="8" hspace="0" vspace="0"></td>
+	</tr>
+</table>
+
+<? elseif ($badlogin): ?><p>Login failed. Please try again.
+<table border="0" cellspacing="0" cellpadding="5" align="center" style="margin-top: 150px;">
+	<tr>
+		<td><img src="<?=$rootDir;?>images/lock3.jpg" width="292" height="244" hspace="5" vspace="0" align="left" alt="Big Lock of Doom"></td>
+		<td><div class='loginbox'>
+<form action="<?=$PHP_SELF;?>" method=POST>
+<label for="username">Username:</label><input type=text name="username" /><br>
+<label for="password">Password:</label><input type=password name="password" /><br>
+<input type="submit" value="Log In" />
+</form></p></td>
+	</tr>
+</table>
+<? else: ?>
+<table border="0" cellspacing="0" cellpadding="5" align="center" style="margin-top: 150px;">
+	<tr>
+		<td><img src="<?=$rootDir;?>images/lock3.jpg" width="292" height="244" hspace="5" vspace="0" align="left" alt="Big Lock of Doom"></td>
+		<td><div class='loginbox'>
+<p><form action="<?=$PHP_SELF;?>" method=POST>
+<label for="username">Username:</label><input type=text name="username" /><br>
+<label for="password">Password:</label><input type=password name="password" /><br>
+<input type="submit" value="Log In" />
+</form></p>
+</div></td>
+	</tr>
+</table>
+
+<? endif; ?>

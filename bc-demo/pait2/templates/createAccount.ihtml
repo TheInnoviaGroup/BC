@@ -1,0 +1,90 @@
+<form action="<?=$action;?>" method="post" enctype="multipart/form-data">
+<input type="hidden" name="mode" value="User" />
+<input type="hidden" name="action" value="addUser" />
+<? if ($step == 1): ?>
+<fieldset><legend>Login Information</legend>
+      <div class="notes">
+        <h4>Login Information</h4>
+        <p>Usernames and passwords must both be at least 4 characters long and are case-sensitive. Please do not enter accented characters.</p>
+        <p>We recommend that passwords not be a word you can find in the dictionary, and should include both capital and lower case letters, and contains at least one special character (1-9, !, *, _, etc.).</p>
+
+        <p class="last">Passwords are encrypted and stored in the system.  Due to the encryption, passwords <strong>cannot</strong> be retrieved for viewing.  If someone loses or forgets their password, you will need to reset it.</p>
+      </div>
+      <div class="required">
+        <label for="first_name">First Name:</label>
+        <input type="text" name="first_name" id="first_name" class="inputText" size="10" tabindex="99" maxlength="100" value="<?=$form->first_name;?>"  onfocus="this.select()"/>
+      </div>
+       <div class="required">
+        <label for="last_name">Last Name:</label>
+        <input type="text" name="last_name" id="last_name" class="inputText" size="10" tabindex="100" maxlength="101" value="<?=$form->last_name;?>"  onfocus="this.select()" />
+      </div>
+      <? if (in_array('username', $badvars)): ?>
+      <div class="required error">
+        <p class="error"><?=$errors['username'];?></p>
+	<? else: ?>
+      <div class="required">
+	<? endif; ?>
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" class="inputText" size="10" tabindex="102" maxlength="20" value="<?=$form->username;?>" onfocus="this.select()" />
+
+        <small>May only contain letters, numbers, dashes (-) and underscores (_). It must be between 4 and 20 characters long.</small>
+      </div>
+      <? if (in_array('password', $badvars)): ?>
+      <div class="required error">
+        <p class="error"><?=$errors['password'];?></p>
+	<? else: ?>
+      <div class="required">
+	<? endif; ?>
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" class="inputPassword" size="10" tabindex="103" maxlength="25" value="<?=$form->password;?>"  onfocus="this.select()"/>
+        <small>Must be 4-25 characters long.</small>
+
+      </div>
+      <? if (in_array('confirm_password', $badvars)): ?>
+      <div class="required error">
+        <p class="error"><?=$errors['confirm_password'];?></p>
+	<? else: ?>
+      <div class="required">
+	<? endif; ?>
+        <label for="confirm_password">Please re-enter your password:</label>
+        <input type="password" name="confirm_password" id="confirm_password" class="inputPassword" size="10" tabindex="104" maxlength="25" value="<?=($goneback)?$form->password:$form->confirm_password;?>"  onfocus="this.select()"/>
+        <small>Must match the password you entered just above.</small>
+      </div>
+	  <div class="required">
+        <label for="access_level">Access Level:</label>
+        <select name="access_lv" id="access_lv" class="selectOne" tabindex="105">
+		<? foreach ($a_levels as $key => $val): ?>
+		<option value="<?=$val;?>" <?=($form->access_level == $val)?"selected":"";?>><?=$key;?></option>
+		<? endforeach; ?>
+		</select>
+      </div>
+       <div class="required">
+        <label for="home_line">Home Line:</label>
+        <input type="text" name="home_line" id="last_name" class="inputText" size="10" tabindex="106" maxlength="100" value="<?=$form->home_line;?>"  onfocus="this.select()" />
+      </div>
+      <div class="required">
+        <label for="line_lead">Line Lead:</label> yes: <input name="line_lead" id="line_lead" type="radio" class="inputRadio" tabindex="107" value="1" /> no: <input name="line_lead" id="line_lead" type="radio" class="inputRadio" tabindex="108" value="0"  checked="checked"/>
+      </div>
+       <div class="required">
+        <label for="start_date">Training Start Date:</label>
+        <input type="text" name="start_date" id="start_date" class="inputText" size="10" tabindex="109" maxlength="100" value="<?=$form->start_date;?>"  onfocus="this.select()" />
+      </div>
+    </fieldset>
+<p><strong>Bold</strong> fields are required.</p>
+<? endif; ?>
+<? if ($step != 3): ?>
+<fieldset>
+      <div class="submit">
+        <div>
+	<input name="step" type="hidden" value="<?=($step)?$step:0;?>" />
+	<input name="returnto" type="hidden" value="<?=$returnto;?>" />
+          <input id="finish" name="finish" type="submit" class="inputSubmit" tabindex="130" value="Finish" />
+          <input id="cancel" name="cancel" type="submit" class="inputSubmit" tabindex="132" value="Cancel" />
+        </div>
+      </div>
+    </fieldset>
+<? else: ?>
+<h2>Account Successfully Created</h2>
+<a href="<?=$self;?>?mode=User&action=addUser">Add Another User</a>
+<? endif; ?>
+</form>

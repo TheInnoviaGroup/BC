@@ -1,0 +1,365 @@
+<? if ($dumpMe):
+pre($dumpMe);
+ endif; ?>
+<? if ($error): ?>
+<div class="errorMessage"><?=$error;?></div>
+<? endif; ?>
+<form name="importWiz" id="importWiz" class="x-form" enctype="multipart/form-data" method="post" action="<?=$self;?>" onsubmit="Ext.PAIT.importHandler(this);return false;">
+<input type="hidden" name="mode" value="Importer" />
+<input type="hidden" name="step" value="1" />
+<input type="hidden" name="node" value="<?=$node;?>" />
+<? if ($subStep == "pickHeaderRow"): ?>
+<fieldset><div class="notes"><h4>Please select the row with the data headers.</h4>
+<p>Below are the first fifteen rows of data from. Please select the row which contains the headers (Name, Hire Date, Title, etc).</p>
+</div><div class="clear">&nbsp;</div>
+<div class="hideme" id="sheet1"><br><br><table class="sortable worksheet" id="worksheet1">
+<tr><td>&nbsp;</td><td>&nbsp;</td>
+<? $count = array_keys($data[0]);
+$arr = array();
+foreach ($count as $stuff):
+if (!is_int($stuff)) {
+$arr[] = $stuff;
+}
+endforeach; 
+$count = count($arr) - 1;
+ ?>
+<? for ($j=0;$j < $count;$j++) { ?>
+<td class="index">&nbsp;<? 	if( $j>25 ) print chr((int)($j/26)+64);
+			print chr(($j % 26) + 65)."&nbsp;</td>";
+} ?>
+</tr>
+<? foreach ($data as $row): ?>
+<tr class=\"hoverable\"><td><input name="headerrow" id="headerrow<?=$row['rowID'];?>" type="radio" class="Radio" tabindex="10<?=$row['rowID'];?>" value="<?=$row['rowID'];?>" /><td><?=$row['rowID'];?></td><? unset($row['rowID']);
+foreach ($row as $cruft => $cell): ?>
+<? if (!is_int($cruft)): ?>
+<td><?=$cell;?></td>
+<? endif; ?>
+<? endforeach;?>
+</tr>
+<? endforeach; ?>
+</table></div><br>
+<div class="submit">			<input type="submit" value="Next &rarr;" name="next"/></div>
+
+
+<? elseif ($subStep == "normalizeHeaders"): ?>
+<br>
+<input type="hidden" name="headerrow" value="<?=$headerRowNum;?>" />
+<fieldset><legend>Import Configuration</legend>
+<div class="required"><label for="importType">Import Type: </label><select name="importType" id="importType">
+	<option>Census</option>
+	<option>Ratefile</option>
+        <option>Policy File</option>
+</select>
+</div>
+<div class="notes"><h4>Please choose a carrier and/or company.</h4>
+<p>Which company is this spreadsheet related to? Please choose a company from the drop down. If this is a company census only, and not a bid from a carrier, leave carrier blank.</p>
+</div>
+
+<table cellspacing="4" cellpadding="4" class="paitTable">
+	<tr>
+		<td><label for="Company" class="x-form-item">Company:</label></td>
+		<td><select name="company" id="company" class="selectOne" tabindex="101">
+<? foreach ($companies as $key => $val): ?>
+<option value="<?=$val;?>"><?=$key;?></option>
+<? endforeach;?>
+</select></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><label for="Carrier" class="x-form-item">Carrier:</label></td>
+		<td><select name="carrier" id="carrier" class="selectOne" tabindex="101" onchange="Ext.PAIT.checkForPol();">
+<? foreach ($carriers as $key => $val): ?>
+<option value="<?=$val;?>"><?=$key;?></option>
+<? endforeach;?>
+</select></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td colspan=3><span  class="x-form-item"><input type="checkbox" name="updateOnly" /> Check if this is only an update and PAIT should <b>not</b> add new accounts.</span>
+		</td>
+	</tr>
+</table>
+<div id="policyExtras" style="display: none">
+<table cellspacing="4" cellpadding="4" class="paitTable">
+	<tr>
+		<td><label for="policyType" class="x-form-item">Policy Type: </label></td>
+		<td><select name="policyType" id="policyType" class="selectOne" tabindex="101">
+<? foreach ($policyTypes as $val => $type): ?>
+<option value="<?=$val;?>"><?=$type;?></option>
+<? endforeach; ?>
+</select></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><label for="policyStatus" class="x-form-item">Policy Status: </label></td>
+		<td><select name="policyStatus" id="policyStatus" class="selectOne" tabindex="101">
+<? foreach ($policyStats as $val => $status): ?>
+<option value="<?=$val;?>"><?=$status;?></option>
+<? endforeach; ?>
+</select></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><label for="paidBy" class="x-form-item">
+Paid by:</td>
+		<td class="x-form-item">Employee <input type="radio" name="paidBy" value="0" class="inputRadio"> Employer <input type="radio" name="paidBy" value="1"  class="inputRadio"></label></td>
+		<td></td>
+	</tr>
+</table>
+</div>
+
+<table cellspacing="4" cellpadding="4" class="paitTable">
+	<tr>
+		<td><label for="defaultStatus" class="x-form-item">Default Status :</label></td>
+		<td><select name="defaultStatus">
+<? foreach($personStatus as $num => $status): ?>
+<option><?=$status;?></option>
+<? endforeach; ?>
+</select></td>
+		<td class="x-form-item"><input type="checkbox" name="overrideStatus" /> Check this box to override any status already in the database.</td>
+	</tr>
+</table>
+
+</fieldset>
+<fieldset><legend>Normalize Headers</legend>
+<table cellspacing="4" cellpadding="4" align="center">
+
+<? $count = 0; ?>
+<? foreach ($headerRow as $header): ?>
+<? $headername = preg_replace('/[\s]+/', '', $header);?>
+	<tr class="x-form-item">
+<td><label for="<?=$headername;?>"><?=$header;?> :</label>
+<select name="headerAction[<?=$headername;?>]" id="<?=$headername;?>" class="selectOne" tabindex="<?=$count + 100;?>" onchange="Ext.PAIT.checkForSub('<?=$headername;?>')">
+<? foreach ($headerMap as $key => $val): ?>
+<option value="<?=$val;?>" <?=($mapped[$header] == $key)?"selected":"";?>><?=$key;?></option>
+<? endforeach;?>
+</select>
+</td>
+<td>
+<select name="headerSub1Action[<?=$headername;?>]" id="<?=$headername;?>-sub1" class="selectOne" tabindex="<?=$count+100;?>" style="display: none;">
+<? foreach ($sub1HeaderMap as $key => $val): ?>
+<option value="<?=$key;?>" <?=($sub1mapped[$header] == $key)?"selected":"";?>><?=$key;?></option>
+<? endforeach;?>
+</select>
+<select name="headerSub2Action[<?=$headername;?>]" id="<?=$headername;?>-sub2" class="selectOne" tabindex="<?=$count+100;?>" style="display: none;">
+<? foreach ($sub2HeaderMap as $key => $val): ?>
+<option value="<?=$val;?>" <?=($sub2mapped[$header] == $key)?"selected":"";?>><?=$key;?></option>
+<? endforeach;?>
+</select></td>
+<td><span class="example">Example: 
+<?=$exampleRow[$count];?>
+</span>
+</td>
+	</tr>
+<? $count++; ?>
+<? endforeach;?>
+</table>
+<div class="submit">			<input type="submit" value="Finish" name="next"/></div>
+<script type="text/javascript">
+
+Ext.PAIT.checkForSub = function (elem) {
+	var id = elem.id;
+	if (id) {
+		var elem2 = document.getElementById(id+'-sub1');
+		var elem3 = document.getElementById(id+'-sub2');
+	} else {
+		id = elem;
+		elem = document.getElementById(id);
+		var elem2 = document.getElementById(id+'-sub1');
+		var elem3 = document.getElementById(id+'-sub2');
+	}
+	if (elem2 && elem3) {
+	elem2.style.display = "none";
+	elem3.style.display = "none";
+	if (elem.value == 1) {
+		elem2.style.display = "block";
+		elem3.style.display = "none";
+	}
+	if (elem.value == 6) {
+		elem3.style.display = "block";
+		elem2.style.display = "none";
+	}
+	}
+}
+
+Ext.PAIT.checkForPol = function() {
+	elem = document.getElementById('carrier');
+	if (elem.value > 0) {
+	myDiv = document.getElementById('policyExtras');
+	myDiv.style.display = "block";
+	} else {
+	myDiv = document.getElementById('policyExtras');
+	myDiv.style.display = "none";
+	}
+}
+
+Ext.PAIT.showSubMenus = function() {
+for (var form_loop=0; form_loop<document.forms.length; form_loop++) 
+  {	
+	if (document.forms[form_loop].name = "importWiz") {
+	var the_form = document.forms[form_loop];
+	for (var loop=0; loop < the_form.elements.length; loop++)
+  {
+	if (the_form.elements[loop].id.indexOf('-sub') == -1) {
+	if (the_form.elements[loop].type == "select-one") {
+	var elem = the_form.elements[loop];
+	var id = elem.id;
+	if (id) {
+	var elem2 = document.getElementById(id+'-sub1');
+	var elem3 = document.getElementById(id+'-sub2');
+	if (elem2 && elem3) {
+	if (elem.value == 1) {
+	elem2.style.display = "block";
+	elem3.style.display = "none";
+	}
+	if (elem.value == 6) {
+	elem3.style.display = "block";
+	elem2.style.display = "none";
+	}
+}
+}
+}
+  }
+
+}
+}
+}
+}
+Ext.PAIT.showSubMenus();
+</script>
+<? elseif ($subStep == "dataFailure"): ?>
+<fieldset><div class="notes"><h4>Additional Data Normalization Required</h4>
+<? if ($failures['identifier']): ?><p>There is no way to identify which person is which. Please use your browser back button to choose either a SSN column or both a first and last name column.</p>
+<? else: ?>
+<? if ($failures['carrier']): ?>
+<p>The following are the carriers listed in the spreadsheet. Please choose a PAIT carrier to associate with them. You may choose a PAIT carrier more than once if necessary.</p>
+<? foreach ($xlCarriers as $xlCarrier): ?>
+<div class="required"><label for="xlCarriers[<?=$xlCarrier[0];?>]"><?=$xlCarrier[0];?>&nbsp;<select name="xlCarriers[<?=$xlCarrier[0];?>]" id="carrier-<?=$xlCarrier[0];?>" class="selectOne" tabindex="101">
+<? foreach ($carriers as $key => $val): ?>
+<option value="<?=$val;?>"><?=$key;?></option>
+<? endforeach;?>
+</select></div>
+<? endforeach; ?>
+<? endif;?>
+<? if ($failures['dateCols']): ?>
+<p>Please choose which of the following are showing the correct dates:</p>
+<table style="border: 1px solid black;margin-bottom:3px;"><tr style="border-bottom: 1px solid black;"><td rowspan=4><input type="radio" name="dateType" value="zakkis1" /></td>
+<? 
+$keys = $dateRows[0];
+$keys['rowID'] = 'Row';
+foreach ($keys as $key):
+?>
+<th align=center><?=($rowTitles[$key])?$rowTitles[$key]:$key;?>
+<? endforeach; ?>
+</tr>
+<? for ($i = 1; $i < count($dateRows) ; $i++):
+$j = 0; ?>
+<tr>
+<? foreach ($dateRows[$i] as $val):
+if ($j <= 2):?>
+<td><?=$val;?></td>
+<? elseif (preg_match('/[\.\/]/', $val) && !preg_match('/\.00/', $val)): ?>
+<td><?=$val;?></td>
+<? else: ?>
+<td><?=date(PAITDATE,(($val*86400) - 2209132800));?></td>
+<? endif;
+$j++; ?>
+<? endforeach; ?>
+</tr>
+<? endfor; ?>
+</table>
+<table style="border: 1px solid black;margin-bottom:3px;"><tr style="border-bottom: 1px solid black;"><td rowspan=4><input type="radio" name="dateType" value="zakkis2" /></td>
+<? 
+foreach ($keys as $key):
+?>
+<th align=center><?=($rowTitles[$key])?$rowTitles[$key]:$key;?>
+<? endforeach; ?>
+</tr>
+<? for ($i = 1; $i < count($dateRows) ; $i++):
+$j = 0; ?>
+<tr>
+<? foreach ($dateRows[$i] as $val):
+if ($j <= 2):?>
+<td><?=$val;?></td>
+<? elseif (preg_match('/[\.\/]/', $val) && !preg_match('/\.00/', $val)): ?>
+<td><?=$val;?></td>
+<? else: ?>
+<td><?=date(PAITDATE,(($val*86400) - 2082988800));?></td>
+<? endif;
+$j++; ?>
+<? endforeach; ?>
+</tr>
+<? endfor; ?>
+</table>
+<table style="border: 1px solid black;margin-bottom:3px;"><tr style="border-bottom: 1px solid black;"><td rowspan=4><input type="radio" name="dateType" value="rawdate" /></td>
+<? 
+global $debug;
+$debug->variable($keys,2);
+$debug->variable($dateRows,2);
+foreach ($keys as $key):
+?>
+<th align=center><?=($rowTitles[$key])?$rowTitles[$key]:$key;?>
+<? endforeach; ?>
+</tr>
+<? for ($i = 1; $i < count($dateRows) ; $i++):
+$j = 0; ?>
+<tr>
+<? foreach ($dateRows[$i] as $val):?>
+
+<? if ($j <= 2):?>
+<td><?=$val;?></td>
+<? elseif (preg_match('/[\.\/]/', $val) && !preg_match('/\.00/', $val)): ?>
+<td><?=$val;?></td>
+<? else: ?>
+<td><?=date(PAITDATE,$val);?></td>
+<? endif;
+$j++; ?>
+<? endforeach; ?>
+</tr>
+<? endfor; ?>
+</table>
+<table style="border: 1px solid black;margin-bottom:3px;"><tr style="border-bottom: 1px solid black;"><td rowspan=4><input type="radio" name="dateType" value="rawtext" /></td>
+<? 
+foreach ($keys as $key):
+?>
+<th align=center><?=($rowTitles[$key])?$rowTitles[$key]:$key;?>
+<? endforeach; ?>
+</tr>
+<? for ($i = 1; $i < count($dateRows) ; $i++):?>
+<tr>
+<? foreach ($dateRows[$i] as $val):?>
+<td><?=$val;?></td>
+<? endforeach; ?>
+</tr>
+<? endfor; ?>
+</table>
+</tr>
+<? endif;?>
+<div class="submit">			<input type="submit" value="Finish" name="next"/></div>
+<? endif;?>
+</fieldset>
+<? elseif ($subStep == "Finish"): ?>
+<!-- Refresh the tree here -->
+<script type="text/javascript">
+// refresh tree
+var wsTree = Ext.PAIT.wsTree;
+wsTree.getNodeById('source').reload();
+// refresh sheetlist
+var sheetList = Ext.get('sheetListDiv');
+    sheetList.load(
+                   {
+        url: 'index.php?mode=Workspace&action=sheetList',
+        scripts:true,
+        text: "Refreshing..."
+   })
+</script>
+<div class="errorMessage">Headers Assigned. You may close this tab.</div>
+
+
+
+<? endif; ?>
+</form>
+<script type="text/javascript">
+Ext.PAIT.importNode = '<?=$node;?>';
+
+    </script>

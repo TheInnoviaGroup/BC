@@ -1,0 +1,728 @@
+<!-- this puts ie6 in quirksmode -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>PAIT: <? if ($personData['cn']): ?>
+    <?=$personData['cn'];?>
+    <? elseif (preg_match("/[A-Za-z]/",$personData['gn']) && preg_match("/[A-Za-z]/",$personData['sn'])): ?>
+        <?=$personData['salutation'];?> <?=$personData['gn'];?><?=($personData['mn'])?" ".$personData['mn']:"";?> <?=$personData['sn'];?><?=($personData['suffix'])?", ".$personData['suffix']:"";?>
+        <? else: ?>
+        <?=$personData['cn'];?><? endif; ?></title>
+  <? if (is_array($stylesheets)): ?>
+  <? foreach ($stylesheets as $stylesheet => $type): ?>
+  <link rel="stylesheet" href="<?=$stylesheet;?>" type="text/css" media="<?=$type;?>" />
+  <? endforeach; ?>
+  <!--[if lt IE 7]>
+      <? foreach ($stylesheets as $stylesheet => $type): ?>
+      <link rel="stylesheet" href="ie<?=$stylesheet;?>" type="text/css" media="<?=$type;?>" />
+      <? endforeach; ?>
+      <![endif]-->
+  <? endif; ?>
+  <? if (is_array($javascripts)): ?>
+  <? foreach ($javascripts as $javascript): ?>
+  <script src="javascripts/<?=$javascript;?>" type="text/javascript"></script>
+  <? endforeach; ?>
+  <? endif; ?>
+  <link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css" />
+  <!-- GC --> <link rel="stylesheet" type="text/css" href="ext/resources/css/xtheme-aero.css" />
+  <!-- LIBS -->
+  <script type="text/javascript" src="firebug/firebugx.js"></script>
+  <script type="text/javascript" src="ext/adapter/ext/ext-base.js"></script>
+  <!-- ENDLIBS -->
+  <script type="text/javascript" src="ext/ext-all-debug.js"></script>
+  <!-- Optional Libs -->
+  <script type="text/javascript" src="ext/Ext.ux.TableGrid.js"></script>
+<!--  <script type="text/javascript" src="ext/Ext.ux.InfoPanel.js"></script>
+  <script type="text/javascript" src="ext/Ext.ux.Accordion.js"></script> -->
+  <script type="text/javascript" src="ext/Ext.ux.FormBuilder.js"></script>
+  <script type="text/javascript" src="ext/Ext.ux.CascadingDialogs.js"></script>
+  <!-- End Optional Libs -->
+  <style type="text/css">
+    html, body {
+    font:normal 12px verdana;
+    margin:0;
+    padding:0;
+    border:0 none;
+    overflow:hidden;
+      height:100%;
+      }
+      .x-layout-panel-north {
+      border:0px none;
+      padding: 0px;
+	    height: 72px;
+      }
+      #nav {
+      }
+      #autoTabs, #center1, #center2, #west {
+      padding:10px;
+      }
+      #south{
+      font:normal 8pt arial, helvetica;
+	    padding:4px;
+      }
+      #north.x-layout-active-content {
+      font:normal 12pt arial, helvetica;
+	    padding: 0px;
+	    height: 72px;
+      }
+      .x-layout-panel-center p {
+      margin:5px;
+      }
+#props-panel .x-grid-col-0{
+      }
+      #props-panel .x-grid-col-1{
+      }
+
+h1 {
+    font-size: x-large;
+}
+h2 {
+    font-size: large;
+}
+th {
+    font-weight: bold;
+}
+
+    .logo {
+			background: url(<?=$rootDir;?>images/banner_bg.jpg) repeat-x left top;
+			height: 12px;
+			width: 100%;
+			position: absolute;
+			z-index: 1;
+			top: 0px;
+			left: 0px;
+			}
+
+          ul.actionBloc {
+        border-top: 1px solid #99bbe8;
+        margin-right: 1px;
+        background: #d8e6f6;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      
+      ul.actionBloc li {
+        width: 100%;
+        height: 2em;
+        position: relative;
+        border-bottom: 2px solid #99bbe8;
+        border-right: 2px solid #99bbe8;
+        border-left: 2px solid #99bbe8;
+        text-align: center;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      
+      ul.actionBloc li.header {
+        background: #c7d5e5;
+      }
+      
+      ul.actionBloc li h2 {
+        font-size: 1.5em;
+        display: block;
+        width: 100%;
+        background: #c7d5e5;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      
+      ul.actionBloc li a{
+        color: #41418b;
+        height: 2em;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.33em;
+        line-height: 1em;
+        vertical-align: middle;
+        text-decoration: none;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    ul.actionBloc li a:hover {
+        color: #E2A53C;
+      }
+  
+		.x-layout-panel-hd-text {
+			color: #FFF;
+		}
+		
+		.x-layout-split-h {
+			background:#5080CF none repeat scroll 0%;
+		}
+		.x-layout-split {
+			background-color:#5080CF;
+		}
+		#searchDiv {
+			margin: 10px;
+		}
+		.x-form-item label {
+			width: 150px;
+		}
+		.x-grid-hd-text {
+			color: #FFF;
+		}
+		.x-grid-row-selected a {
+			color:#ECC47E;
+		}
+		.x-grid-row-selected a:visited {
+			color:#ECC47E;
+		}
+		a {
+			color:#316AC5;
+		}
+		a:visited {
+			color:#316AC5;
+		}
+
+    
+    </style>
+    <script type="text/javascript">
+      Ext.BLANK_IMAGE_URL = 'ext/resources/images/default/s.gif';
+Ext.namespace('Ext.PAIT');
+App = {};
+App.layout = {};
+      App.init = function(){
+	  var southConf;
+		       
+	               App.layout = new Ext.BorderLayout(document.body, {
+	                    north: {
+	                        split:false,
+	                        initialSize: 72,
+	                        titlebar: false
+	                    },
+			    east: {
+	                        split:true,
+	                        initialSize: 202,
+	                        minSize: 175,
+	                        maxSize: 400,
+	                        titlebar: true,
+	                        collapsible: true,
+                            animate: true
+	                    },
+	                    center: {
+	                        titlebar: true,
+	                        //autoScroll: true,
+			       closeOnTab: false
+			       }
+	                });
+
+                    App.layout.beginUpdate();   
+	  App.layout.add('north', new Ext.ContentPanel('north', 'North'));
+	  App.layout.add('east', new Ext.ContentPanel('east', {closable: false}));
+	  App.layout.add('center', new Ext.ContentPanel('personDiv', {title: 'Person Info', autoScroll: true, fitToFrame:true}));
+	  //        App.layout.add('center', new Ext.ContentPanel('savedSearches', {title: 'Saved Searches'}));
+	  //            App.layout.add('center', new Ext.ContentPanel('imports', {title: 'Pending Imports'}));
+	  //            App.layout.add('center', new Ext.ContentPanel('uploads', {title: 'Uploaded Files'}));
+	  //App.layout.getRegion('center').showPanel('center');
+
+//Start Policy Summary Grid
+	  
+	    var ds = new Ext.data.Store({
+        // load using script tags for cross domain, if the data in on the same domain as
+        // this page, an HttpProxy would be better
+        proxy: new Ext.data.HttpProxy({
+            url: '<?=$self;?>?mode=ajax&module=policySummary&personID=<?=$personID;?>'
+        }),
+
+        // create reader that reads the Topic records
+        reader: new Ext.data.JsonReader({
+            root: 'policyTypes',
+            id: 'type'
+        }, [
+            {name: 'type', mapping: 'type'},
+            {name: 'term', mapping: 'term'},
+            {name: 'paidBy', mapping: 'paidBy'},
+            {name: 'benefit', mapping: 'benefit'},
+	    {name: 'premium', mapping: 'premium'}
+            ]
+        ),
+
+        // turn on remote sorting
+        remoteSort: false
+    });
+
+
+    // the column model has information about grid columns
+    // dataIndex maps the column to the specific data field in
+    // the data store
+    var cm = new Ext.grid.ColumnModel([{
+           id: 'type', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+           header: "Policy Type",
+           dataIndex: 'type',
+           css: 'white-space:normal;',
+	   sortable: true
+        }
+        ,{
+           id: 'paidBy',
+           header: "Paid By",
+           dataIndex: 'paidBy',
+           sortable: true
+        }
+	,{
+           id: 'benefit', 
+           header: "Total Benefit",
+           dataIndex: 'benefit',
+           css: 'white-space:normal;',
+	   sortable: true,
+           renderer: Ext.util.Format.usMoney
+        }
+	,{
+           id: 'premium', 
+           header: "Total Premium",
+           dataIndex: 'premium',
+           css: 'white-space:normal;',
+	   sortable: true,
+           renderer: Ext.util.Format.usMoney
+        }
+        ,{
+           id: 'term',
+           header: "Premium Term",
+           dataIndex: 'term',
+           width: 95
+        }
+]);
+
+ 
+Ext.PAIT.myLoadMask = (Ext.isIE)?false:true;
+    // create the editor grid
+  var grid = new Ext.grid.Grid('policySummaryGrid', {
+        ds: ds,
+        cm: cm,
+        selModel: new Ext.grid.RowSelectionModel({singleSelect:true}),
+        enableColLock:true,
+        loadMask: Ext.PAIT.myLoadMask,
+        //autoExpandColumn: 'type',
+	autoSizeColumns: true,
+        height: 150,
+        minHeight: 175,
+	monitorWindowResize: false
+    });
+grid.render();
+
+var gridFoot = grid.getView().getFooterPanel(true);
+
+    // add a paging toolbar to the grid's footer
+    
+grid.bottomToolbar = new Ext.Toolbar(gridFoot);
+grid.bottomToolbar.addText(' ');
+Ext.fly(grid.bottomToolbar.addSpacer().getEl().parentNode).setStyle('width', '100%');
+ds.on('load', Ext.PAIT.addBeneTotals, grid);
+ds.load();
+grid.on('render', grid.container.repaint, grid);
+//End Policy Summary Grid.
+
+	  App.layout.endUpdate();
+      };
+
+Ext.PAIT.addBeneTotals = function() {
+    var grid = this;
+    var ds = grid.dataSource.reader.jsonData;
+    var tb = grid.bottomToolbar;
+    tb.addText('Total Benefit: '+Ext.util.Format.usMoney(ds.totalBenefit));
+    tb.addSpacer();
+    tb.addSeparator();
+    tb.addSpacer();
+    tb.addText('Total Premium: '+Ext.util.Format.usMoney(ds.totalPremium));
+    console.log('Toolbar: %o', tb);
+    
+}
+
+Ext.PAIT.openAccountHistory = function() {
+var layout = App.layout;
+  
+  layout.beginUpdate();
+  // create the Data Store
+    var ds = new Ext.data.Store({
+        // load using script tags for cross domain, if the data in on the same domain as
+        // this page, an HttpProxy would be better
+        proxy: new Ext.data.HttpProxy({
+            url: '<?=$self;?>?mode=ajax&module=personAcctHistory&personID=<?=$personID;?>'
+        }),
+
+        // create reader that reads the Topic records
+        reader: new Ext.data.JsonReader({
+            root: 'results',
+            totalProperty: 'totalCount',
+            id: 'uniqueID'
+        }, [
+            {name: 'uniqueID', mapping: 'uniqueID'},
+            {name: 'time', mapping: 'time'},
+            {name: 'action', mapping: 'action'},
+            {name: 'importID', mapping: 'importID'},
+            {name: 'username', mapping: 'username'},
+            {name: 'field', mapping: 'field'},
+            {name: 'from', mapping: 'from'},
+            {name: 'to', mapping: 'to'}
+            ]),
+
+        // turn on remote sorting
+        remoteSort: true
+    });
+
+
+    // the column model has information about grid columns
+    // dataIndex maps the column to the specific data field in
+    // the data store
+    var cm = new Ext.grid.ColumnModel([{
+           id: 'time', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+           header: "Time",
+           dataIndex: 'time',
+           css: 'white-space:normal;',
+	   sortable: true
+        },
+        {
+           id: 'action', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+           header: "Action",
+           dataIndex: 'action',
+           css: 'white-space:normal;',
+	   sortable: true
+        },
+        {
+           id: 'username', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+           header: "User Name",
+           dataIndex: 'username',
+           css: 'white-space:normal;',
+	   sortable: true
+        },
+        {
+           id: 'field', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+           header: "Field Changed",
+           dataIndex: 'field',
+           css: 'white-space:normal;',
+	   sortable: true
+        },
+        {
+           id: 'from', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+           header: "From",
+           dataIndex: 'from',
+           css: 'white-space:normal;',
+	   sortable: true
+        },
+        {
+           id: 'to', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+           header: "To",
+           dataIndex: 'to',
+           css: 'white-space:normal;',
+	   sortable: true
+        }
+
+]);
+var gridE;
+    if (layout.findPanel('acctHist')) {
+        gridE = layout.findPanel('acctHist');
+        console.log('GridE: ',gridE);
+        gridE.refresh();
+        //getGrid().getDataStore().load({params:{start:0, limit:50}});
+        App.layout.showPanel('acctHist');
+    } else {
+
+    gridE = Ext.DomHelper.append(document.body,{tag: 'div', id:'acctHist'});
+    
+
+    // create the editor grid
+  var grid = new Ext.grid.Grid(gridE, {
+        ds: ds,
+        cm: cm,
+        selModel: new Ext.grid.RowSelectionModel({singleSelect:true}),
+        enableColLock:true,
+        loadMask: Ext.PAIT.myLoadMask,
+        autoExpandColumn: 'to',
+	//autoSizeColumns: true,
+	monitorWindowResize: false
+    });
+  
+
+    // render it
+    grid.render();
+
+    var gridFoot = grid.getView().getFooterPanel(true);
+
+    // add a paging toolbar to the grid's footer
+    var paging = new Ext.PagingToolbar(gridFoot, ds, {
+        pageSize: 50,
+        displayInfo: true,
+        displayMsg: 'Displaying results {0} - {1} of {2}',
+        emptyMsg: "No results to display."
+    });
+    
+    var gridContextMenu = new Ext.menu.Menu('acctHistoryCM');
+    gridContextMenu.add({ id: 'undo', text: 'Undo', handler: Ext.PAIT.undoHandler, scope: grid});
+
+      grid.doRowContextMenu = function (grid, rowIndex, e) {
+        //row data is available here
+        e.stopEvent();
+        var coords = e.getXY();
+        
+        var rowRecord = grid.getDataSource().getAt(rowIndex);
+        grid.rowRecord = rowRecord;
+        gridContextMenu.showAt([coords[0], coords[1]]);
+        
+      }
+      grid.addListener('rowcontextmenu', grid.doRowContextMenu);
+
+  var gpanel = new Ext.GridPanel(grid, {title:'Account History', closable: true});
+  layout.add('center', gpanel);  
+  layout.endUpdate();
+    // trigger the data store load
+  console.log('Grid: %o', grid);
+    ds.load({params:{start:0, limit:50}});
+
+    }
+
+}    
+Ext.PAIT.undoHandler = function(e) {
+    console.log('E: %o, this: %o', e,this);
+    var myurl = '<?=$self;?>?mode=ajax&module=undoPerson&uniqueID='+this.rowRecord.id;
+    console.log('url: %s', myurl);
+    Ext.Ajax.request({url: myurl, callback: Ext.PAIT.undoCallback, scope: this});
+}
+
+Ext.PAIT.editPerson = function(f,e,g) {
+    f.stopEvent();
+    console.log('DLG Submit: %o', this,f,e,g);
+    //causeAnError();
+  var form = this;
+  form.on('actioncomplete', Ext.PAIT.editPersonResponse, form);
+  form.on('actionfailed', Ext.PAIT.editPersonResponse, form);
+  console.log('Submitting %o!', this);
+  
+  if (Ext.isIE) {
+  form.submit({url: '<?=$self;?>',
+              params: {personID: '<?=$personData['personID'];?>',
+                       mode: 'Person',
+                       action: 'editPerson'}
+              }); 
+  } else {
+  form.submit({url: '<?=$self;?>',
+              params: {personID: '<?=$personData['personID'];?>',
+                       mode: 'Person',
+                       action: 'editPerson'},
+                       waitMsg: 'Please wait...'}); 
+  }
+};
+
+Ext.PAIT.editPersonResponse = function(f,r,q) {
+    console.log('Response: ',f,r,q);
+   if (r.response) {
+  var resp = Ext.util.JSON.decode(r.response.responseText);
+  } else {
+  var resp = Ext.util.JSON.decode(r.responseText);
+  }
+  if (resp.success) {
+    //First we remove the edit tab, then we activate the details tab and refresh it.
+    App.layout.beginUpdate();
+    //var editTab = App.layout.findPanel('editpersontab');
+    App.layout.remove('center', 'editpersontab');
+    var detailTab = App.layout.findPanel('personDiv');
+    detailTab.load({url: '<?=$self;?>?mode=Person&action=showPerson&personID=<?=$personID;?>&module=details',
+                   scripts: true});
+    App.layout.getRegion('center').showPanel('personDiv');
+    console.log('Detail Tab: %o', detailTab);
+    App.layout.endUpdate();
+  } else {
+    Ext.MessageBox.alert('Error', resp.errorText);
+  }
+  
+    
+};
+
+Ext.PAIT.addLog = function(f,e,g) {
+    f.stopEvent();
+    console.log('DLG Submit: %o', this,f,e,g);
+    //causeAnError();
+  var form = this;
+  form.on('actioncomplete', Ext.PAIT.addLogResponse, form);
+  form.on('actionfailed', Ext.PAIT.addLogResponse, form);
+  console.log('Submitting %o!', this);
+  
+  if (Ext.isIE) {
+  form.submit({url: '<?=$self;?>',
+              params: {id: '<?=$personData['personID'];?>',
+                       mode: 'Log',
+                       type: 'Person'}
+              }); 
+  } else {
+  form.submit({url: '<?=$self;?>',
+              params: {id: '<?=$personData['personID'];?>',
+                       mode: 'Log',
+                       type: 'Person'},
+                       waitMsg: 'Please wait...'}); 
+  }
+};
+
+Ext.PAIT.addLogResponse = function(f,r,q) {
+    console.log('Response: ',f,r,q);
+   if (r.response) {
+  var resp = Ext.util.JSON.decode(r.response.responseText);
+  } else {
+  var resp = Ext.util.JSON.decode(r.responseText);
+  }
+  if (resp.success) {
+    //First we remove the edit tab, then we activate the details tab and refresh it.
+    App.layout.beginUpdate();
+    //var editTab = App.layout.findPanel('editpersontab');
+    App.layout.remove('center', 'logentrytab');
+    App.layout.getRegion('center').showPanel('personDiv');
+    App.layout.endUpdate();
+    Ext.MessageBox.alert('Log Added', 'Log message successfully added.');
+  } else {
+    Ext.MessageBox.alert('Error', resp.errorText);
+  }
+  
+    
+};
+
+Ext.PAIT.undoCallback = function(grid, f, r, h) {
+    if (r.response) {
+  var resp = Ext.util.JSON.decode(r.response.responseText);
+  } else {
+  var resp = Ext.util.JSON.decode(r.responseText);
+  }
+  if (resp.success) {
+    Ext.MessageBox.alert('Success', 'Undo successfully completed.');
+    grid.scope.getDataSource().load();
+  } else {
+    Ext.MessageBox.alert('Error', resp.errorText);
+  }
+  
+}
+ 
+ Ext.PAIT.deletePolicyCallback = function(grid, f, r, h) {
+    if (r.response) {
+  var resp = Ext.util.JSON.decode(r.response.responseText);
+  } else {
+  var resp = Ext.util.JSON.decode(r.responseText);
+  }
+  if (resp.success) {
+    Ext.MessageBox.alert('Success', 'Policy Deleted.');
+    var panel = App.layout.findPanel('policyinfotab');
+    panel.load({url: '<?=$self;?>?mode=Person&action=showPerson&personID=<?=$personID;?>&module=policyinfo', scripts:true});
+    //console.log('Panel: %o', panel);
+    var detailTab = App.layout.findPanel('personDiv');
+    detailTab.load({url: '<?=$self;?>?mode=Person&action=showPerson&personID=<?=$personID;?>&module=details',
+                   scripts: true});
+  } else {
+    Ext.MessageBox.alert('Error', resp.errorText);
+  }
+  
+}
+ 
+ Ext.PAIT.deletePolicyHandler = function(e) {
+    console.log('E: %o, this: %o', e,this);
+    var myurl = '<?=$self;?>?mode=Person&action=deletePolicy&personID=<?=$personData['personID'];?>&uid='+e.rowRecord.data['tcol-0'];
+    console.log('url: %s', myurl);
+    Ext.Ajax.request({url: myurl, callback: Ext.PAIT.deletePolicyCallback, scope: e});
+}
+
+
+Ext.PAIT.renderDate = function(e) {
+    console.log(e);
+    var dt = new Date(e);
+    console.log('DT: %o',dt);
+    return dt.format('Y-m-d H:i:sO');
+}
+	    
+	Ext.EventManager.onDocumentReady(App.init, App, true);
+Ext.EventManager.onDocumentReady(Ext.ux.CascadingDialogs.scanHrefs, App, true);
+
+
+
+</script>
+    </head>
+<body>
+<div id ="container">
+  <div id="west" class="x-layout-inactive-content">
+    West
+  </div>
+  <div id="north" class="x-layout-inactive-content">
+    <table border="0" width="100%" height="72" cellspacing="0" cellpadding="0" align="center" class="logo">
+	<tr>
+		<td><img src="<?=$rootDir;?>images/lr.jpg" alt="" width="400" height="72" hspace="0" vspace="0" border="0" align="left" /></td>
+		<td><?=$loginbox;?></td>
+	</tr>
+</table>
+  </div>
+  <div id="east" class="x-layout-inactive-content">
+    <ul class="actionBloc">
+        <li><a href="<?=$self;?>?mode=Person&action=showPerson&personID=<?=$personID;?>&module=policyinfo" id="policyinfo" class="centerTarget" title="Policies">Policies</a></li>
+        <li><a href="" onclick="javascript:Ext.PAIT.openAccountHistory();return false;">Account History</a></li>
+        <li><a href="<?=$self;?>?mode=Person&action=showPerson&personID=<?=$personID;?>&module=comphistory" id="comphistory" class="centerTarget" title="Compensation">Compensation</a></li>
+        <li><a href="">Extra Census Data</a></li>
+        <li><a href="">Add Policy</a></li>
+        <li><a href="<?=$self;?>?mode=Person&action=editPerson&personID=<?=$personID;?>&module=editperson" id="editperson" class="centerTarget" title="Edit Person">Edit Person</a></li>
+        <li><a href="<?=$self;?>?mode=Log&action=addPerson&personID=<?=$personID;?>" class="centerTarget" id="logentry" title="Add Log">Add Log Entry</a></li>
+        </ul>
+    </div>
+  <div id="personDiv" class="x-layout-inactive-content">
+<table border=0 style="width:90%;height: 90%;margin-left:auto;margin-right:auto;margin-top:0.35em;"><tr><td align=left valign="top">
+        <h1>
+        <? if ($personData['cn']): ?>
+    <?=$personData['cn'];?>
+    <? elseif (preg_match("/[A-Za-z]/",$personData['gn']) && preg_match("/[A-Za-z]/",$personData['sn'])): ?>
+        <?=$personData['salutation'];?> <?=$personData['gn'];?><?=($personData['mn'])?" ".$personData['mn']:"";?> <?=$personData['sn'];?><?=($personData['suffix'])?", ".$personData['suffix']:"";?>
+        <? else: ?>
+        <?=$personData['cn'];?><? endif; ?></h1></td>
+<td valign="top"><h2>Status: <?=$personData['status'];?></h2></td></tr>
+<tr><td colspan=2 align=center><table width=100%><tr><th>Home Address:</th><th align="center">Personal Info:</th></tr>
+<tr><td><?=($personData['address'])?multiline($personData['address'])."<br />":"";?><?=($personData['address2'])?multiline($personData['address2'])."<br />":"";?>
+<?=($personData['city'])?$personData['city'].", ":"";?><?=$personData['state']." ".$personData['postal'];?></td>
+<td rowspan="4" valign="top"><table>
+<tr><td align="right">Social:</td><td align="left"><? if ($personData['ssn']): ?>
+<?=formatSocial($personData['ssn']);?><br />
+<? endif; ?>
+</td></tr>
+<tr><td align="right">Gender:</td><td align="left"><? global $genders; ?>
+<?=$genders[$personData['gender']];?><br />
+</td></tr>
+<tr><td align="right">Birthdate:</td><td align="left"><? if ($personData['birthdate']): ?>
+<?=gmdate(PAITDATE,$personData['birthdate']);?><br />
+<? endif; ?>
+</td></tr>
+<tr><td align="right">Work Phone:</td><td align="left"><? if ($personData['workphone']): ?>
+<?=formatPhone($personData['workphone']);?><br />
+<? endif; ?>
+</td></tr>
+<tr><td align="right">Home Phone:</td><td align="left"><? if ($personData['homephone']): ?>
+<?=formatPhone($personData['homephone']);?><br />
+<? endif; ?>
+</td></tr>
+<tr><td align="right">Cell Phone:</td><td align="left"><? if ($personData['cellphone']): ?>
+<?=formatPhone($personData['cellphone']);?><br />
+<? endif; ?>
+</td></tr>
+<tr><td align="right">E-mail:</td><td align="left"><? if ($personData['email']): ?>
+<a href="mailto:<?=$personData['email'];?>"><?=$personData['email'];?></a><br />
+<? endif; ?>
+</td></tr>
+</table></td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><th>Company Info:</th></tr>
+<tr><td><table>
+<tr><td align="right">Hire Date:</td><td align="left"><? if ($companyData['hiredate'] > 1900 && $companyData['hiredate'] < 2010): ?>
+<?=$companyData['hiredate'];?><br />
+<? elseif (is_numeric($companyData['hiredate'])): ?>
+<?=gmdate(PAITDATE, $companyData['hiredate']);?><br />
+<? endif; ?></td></tr>
+<tr><td align="right">Title:</td><td align="left"><?=$companyData['title'];?></td></tr>
+<tr><td align="right">Employee ID:</td><td align="left"><? if ($companyData['employeeID']): ?>
+<?=$companyData['employeeID'];?><br />
+<? endif; ?></td></tr>
+<tr><td align="right">Company:</td><td align="left"><a href="<?=$self;?>?mode=Company&action=showCompany&companyID=<?=$personData['companyID'];?>"><?=$companyData['name'];?></a></td></tr>
+<tr><td align="right">Facility:</td><td align="left"><? if ($personData['facility']): ?><?=$personData['facility'];?><br />
+<? endif; ?></td></tr>
+<tr><td align="right">Dept:</td><td align="left"><? if ($companyData['department']):?><?=$companyData['department'];?><? endif;?></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td colspan="2" align="center" valign="bottom"><div style="position:relative;">
+<table width="600">
+<tr><td align="center"><h2>Policy Summary</h2></td></tr>
+<tr><td align="left" style="text-align: left;"><div style="position:relative;" id="policySummaryGrid">Policy Summary Grid goes here</div></td></tr>
+</table></div></td></tr>
+</table>
+</div>
+  </body>
+</html>

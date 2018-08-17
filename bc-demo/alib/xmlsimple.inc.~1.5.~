@@ -1,0 +1,408 @@
+<?php
+  /**
+   * Simple XML handler object
+   *
+   * Since he likes Perl's XML::Simple and dislikes
+   * PHP's simplexml, B- asked me to come up with this.
+   * It's a two-way tranformation object. It will turn
+   * an XML document and into a simple array (rather
+   * than the mixed array that simplexml concocts).
+   * Plus, and this is something simplexml won't even
+   * attempt, it will take an array and convert it into XML.
+   *
+   * It does all this without the developer needing to
+   * touch any DOM functions. It does all the necessary
+   * bits and pieces for you. If you need the DOM object,
+   * it will hand it to you, but it shouldn't be necessary
+   * very often.
+   *  
+   * @author Norbert Taylor
+   * @package aLib
+   * @subpackage XML
+   * @version 0.1
+   */
+class xmlSimple extends anObject {
+  private $doc; // the XML document itself, a DOM object
+  private $elementArray = array(); //holds the results of findElementsByTag
+  
+  /**
+   * Constructor method
+   * Intentionally left blank. Use loadFile or loadString to
+   * populate the object with data.
+   */
+  Function __construct(){
+    $this->doc = new DOMDocument;
+  }
+  
+  /**
+   * Loads a file into the XML handler's memory,
+   * returns the file as a PHP array.
+   * 
+   * In the returned array, attributes have 'ATTR:'
+   * appended to them.
+   * 
+   * @param string $file filename
+   * @return array $array the xml file translated into an array
+   */
+  function loadFile($filename){
+    $this->doc->load($filename);
+    return $this->translateXMLObject();
+  }
+
+  /**
+   * Loads a string into the XML handler's memory,
+   * returns the file as a PHP array.
+   *
+   * In the returned array, attributes have 'ATTR:'
+   * appended to them.
+   * 
+   * @param string $string  xml string
+   * @return array $array the xml string translated into an array
+   */  
+  function loadString($string){
+    $this->doc->loadXML($string);
+    return $this->translateXMLObject();
+  }
+  
+  /**
+   * Receives an XML node and translates it into an array,
+   * which it then returns.
+   *
+   * Based on code I found on php.net, but heavily tweaked
+   * to suit our purposes.
+   * 
+   * @param object $domnode xml object
+   * @return array $array the xml object translated into an array
+   */
+  function translateXMLObject($domnode=""){
+    $array = array();
+    
+    if (empty($domnode)){
+      $domnode = $this->doc;
+    }
+  
+    /**
+     * Simple kluge:
+     * toSimpleArray() starts with the child elements
+     * of the node it's been passed. This means that
+     * if the parent node has any attributes, they
+     * get missed. This is a simple catch for that.
+     */
+    if ($domnode->nodeType == XML_ELEMENT_NODE){
+      if ($domnode->hasAttributes() ) {
+        foreach ($domnode->attributes as $d_attribute){
+          $array['ATTR:' .$d_attribute->name] = $d_attribute->value;
+        }
+      }  
+    }
+    
+    $this->toSimpleArray($domnode, $array); 
+    return $array;
+  }
+
+  /**
+   * The workhorse function. There's a reason it's private.
+   *
+   * It traverses the tree of an XML document by taking the
+   * children of the node it's been given and walking
+   * through them one at a time (calling itself back to walk
+   * through any children nodes it finds). As it goes deeper
+   * it carries a local portion of the array it's writing to
+   * with it. I stole this code, so if you're blinded by its
+   * inherent elegance, don't look at me. I did tweak it and
+   * ungeek it, though. (Actually, I misspoke. This will go
+   * through the tree sturcture of any XML node it's given.
+   * I can't say it'll *work* with any node it's ever handed
+   * but it will work with elements and documents. This is
+   * a simple object, kids. That's all it needs to work with.)
+   * 
+   * If you're going to mess with this, read the code in
+   * the function *very* carefully, and reconsider whatever
+   * it is you think you want to do often. If you break this
+   * you better pray I'm dead, else I will hunt you down.
+   */
+  private function toSimpleArray($domnode, &$array){
+    $array_ptr = &$array;
+    $aNode = $domnode = $domnode->firstChild;
+    
+    $count = array();
+    
+    /**
+     * Whenever this function is first called we walk
+     * through all the sibling nodes to get a quick
+     * map of the elements we're about to deal with.
+     *
+     * We do this so that the resulting array won't
+     * come out with unnecessary levels.
+     *
+     * What do I mean? Consider the following:
+     * 
+     * $text=<<<EOT
+     * <document>
+     * <title>A Document</title>
+     * </document>
+     * EOT;
+     *
+     * $array = $xml->loadString($text);
+     * 
+     * Given how this function has been tweaked,
+     * the title in the above xml sample would be
+     * accessible in $array as
+     * $array['document']['title'];
+     *
+     * Without the steps shown here and later
+     * the array would have been:
+     * $array['document'][0]['title'][0];
+     *
+     * Those [0]s are unnecessary levels. And as
+     * documents get bigger, those wasted levels
+     * only increase.
+     * 
+     * Here I am being nice to the developers by
+     * stripping that excess away (and breaking
+     * my back to do so). Thank me, developers.
+     *
+     * Thank you, Norbert. --B
+     */
+    while (!is_null($aNode)){
+      if ($aNode->nodeType == XML_ELEMENT_NODE){
+        $count[$aNode->nodeName]++;
+      }
+      $aNode = $aNode->nextSibling;
+    }
+                
+    while (!is_null($domnode)) {
+       switch ($domnode->nodeType) {
+       
+         case XML_TEXT_NODE: {
+          if (! (trim($domnode->nodeValue) == "") ) {
+            $array_ptr = $domnode->nodeValue;
+          }
+          break;
+         }
+         case XML_ELEMENT_NODE: {
+          /**
+           * Just as we walk through the siblings
+           * above, we also walk through the children.
+           * Again, in an effort to avoid unnecessary
+           * levels in the array.
+           */
+           if ($domnode->hasChildNodes()){
+            $children = $domnode->childNodes;
+            foreach ($children as $child){
+               if ((! (trim($child->nodeValue) == "")) && ($child->nodeType == XML_TEXT_NODE)){
+                 $textContainer = 1;
+                } else {
+                 $textContainer = 0;
+                }
+             }
+           }
+           /**
+            * This is where the array's levels are actually set.
+            * 
+            * It works like this:
+            *  - If the element in question only has text
+            *    *and* it has no siblings with the same name
+            *    we make it a string. And we set the array
+            *    pointer accordingly.
+            *  - If the element has no siblings with the same
+            *    name, we don't need to bother with creating
+            *    a new level. The array pointer is set
+            *    and we go through to deal with the children.
+            *  - Otherwise, we add a new level to the array and
+            *    the pointer is, well, set accordingly.  
+            *  
+            */
+           if ($textContainer && ($count[$domnode->nodeName] == 1)) {
+              $array[$domnode->nodeName] = "";
+              $array_ptr = &$array[$domnode->nodeName];
+           } elseif ($count[$domnode->nodeName] == 1){
+              $array_ptr = &$array[$domnode->nodeName];              
+           } else {
+              $array_ptr = &$array[$domnode->nodeName][]; 
+            }
+   
+            if ($domnode->hasAttributes() ) {
+                     foreach ($domnode->attributes as $d_attribute){
+                       $array_ptr['ATTR:' . $d_attribute->name] = $d_attribute->value;
+                     }
+           }
+           
+           break;
+         }
+       }
+       /**
+        * Now we call this function again to deal
+        * with the children. Lovely, ain't it?
+        */
+       if ( $domnode->hasChildNodes() ) {
+         $this->toSimpleArray($domnode, $array_ptr);
+       }
+     
+     $domnode = $domnode->nextSibling;
+    }
+  }
+  
+  /**
+   * Given a tag name, it will search the entire XML document
+   * for matching tags. Since we're used to the query/nextRecord()
+   * form, that's how this works. This is the query part, then
+   * nextRecord() is used to walk through the results. This returns
+   * a 1 on success.
+   * 
+   * @param string $tag
+   * @return int $success 1 if it found anything, 0 if it didn't
+   */
+  function findElementsByTag($tag){
+      $elementSet = $this->doc->getElementsByTagName($tag);
+      $this->elementArray[$tag] = array();
+      $success = $count = 0;
+      
+      while ($element = $elementSet->item($count)){
+        $item = $this->translateXMLObject($element);
+        if (!empty($item)){
+          $this->elementArray[$tag][] = $item;
+        }
+        $count++;
+      }
+      
+    if ($count > 0) {
+      $success  = 1; 
+    }
+    
+    return $success;
+  }
+
+  function nextRecord($tag){
+    if (is_array($this->elementArray[$tag])){
+      return array_shift($this->elementArray[$tag]);
+    } else {
+      return NULL;  
+    }
+  }
+
+
+  function createNewDocument(){
+    /**
+     * Thought:
+     * Right now, I work with the idea that this
+     * object will only work with one XML document
+     * at a time. I may change my mind at a later
+     * date, but right now, that's where my head
+     * is at. As such, I have to delete any data
+     * sitting on the XML document in memory
+     * before doing anything else.
+     */
+    if ($this->doc->hasChildNodes()){
+      $oldroot = $this->doc->firstChild;
+      $this->doc->removeChild($oldroot);
+    }
+  }
+
+    /**
+     * Turns a PHP array into XML. Attributes should have
+     * their key set as ATTR:myattrname
+     * (e.g. the attribute "id" would have the key of
+     * "ATTR:id"). 
+     *
+     * @param array $array PHP data structure to be converted to XML.
+     * @return object $doc Returns DOM xml object. 
+     */    
+  function loadArray($array){
+    $this->pass = 0;
+    $this->convertToXML($array, $this->doc);
+      
+    return $this->doc;    
+  }
+  
+    /**
+     * It is certainly _strongly_ recommended that you leave this function
+     * alone. It's private for a reason, kids. The ugly things I do in here
+     * aren't all that bad, anyway.
+     * @param array $array PHP data structure to be converted to XML.
+     * @param object $domnode DOMNODE Object 
+     */
+  private function convertToXML($array, &$domnode){
+    $node = &$domnode;
+    $firstInSeries = 0;
+    $this->pass++;
+    
+    
+    /**
+     * Takes the array, splits the name/value pairs and makes tags
+     * of them. If the name is a numeric index we have to do something
+     * special (Can't have XML tags starting with numbers, you know).
+     */
+    foreach($array as $tag=>$value){
+      $isATTR = 0;
+      
+      if (!is_string ($tag)){
+        if ($tag == 0){
+          $firstInSeries = 1;
+          $tag_holder = $tag = $node->nodeName;
+        }
+
+        $tag = $tag_holder;
+      } elseif($specialCase = split(":", $tag, 2)) {
+        switch ($specialCase[0]){
+          case "ATTR":{
+            $node->setAttribute($specialCase[1], $value);
+            $isATTR = 1;
+            break;
+          }
+        }
+      }
+      
+      if (!$isATTR == 1){
+        $tag = trim($tag);
+       $childNode = $this->doc->createElement($tag);
+      
+      
+      /**
+      * This is where I earn my money.
+      * If this is the first in a numerically-keyed
+      * array we have to deal with it in a special
+      * way. We have to get rid of the node which
+      * was passed to this function, because it's
+      * only a placeholder. Then we make the parent
+      * node active, unset the trip value, and
+      * everything else works itself out.  You
+      * _will not_ mess with this block without
+      * talking to Norbert first. (And even then you
+      * know he'll just tell you not to touch it.)
+      */
+         if ($firstInSeries == 1){
+          $parent = &$node->parentNode;
+          $parent->removeChild($node);
+          $node = &$parent;
+          $firstInSeries = 0;
+        }
+
+        $newnode = $node->appendChild($childNode);
+      
+      if (is_string($value)){
+        $newnode->appendChild($this->doc->createTextNode($value));
+      } elseif (is_array ($value)) {
+        $this->convertToXML($value, $newnode);  
+      }
+     
+     }
+    }
+    
+  }
+
+
+  function saveToFile($filename){
+    if (is_string($filename)){
+      $this->doc->formatOutput = true;
+      $this->doc->save("$filename");
+    }
+  }
+  
+ function saveToString(){
+ 		return $this->doc->saveXML();
+	} 
+}
+
+
+?>

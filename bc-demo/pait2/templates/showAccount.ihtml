@@ -1,0 +1,543 @@
+<?
+$debug->line('Inside Template', 1);
+$debug->variable($action, 1); ?>
+<? if ($action == "detail"): ?>
+
+Name: <?=$first_name." ".$last_name;?><br>
+Username: <?=$username;?><br>
+Access Level: <?=$access_lv;?><br>
+Home Line: <?=$home_line;?><br>
+Line Lead: <?=$line_lead;?><br>
+Training Start Date: <?=$start_date;?><br>
+[<a href="<?=$url;?>?mode=User&action=edit&uid=<?=$username;?>">edit</a>] [<a href="<?=$url;?>?mode=User&action=reset&uid=<?=$username;?>">reset password</a>] [<a href="<?=$url;?>&mode=User">show list</a>] [<a href="<?=$url;?>?mode=User&action=delete_confirm&uid=<?=$username;?>">delete user</a>]<br />
+[<a href="<?=$url;?>?mode=User&action=assign_credit_choose_unit&selectUser[<?=$username;?>]=<?=$first_name."%20".$last_name;?>">assign credit</a>] [<a href="<?=$url;?>?mode=User&action=assign_training_choose_unit&selectUser[<?=$username;?>]=<?=$first_name."%20".$last_name;?>">assign training</a>]
+
+
+<? elseif ($action == "edit"): ?>
+
+<form action="<?=$self;?>" method="post" enctype="multipart/form-data">
+<input type="hidden" name="mode" value="User" />
+<fieldset><legend>Login Information</legend>
+      <div class="notes">
+        <h4>Login Information</h4>
+        <p>Username must be at least 4 characters long and is case-sensitive. Please do not enter accented characters.</p>
+        <p>Passwords are encrypted and stored in the system.  Due to the encryption, passwords <strong>cannot</strong> be retrieved for viewing.  If someone loses or forgets their password, you will need to reset it. 
+        <p class="last">[<a href="#">Reset Password</a>]</p>
+      </div>
+      <div class="required">
+        <label for="first_name">First Name:</label>
+        <input type="text" name="first_name" id="first_name" class="inputText" size="10" tabindex="99" maxlength="100" value="<?=$first_name;?>"  onfocus="this.select()"/>
+      </div>
+       <div class="required">
+        <label for="last_name">Last Name:</label>
+        <input type="text" name="last_name" id="last_name" class="inputText" size="10" tabindex="100" maxlength="101" value="<?=$last_name;?>"  onfocus="this.select()" />
+      </div>
+      <div class="required">
+        <label for="username">Username:</label> <?=$username;?>
+      </div>
+	  <div class="required">
+        <label for="access_level">Access Level:</label>
+        <select name="access_lv" id="access_lv" class="selectOne" tabindex="105">
+		<? foreach ($a_levels as $key => $val): ?>
+		<option value="<?=$val;?>" <?=($access_lv == $val)?"selected":"";?>><?=$key;?></option>
+		<? endforeach; ?>
+		</select>
+      </div>
+       <div class="required">
+        <label for="home_line">Home Line:</label>
+        <input type="text" name="home_line" id="last_name" class="inputText" size="10" tabindex="106" maxlength="100" value="<?=$home_line;?>"  onfocus="this.select()" />
+      </div>
+      <div class="required">
+        <label for="access_level">Line Lead: </label> yes: <input name="line_lead" id="line_lead" type="radio" class="inputRadio" tabindex="107" value="1" <?=($line_lead == 1)?"checked=\"checked\"":"";?>/> no: <input name="line_lead" id="line_lead" type="radio" class="inputRadio" tabindex="108" value="0"  <?=($line_lead == 0)?"checked=\"checked\"":"";?>/>
+      </div>
+       <div class="required">
+        <label for="start_date">Training Start Date:</label>
+        <input type="text" name="start_date" id="start_date" class="inputText" size="10" tabindex="109" maxlength="100" value="<?=$start_date;?>"  onfocus="this.select()" />
+      </div>
+    </fieldset>
+<p><strong>Bold</strong> fields are required.</p>
+</div>
+<fieldset>
+  <div class="submit">
+	<div>
+<input name="uid" type="hidden" value="<?=$username;?>" />
+<input name="action" type="hidden" value="edit_update" />
+	  <input id="finish" name="finish" type="submit" class="inputSubmit" tabindex="130" value="Finish" />
+	  <input id="cancel" name="cancel" type="submit" class="inputSubmit" tabindex="132" value="Cancel" />
+	</div>
+  </div>
+</fieldset>
+</form>
+
+
+<? elseif ($action == "edit_update"): ?>
+
+<!-- show new info -->
+Name: <?=$first_name." ".$last_name;?><br>
+Username: <?=$username;?><br>
+Access Level: <?=$access_lv;?><br>
+Home Line: <?=$home_line;?><br>
+Line Lead: <?=$line_lead;?><br>
+Training Start Date: <?=$start_date;?><br>
+[<a href="<?=$url;?>?mode=User&action=edit&uid=<?=$username;?>">edit</a>] [<a href="<?=$url;?>?mode=User&action=reset&uid=<?=$username;?>">reset password</a>] [<a href=<?=$self;?>?mode=User">show list</a>] [<a href="<?=$url;?>?mode=User&action=delete_confirm&uid=<?=$username;?>">delete user</a>]<br />
+[<a href="<?=$url;?>?mode=User&action=individual_credit&uid=<?=$username;?>">assign credit</a>] [<a href="<?=$url;?>?mode=User&action=individual_training&uid=<?=$username;?>">assign training</a>]
+
+<? elseif ($action == "reset"): ?>
+
+<form action="<?=$self;?>" method="post" enctype="multipart/form-data">
+<input type="hidden" name="mode" value="User" />
+<fieldset><legend>Reset Password</legend>
+      <div class="notes">
+        <h4>Reset Password</h4>
+        <p>Passwords must be at least 4 characters long and is case-sensitive. Please do not enter accented characters.</p>
+        <p>We recommend that passwords not be a word you can find in the dictionary, and should include both capital and lower case letters, and contains at least one special character (1-9, !, *, _, etc.).</p>
+      </div>
+Name: <?=$first_name." ".$last_name;?><br>
+Username: <?=$username;?><br>
+Access Level: <?=$access_lv;?><br>
+Home Line: <?=$home_line;?><br>
+Line Lead: <?=$line_lead;?><br>
+Training Start Date: <?=$start_date;?><br>
+
+      <div class="required">
+        <label for="password">New Password:</label>
+        <input type="password" name="password" id="password" class="inputPassword" size="10" tabindex="103" maxlength="25" value="<?=$form->password;?>"  onfocus="this.select()"/>
+        <small>Must be 4-25 characters long.</small>
+
+      </div>
+      <div class="required">
+        <label for="confirm_password">Please re-enter your new password:</label>
+        <input type="password" name="confirm_password" id="confirm_password" class="inputPassword" size="10" tabindex="104" maxlength="25" value="<?=($goneback)?$form->password:$form->confirm_password;?>"  onfocus="this.select()"/>
+        <small>Must match the password you entered just above.</small>
+      </div>
+    </fieldset>
+<fieldset>
+  <div class="submit">
+	<div>
+<input name="uid" type="hidden" value="<?=$username;?>" />
+<input name="action" type="hidden" value="reset_update" />
+	  <input id="finish" name="finish" type="submit" class="inputSubmit" tabindex="130" value="Finish" />
+	  <input id="cancel" name="cancel" type="submit" class="inputSubmit" tabindex="132" value="Cancel" />
+	</div>
+  </div>
+</fieldset>
+</form>
+
+
+<? elseif ($action == "reset_update"): ?>
+<h2>Password Successfully Reset</h2>
+<a href="<?=$self;?>?mode=User">Click here to return to the User list.</a>
+
+<? elseif ($action == "delete_confirm"): ?>
+<form action="<?=$self;?>" method="post" enctype="multipart/form-data">
+<input type="hidden" name="mode" value="User" />
+<fieldset><legend>Confirm Delete</legend>
+<h2>Are you sure you want to delete <?=$fullname;?>?</h2>
+    </fieldset>
+<fieldset>
+  <div class="submit">
+  <input name="uid" type="hidden" value="<?=$username;?>" />
+<input name="action" type="hidden" value="delete_user" />
+<input id="delete" name="delete" type="submit" class="inputSubmit" tabindex="130" value="Delete" />
+  </div>
+</fieldset>
+<? elseif ($action == "delete_user"): ?>
+<h2>User Successfully Deleted</h2>
+<a href="<?=$self;?>?mode=User">Click here to return to the User list.</a>
+
+
+<? elseif ($action == "search_user" || $action == "assign_credit_search"): ?>
+
+<form action="<?=$self;?>" method="post" enctype="multipart/form-data">
+<input type="hidden" name="mode" value="User" />
+<fieldset><legend>Search For Users <?=($assigncredit)?"To Assign Credits To":"";?></legend>
+      <div class="notes">
+        <h4>Search Users</h4>
+        <p>Enter your search criteria in the fields to the left.</p>
+        <p>Leaving a field blank is the same as saying "any value" for that field. 
+        <p class="last"><? if ($assigncredit): ?>[<a href="<?=$url;?>?mode=User&action=display_search_assign_credit">Show User List</a>]
+<? else: ?>
+[<a href="<?=$url;?>?mode=User">Show User List</a>]
+<? endif; ?></p>
+      </div>
+      <div class="required">
+        <label for="first_name">First Name:</label>
+        <input type="text" name="first_name" id="first_name" class="inputText" size="10" tabindex="99" maxlength="100" value=""  onfocus="this.select()"/>
+      </div>
+       <div class="required">
+        <label for="last_name">Last Name:</label>
+        <input type="text" name="last_name" id="last_name" class="inputText" size="10" tabindex="100" maxlength="101" value=""  onfocus="this.select()" />
+      </div>
+      <div class="required">
+        <label for="username">Username:</label> 
+        <input type="text" name="username" id="username" class="inputText" size="10" tabindex="100" maxlength="102" value=""  onfocus="this.select()" />
+      </div>
+	  <div class="required">
+        <label for="access_level">Access Level:</label>
+        <select name="access_lv" id="access_lv" class="selectOne" tabindex="105">
+		<? foreach ($a_levels as $key => $val): ?>
+		<option value="<?=$val;?>"><?=$key;?></option>
+		<? endforeach; ?>
+		</select>
+      </div>
+       <div class="required">
+        <label for="home_line">Home Line:</label>
+        <input type="text" name="home_line" id="last_name" class="inputText" size="10" tabindex="106" maxlength="100" value=""  onfocus="this.select()" />
+      </div>
+      <div class="required">
+        <label for="line_lead">Line Lead: </label>
+        <select name="line_lead" id="line_lead" class="selectOne" tabindex="107">
+				<option value="">Search All</option>
+				<option value="0">no</option>
+				<option value="1">yes</option>
+		</select>
+      </div>
+       <div class="required">
+        <label for="start_date">Training Start Date:</label>
+        <input type="text" name="start_date" id="start_date" class="inputText" size="10" tabindex="109" maxlength="100" value=""  onfocus="this.select()" />
+      </div>
+    </fieldset>
+</div>
+<fieldset>
+  <div class="submit">
+	<div><? if ($assigncredit): ?>
+<input name="action" type="hidden" value="display_search_assign_credit" />
+<? else: ?>
+<input name="action" type="hidden" value="display_search_results" />
+<? endif; ?>
+	  <input id="search" name="search" type="submit" class="inputSubmit" tabindex="130" value="Search" />
+	  <input id="cancel" name="cancel" type="submit" class="inputSubmit" tabindex="132" value="Cancel" />
+	</div>
+  </div>
+</fieldset>
+</form>
+
+<? elseif ($action == "display_search_results"): ?>
+
+<? $debug->variable($userList, 1); ?>
+<table id="search11b" class="sortable">
+<thead>	<tr>
+		<th>First</th>
+		<th>Last</th>
+		<th>Username</th>
+		<th>Access Level</th>
+		<th>Home Line</th>
+		<th>Line Lead</th>
+		<th>Training Start</th>
+		<th>Options</th>
+	</tr>
+</thead><tbody>
+<? for($i=0; $i< count($userList); $i++): ?>
+
+<tr class="hoverable">
+	<td><?=$userList[$i][gn]?></td>
+	<td><?=$userList[$i][sn]?></td>
+	<td><?=$userList[$i][username];?></td>
+	<td><? if($userList[$i][access_lv] == 7) { ?>
+	Admin
+	<? } elseif ($userList[$i][access_lv] == 6) { ?>
+	Supervisor
+	<? } else { ?>
+	User
+	<? } ?></td>
+	<td><?=$userList[$i][home_line];?></td>
+	<td><?=($userList[$i][line_lead] == 1)?"yes":"no";?></td>
+	<td><?=date("n/j/Y", $userList[$i][start_date]);?></td>
+	<td>[<a href="<?=$self;?>?mode=User&action=detail&uid=<?=$userList[$i][username];?>">details</a>] [<a href="<?=$self;?>?mode=User&action=reset&uid=<?=$userList[$i][username];?>">reset pass</a>]  [<a href="<?=$url;?>?mode=User&action=delete_confirm&uid=<?=$userList[$i][username];?>">delete</a>]</td>
+</tr>
+<? endfor; ?>
+</tbody>
+</table>
+
+<? elseif ($action == "display_search_assign_credit"): ?>
+
+<? $debug->variable($userList, 1); ?>
+<form action="<?=$self;?>" method="post" name="searchassign" enctype="multipart/form-data">
+<input type="hidden" name="mode" value="User" />
+<fieldset>
+<legend>Choose users to assign credit to</legend>
+<table id="search11b" class="sortable">
+	<tr>
+	<th><input name="checkall" id="selectAll" type="checkbox" class="inputCheckbox" tabindex="99" value="1" onclick="checkUncheckAll(this);" /></th>
+		<th>First</th>
+		<th>Last</th>
+		<th>Username</th>
+		<th>Access Level</th>
+		<th>Home Line</th>
+		<th>Line Lead</th>
+		<th>Training Start</th>
+	</tr>
+
+<? for($i=0; $i< count($userList); $i++): ?>
+
+<tr class="hoverable">
+<td><input name="selectUser[<?=$userList[$i][username];?>]" id="selectUser<?=$userList[$i][username];?>" type="checkbox" class="inputCheckbox" tabindex="<?=$i + 100;?>" value="<?=$userList[$i][gn] . " " . $userList[$i][sn];?>" /></td>
+	<td><?=$userList[$i][gn]?></td>
+	<td><?=$userList[$i][sn]?></td>
+	<td><?=$userList[$i][username];?></td>
+	<td><? if($userList[$i][access_lv] == 7) { ?>
+	Admin
+	<? } elseif ($userList[$i][access_lv] == 6) { ?>
+	Supervisor
+	<? } else { ?>
+	User
+	<? } ?></td>
+	<td><?=$userList[$i][home_line];?></td>
+	<td><?=($userList[$i][line_lead] == 1)?"yes":"no";?></td>
+	<td><?=date("n/j/Y", $userList[$i][start_date]);?></td>
+</tr>
+<? endfor; ?>
+</table>
+</fieldset>
+<fieldset>
+      <div class="submit">
+        <div>
+	<input type="hidden" name="action" value="assign_credit_choose_unit" />
+          <input id="next" name="next" type="submit" class="inputSubmit" tabindex="1000" value="Choose Unit &rarr;" />
+          <input id="cancel" name="cancel" type="submit" class="inputSubmit" tabindex="1001" value="Cancel" />
+        </div>
+      </div>
+    </fieldset>
+</form>
+
+<? elseif ($action == "assign_credit_choose_unit"): ?>
+<form action="<?=$self;?>" method="post" name="searchassign" enctype="multipart/form-data">
+<input type="hidden" name="mode" value="User" />
+<? foreach ($users as $user => $val): ?>
+<input type="hidden" name="users[<?=$user;?>]" value="<?=$val;?>" />
+<? endforeach; ?>
+<fieldset>
+<legend>Choose the Topic(s) to assign credit for</legend>
+<ul class="choosetopic">
+<? foreach ($topicList as $topLevel):
+$i = 0;?>
+<li><?=$topLevel['data']['name'];?>
+<? if (count($topLevel['children']) > 0): ?>
+<ul>
+<? foreach ($topLevel['children'] as $subLevel): ?>
+<li><?=$subLevel['data']['name'];?>
+<? if (count($subLevel['children']) > 0): ?>
+<ul>
+<? foreach ($subLevel['children'] as $unit): ?>
+<li><input name="selectUnit[<?=$unit['unitID'];?>]" id="selectUser<?=$unit['unitID'];?>" type="checkbox" class="inputCheckbox" tabindex="<?=$i + 100;?>" value="<?=$unit['name'];?>" /><?=$unit['name'];?></li>
+<? $i++; ?>
+<? endforeach; ?>
+</ul>
+<? endif; ?>
+</li>
+<? endforeach; ?>
+</ul>
+<? endif; ?>
+</li>
+<? endforeach; ?>
+</ul>
+
+</fieldset>
+<fieldset>
+      <div class="submit">
+        <div>
+	<input type="hidden" name="action" value="assign_credit_confirm" />
+          <input id="next" name="next" type="submit" class="inputSubmit" tabindex="1000" value="Confirm &rarr;" />
+          <input id="cancel" name="cancel" type="submit" class="inputSubmit" tabindex="1001" value="Cancel" />
+        </div>
+      </div>
+    </fieldset>
+</form>
+<? elseif($action == "assign_credit_confirm"): ?>
+<form action="<?=$self;?>" method="post" name="searchassign" enctype="multipart/form-data">
+<fieldset>
+<legend>Are you sure?</legend>
+<ul class="choosetopic">
+<li>Assigning Credit for the following users:
+<ul class="choosetopic">
+<? foreach ($users as $user => $realname): ?>
+<li><input type="hidden" name="users[<?=$user;?>]" value="<?=$realname;?>" /><?=$realname;?></li>
+<? endforeach; ?>
+</ul></li>
+<li>To the following Topics:
+<ul>
+<? foreach ($units as $unit => $realname): ?>
+<li><input type="hidden" name="units[<?=$unit;?>]" value="<?=$realname;?>" /><?=$realname;?></li>
+<? endforeach; ?>
+</ul></li></ul>
+</fieldset>
+<fieldset>
+      <div class="submit">
+        <div>
+	<input type="hidden" name="mode" value="User" />
+	<input type="hidden" name="action" value="assign_credit_final" />
+          <input id="next" name="next" type="submit" class="inputSubmit" tabindex="1000" value="Finish" />
+          <input id="cancel" name="cancel" type="submit" class="inputSubmit" tabindex="1001" value="Cancel" />
+        </div>
+      </div>
+    </fieldset>
+</form>
+
+<? elseif($action == "assign_credit_final"): ?>
+<div class="message">
+<?=$message;?>
+<p>Click <a href="<?=$self;?>">here</a> to return to the main menu.</p>
+</div>
+<? elseif ($action == "display_search_assign_training"): ?>
+
+<? $debug->variable($userList, 1); ?>
+<form action="<?=$self;?>" method="post" name="searchassign" enctype="multipart/form-data">
+<input type="hidden" name="mode" value="User" />
+<fieldset>
+<legend>Choose users to assign training to</legend>
+<table id="search11b" class="sortable">
+	<tr>
+	<th><input name="checkall" id="selectAll" type="checkbox" class="inputCheckbox" tabindex="99" value="1" onclick="checkUncheckAll(this);" /></th>
+		<th>First</th>
+		<th>Last</th>
+		<th>Username</th>
+		<th>Access Level</th>
+		<th>Home Line</th>
+		<th>Line Lead</th>
+		<th>Training Start</th>
+	</tr>
+
+<? for($i=0; $i< count($userList); $i++): ?>
+
+<tr class="hoverable">
+<td><input name="selectUser[<?=$userList[$i][username];?>]" id="selectUser<?=$userList[$i][username];?>" type="checkbox" class="inputCheckbox" tabindex="<?=$i + 100;?>" value="<?=$userList[$i][gn] . " " . $userList[$i][sn];?>" /></td>
+	<td><?=$userList[$i][gn]?></td>
+	<td><?=$userList[$i][sn]?></td>
+	<td><?=$userList[$i][username];?></td>
+	<td><? if($userList[$i][access_lv] == 7) { ?>
+	Admin
+	<? } elseif ($userList[$i][access_lv] == 6) { ?>
+	Supervisor
+	<? } else { ?>
+	User
+	<? } ?></td>
+	<td><?=$userList[$i][home_line];?></td>
+	<td><?=($userList[$i][line_lead] == 1)?"yes":"no";?></td>
+	<td><?=date("n/j/Y", $userList[$i][start_date]);?></td>
+</tr>
+<? endfor; ?>
+</table>
+</fieldset>
+<fieldset>
+      <div class="submit">
+        <div>
+	<input type="hidden" name="action" value="assign_training_choose_unit" />
+          <input id="next" name="next" type="submit" class="inputSubmit" tabindex="1000" value="Choose Unit &rarr;" />
+          <input id="cancel" name="cancel" type="submit" class="inputSubmit" tabindex="1001" value="Cancel" />
+        </div>
+      </div>
+    </fieldset>
+</form>
+<? elseif ($action == "assign_training_choose_unit"): ?>
+<form action="<?=$self;?>" method="post" name="searchassign" enctype="multipart/form-data">
+<input type="hidden" name="mode" value="User" />
+<? foreach ($users as $user => $val): ?>
+<input type="hidden" name="users[<?=$user;?>]" value="<?=$val;?>" />
+<? endforeach; ?>
+<fieldset>
+<legend>Choose the Topic(s) to assign training for</legend>
+<ul class="choosetopic">
+<? foreach ($topicList as $topLevel):
+$i = 0;?>
+<li><?=$topLevel['data']['name'];?>
+<? if (count($topLevel['children']) > 0): ?>
+<ul>
+<? foreach ($topLevel['children'] as $subLevel): ?>
+<li><?=$subLevel['data']['name'];?>
+<? if (count($subLevel['children']) > 0): ?>
+<ul>
+<? foreach ($subLevel['children'] as $unit): ?>
+<li><input name="selectUnit[<?=$unit['unitID'];?>]" id="selectUser<?=$unit['unitID'];?>" type="checkbox" class="inputCheckbox" tabindex="<?=$i + 100;?>" value="<?=$unit['name'];?>" /><?=$unit['name'];?></li>
+<? $i++; ?>
+<? endforeach; ?>
+</ul>
+<? endif; ?>
+</li>
+<? endforeach; ?>
+</ul>
+<? endif; ?>
+</li>
+<? endforeach; ?>
+</ul>
+
+</fieldset>
+<fieldset>
+      <div class="submit">
+        <div>
+	<input type="hidden" name="action" value="assign_training_confirm" />
+          <input id="next" name="next" type="submit" class="inputSubmit" tabindex="1000" value="Confirm &rarr;" />
+          <input id="cancel" name="cancel" type="submit" class="inputSubmit" tabindex="1001" value="Cancel" />
+        </div>
+      </div>
+    </fieldset>
+</form>
+<? elseif($action == "assign_training_confirm"): ?>
+<form action="<?=$self;?>" method="post" name="searchassign" enctype="multipart/form-data">
+<fieldset>
+<legend>Are you sure?</legend>
+<ul class="choosetopic">
+<li>Assigning Training for the following users:
+<ul class="choosetopic">
+<? foreach ($users as $user => $realname): ?>
+<li><input type="hidden" name="users[<?=$user;?>]" value="<?=$realname;?>" /><?=$realname;?></li>
+<? endforeach; ?>
+</ul></li>
+<li>To the following Topics:
+<ul>
+<? foreach ($units as $unit => $realname): ?>
+<li><input type="hidden" name="units[<?=$unit;?>]" value="<?=$realname;?>" /><?=$realname;?></li>
+<? endforeach; ?>
+</ul></li></ul>
+</fieldset>
+<fieldset>
+      <div class="submit">
+        <div>
+	<input type="hidden" name="mode" value="User" />
+	<input type="hidden" name="action" value="assign_training_final" />
+          <input id="next" name="next" type="submit" class="inputSubmit" tabindex="1000" value="Finish" />
+          <input id="cancel" name="cancel" type="submit" class="inputSubmit" tabindex="1001" value="Cancel" />
+        </div>
+      </div>
+    </fieldset>
+</form>
+<? elseif($action == "assign_training_final"): ?>
+<div class="message">
+<?=$message;?>
+<p>Click <a href="<?=$self;?>">here</a> to return to the main menu.</p>
+</div>
+<? else: ?>
+
+<? $debug->variable($userList, 1); ?>
+<table id="txh11b" class="sortable">
+	<tr>
+		<th>First</th>
+		<th>Last</th>
+		<th>Username</th>
+		<th>Access Level</th>
+		<th>Home Line</th>
+		<th>Line Lead</th>
+		<th>Training Start</th>
+		<th>Options</th>
+	</tr>
+
+<? for($i=0; $i< count($userList); $i++): ?>
+
+<tr class="hoverable">
+	<td><?=$userList[$i][gn]?></td>
+	<td><?=$userList[$i][sn]?></td>
+	<td><?=$userList[$i][username];?></td>
+	<td><? if($userList[$i][access_lv] == 7) { ?>
+	Admin
+	<? } elseif ($userList[$i][access_lv] == 6) { ?>
+	Supervisor
+	<? } else { ?>
+	User
+	<? } ?></td>
+	<td><?=$userList[$i][home_line];?></td>
+	<td><?=($userList[$i][line_lead] == 1)?"yes":"no";?></td>
+	<td><?=date("n/j/Y", $userList[$i][start_date]);?></td>
+	<td>[<a href="<?=$self;?>?mode=User&action=detail&uid=<?=$userList[$i][username];?>">details</a>] [<a href="<?=$self;?>?mode=User&action=reset&uid=<?=$userList[$i][username];?>">reset pass</a>]  [<a href="<?=$url;?>?mode=User&action=delete_confirm&uid=<?=$userList[$i][username];?>">delete</a>]</td>
+</tr>
+<? endfor; ?>
+</table>
+<? endif; ?>

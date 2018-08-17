@@ -1,0 +1,32 @@
+<h2 style="text-align: left;">Data Reconciliation Report
+for: <?=$companyName;?></h2>
+
+
+<span style="font-weight: bold; color: rgb(24, 27, 122);">Date
+of last census</span>: <?=gmdate(PAITDATE, $lastCensus);?><br />
+
+
+<span style="font-weight: bold; color: rgb(24, 27, 122);">Missing
+data by field</span>:<br />
+
+
+<div style="margin-left: 40px;">
+<dl>
+<? foreach ($missingData as $name => $data): ?>
+
+  <dt style="font-weight: bold;"><?=$name;?></dt>
+  <? if (is_array($data)): ?>
+  <dd>
+  <? $string = "";
+   foreach ($data as $datum):
+   $string .= '<a href="'.$self.'?mode=Person&action=showPerson&personID='.$datum['personID'].'">'.$datum['gn'].' '.$datum['sn'].'</a>,';
+   endforeach;
+   print substr($string, 0, -1);?>
+  </dd>
+  <? else: ?>
+  <dd><?=number_format($data,0);?> persons missing this data.</dd>
+  <? endif; ?>
+<? endforeach; ?>
+</dl>
+
+</div>

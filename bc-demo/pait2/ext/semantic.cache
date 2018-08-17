@@ -1,0 +1,27 @@
+;; Object ext/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "ext/"
+  :tables (list 
+   (semanticdb-table "Ext.ux.TableGrid.js"
+    :major-mode 'java-mode
+    :tags 'nil
+    :file "Ext.ux.TableGrid.js"
+    :pointmax 1377
+    )
+   (semanticdb-table "Ext.ux.FormBuilder.js"
+    :major-mode 'java-mode
+    :tags 'nil
+    :file "Ext.ux.FormBuilder.js"
+    :pointmax 6782
+    )
+   (semanticdb-table "Ext.ux.CascadingDialogs.js"
+    :major-mode 'java-mode
+    :tags 'nil
+    :file "Ext.ux.CascadingDialogs.js"
+    :pointmax 9713
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

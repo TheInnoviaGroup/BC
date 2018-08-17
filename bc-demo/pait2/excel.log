@@ -1,0 +1,63 @@
+Sep 04 14:18:04  [info] Logger started
+Sep 04 14:18:04  [info] ParseFromFile() enter.
+Sep 04 14:18:04  [info] InitParser() enter.
+Sep 04 14:18:04  [debug] parse_workbook() function
+Sep 04 14:18:04  [debug] parse_worksheet(DATA) function
+Sep 04 14:18:04  [debug] Parsed BIFF version is 8
+Sep 04 14:18:04  [debug] parse_workbook() function returns 0
+Sep 04 14:18:04  [info] Logger stoped
+Sep 04 14:22:32  [info] Logger started
+Sep 04 14:22:32  [info] ParseFromFile() enter.
+Sep 04 14:22:32  [info] InitParser() enter.
+Sep 04 14:22:32  [debug] parse_workbook() function
+Sep 04 14:22:32  [debug] parse_worksheet(DATA) function
+Sep 04 14:22:32  [debug] Parsed BIFF version is 8
+Sep 04 14:22:32  [debug] parse_workbook() function returns 0
+Sep 04 14:22:33  [info] Logger stoped
+Sep 04 14:23:46  [info] Logger started
+Sep 04 14:23:46  [info] ParseFromFile() enter.
+Sep 04 14:23:46  [info] InitParser() enter.
+Sep 04 14:23:46  [debug] parse_workbook() function
+Sep 04 14:23:46  [debug] parse_worksheet(DATA) function
+Sep 04 14:23:46  [debug] Parsed BIFF version is 8
+Sep 04 14:23:46  [debug] parse_workbook() function returns 0
+Sep 04 14:23:46  [info] Logger stoped
+Sep 04 15:03:52  [info] Logger started
+Sep 04 15:03:52  [info] ParseFromFile() enter.
+Sep 04 15:03:52  [info] InitParser() enter.
+Sep 04 15:03:52  [debug] parse_workbook() function
+Sep 04 15:03:52  [debug] parse_worksheet(DATA) function
+Sep 04 15:03:52  [debug] Parsed BIFF version is 8
+Sep 04 15:03:52  [debug] parse_workbook() function returns 0
+Sep 04 15:03:52  [info] Logger stoped
+Sep 04 15:06:32  [info] Logger started
+Sep 04 15:06:32  [info] ParseFromFile() enter.
+Sep 04 15:06:32  [info] InitParser() enter.
+Sep 04 15:06:32  [debug] parse_workbook() function
+Sep 04 15:06:32  [debug] parse_worksheet(DATA) function
+Sep 04 15:06:32  [debug] Parsed BIFF version is 8
+Sep 04 15:06:32  [debug] parse_workbook() function returns 0
+Sep 04 15:06:33  [info] Logger stoped
+Sep 20 08:02:50  [info] Logger started
+Sep 20 08:02:50  [info] ParseFromFile() enter.
+Sep 20 08:02:50  [info] InitParser() enter.
+Sep 20 08:02:50  [debug] parse_workbook() function
+Sep 20 08:02:50  [debug] parse_worksheet(DATA) function
+Sep 20 08:02:50  [debug] Parsed BIFF version is 8
+Sep 20 08:02:50  [debug] parse_worksheet(DATA) function
+Sep 20 08:02:50  [debug] Parsed BIFF version is 8
+Sep 20 08:02:50  [debug] parse_worksheet(DATA) function
+Sep 20 08:02:50  [debug] Parsed BIFF version is 8
+Sep 20 08:02:50  [debug] parse_workbook() function returns 0
+Sep 20 08:02:50  [info] Logger started
+Sep 20 08:02:50  [info] ParseFromFile() enter.
+Sep 20 08:02:50  [info] InitParser() enter.
+Sep 20 08:02:50  [debug] parse_workbook() function
+Sep 20 08:02:50  [debug] parse_worksheet(DATA) function
+Sep 20 08:02:50  [debug] Parsed BIFF version is 8
+Sep 20 08:02:50  [debug] parse_worksheet(DATA) function
+Sep 20 08:02:50  [debug] Parsed BIFF version is 8
+Sep 20 08:02:50  [debug] parse_worksheet(DATA) function
+Sep 20 08:02:50  [debug] Parsed BIFF version is 8
+Sep 20 08:02:50  [debug] parse_workbook() function returns 0
+Sep 20 08:02:50  [info] Logger stoped

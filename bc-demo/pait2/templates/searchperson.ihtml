@@ -1,0 +1,22 @@
+<?
+$array = array('success' => ($max > 0)?TRUE:FALSE,
+	       'sql' => $sql,
+	       'totalCount' => $max,
+	       'limitname' => $limitname);
+global $self;
+foreach ($results as $row):
+$array['results'][] = array('name' => ($row['cn'])?$row['cn']:$row['gn'].'&nbsp;'.$row['sn'],
+			    'personID' => $row['personID'],
+			    'personURL' => $self."?mode=Person&action=showPerson&personID=".$row['personID'],
+			    'companyName' => $row['companyName'],
+			    'companyID' => $row['companyID'],
+			    'companyURL' => $self."?mode=Company&action=showCompany&companyID=".$row['companyID'],
+			    'city' => $row['city'],
+			    'state' => $row['state'],
+			    'dob' => gmdate(PAITDATE, $row['birthdate']),
+			    'status' => $row['status'],
+			    );
+endforeach;
+print json_encode($array);
+exit;
+?>

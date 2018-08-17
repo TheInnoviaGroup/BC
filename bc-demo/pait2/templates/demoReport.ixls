@@ -1,0 +1,95 @@
+<?
+$babyTemplate = new template('demoReportSub.ixls');
+$count = 0;
+#determine $year.
+//pre($tenure);
+$year = date('Y', time());
+$lastTotal = 0;
+foreach ($totals as $newYear => $array) {
+	$newTotal = count(array_keys($array));
+	if ($newTotal > $lastTotal) {
+	   $year = $newYear;
+	   $lastTotal = $newTotal;
+	} else if ($newTotal == $lastTotal && $newYear > $year) {
+	  $year = $newYear;
+	   $lastTotal = $newTotal;
+	}
+}
+$babyTemplate->set('companyName', $companyName);
+
+$babyTemplate->set('year', $year);
+$totalAge = 0;
+$totalTenure = 0;
+$totalTotal = 0;
+$totalAgeTotal = 0;
+$totalTenureTotal = 0;
+foreach ($brackets as $bracket) {
+	$babyTemplate->set('l_'.$count, $bracket);
+	$babyTemplate->set('e_'.$count, $totals[$year][$bracket]['execs']);
+	$babyTemplate->set('a_'.$count, $totals[$year][$bracket]['age']);
+	$babyTemplate->set('t_'.$count, $totals[$year][$bracket]['tenure']);
+	$count++;
+	$totalTotal += $totals[$year][$bracket]['execs'];
+	if ($totals[$year][$bracket]['age'] != 0) {
+	  $totalAge += ($totals[$year][$bracket]['total'] * $totals[$year][$bracket]['age']);
+	  $totalAgeTotal += $totals[$year][$bracket]['total'];
+	}
+	if ($totals[$year][$bracket]['tenure'] != 0) {
+	  $totalTenure += ($totals[$year][$bracket]['total'] * $totals[$year][$bracket]['tenure']);
+	  $totalTenureTotal += $totals[$year][$bracket]['total'];
+	}
+}
+
+$babyTemplate->set('e_total', $totalTotal);
+$babyTemplate->set('a_total', ($totalAgeTotal > 0)?($totalAge / $totalAgeTotal):0);
+$babyTemplate->set('t_total', ($totalTenureTotal > 0)?($totalTenure / $totalTenureTotal):0);
+
+$stateTotal = 0;
+
+foreach($states as $state) {
+		$babyTemplate->set($state['myState'].'_number', $state['total']);
+		$stateTotal += $state['total'];
+}
+$babyTemplate->set('ST_number', $stateTotal);
+
+$count = 0;
+foreach($averages as $average) {
+		  if ($average['year'] == $year) {
+		     $babyTemplate->set('type_'.$count, $average['category']);
+		     $babyTemplate->set('comp_'.$count, $average['avg']);
+		     $count++;
+		  }
+
+}
+
+#Genders:
+$babyTemplate->set('female_count', $age[1]['total']);
+$babyTemplate->set('female_percentage', sprintf("%01.2f%%", $age[1]['total'] * 100 / ($age[2]['total']+$age[1]['total'])));
+$babyTemplate->set('female_average_age', $age[1]['avgAge']);
+$babyTemplate->set('female_max_age', $age[1]['maxAge']);
+$babyTemplate->set('female_min_age', $age[1]['minAge']);
+$babyTemplate->set('female_average_tenure', $tenure[1]['avgTenure']);
+$babyTemplate->set('female_max_tenure', $tenure[1]['maxTenure']);
+$babyTemplate->set('female_min_tenure', $tenure[1]['minTenure']);
+
+$babyTemplate->set('male_count', $age[2]['total']);
+$babyTemplate->set('male_percentage', sprintf("%01.2f%%", $age[2]['total'] * 100 / ($age[2]['total']+$age[1]['total'])));
+$babyTemplate->set('male_average_age', $age[2]['avgAge']);
+$babyTemplate->set('male_max_age', $age[2]['maxAge']);
+$babyTemplate->set('male_min_age', $age[2]['minAge']);
+$babyTemplate->set('male_average_tenure', $tenure[2]['avgTenure']);
+$babyTemplate->set('male_max_tenure', $tenure[2]['maxTenure']);
+$babyTemplate->set('male_min_tenure', $tenure[2]['minTenure']);
+
+ header('HTTP/1.1 200 OK');
+  header('Date: ' . date("D M j G:i:s T Y"));
+  header('Last-Modified: ' . date("D M j G:i:s T Y"));
+  header("Content-type: application/octet-stream");
+header("Content-Disposition: attachment; filename=\"".urlencode($companyName)."-demoReport.xls\"");
+  header("Cache-Control: no-store, no-cache, no-transform, must-revalidate, private");
+  header("Expires: 0");
+
+ $babyTemplate->display(); 
+
+
+?>

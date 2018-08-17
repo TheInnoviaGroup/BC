@@ -1,0 +1,497 @@
+<div><h2>Add a Line of Business for <?=$companyName;?></h2>
+<div id="lobEditForm"></div>
+</div>
+<script type="text/javascript">
+    Ext.onReady(function() {
+        Ext.namespace("Ext.PAIT");
+        Ext.PAIT.qItems = 0;
+        Ext.PAIT.dqItems = 0;
+        Ext.PAIT.dqMenuClick = function(e,f,g,h) {
+        console.log('dq Menu: ',e,f,g,h);
+    }
+    
+    Ext.PAIT.SubmitLOB = function(e,f,g,h) {
+        console.log('SubmitLOB Menu: ',e,f,g,h);
+        var jsonData = "[";
+        var ds = this.qdata;
+        for(i=0;i<ds.getCount();i++) {
+            var record = ds.getAt(i);
+            jsonData += Ext.util.JSON.encode(record.data)+',';
+        }
+        jsonData = jsonData.substring(0,jsonData.length-1)+']';
+        console.log('JsonData: %o', jsonData);
+        this.on('actioncomplete', function(e,f,g) {
+            if (f.result.success) {
+                Ext.MessageBox.alert('LOB Saved', 'LOB has been successfully saved.');
+            }
+        });
+        this.submit({params: {
+            criteria: jsonData,
+            companyID: '<?=$companyID;?>',
+            action: '<?=$action;?>',
+            <? if ($lobID > 0): ?>
+            lobID: <?=$lobID;?>,
+            <? endif; ?>
+            mode: 'LOB'
+        }});
+    }
+    
+    Ext.PAIT.lobCriteriaTypes = new Ext.data.SimpleStore({
+        fields: ['text', 'value'],
+        id: 1,
+        data: [
+                 ['Total Compensation', 'totalComp']
+                ,['Current Coverage', 'currentCoverage']
+                ,['Current and Proposed Coverage', 'currPropCoverage']
+                ,['Age', 'age']
+                ,['Hire Date', 'hiredate']
+                ,['Title', 'title']
+                ,['Tobacco Use', 'tobacco']
+                ,['Pay Grade', 'payGrade']
+                ,['Location (Facility Code)', 'location']
+              ]
+    });
+    
+    
+    
+    Ext.PAIT.timeOptions = new Ext.data.SimpleStore({
+        fields: ['text', 'value'],
+        id: 1,
+        data: [['Is Before', 1],
+               ['Is After', 0]
+              ]
+    });
+    Ext.PAIT.boolOptions = new Ext.data.SimpleStore({
+        fields: ['text', 'value'],
+        id: 1,
+        data: [['Is Not', 1],
+               ['Is', 0],
+               ['Contains', 2]
+              ]
+    });
+    /* Ext.PAIT.boolOptions = new Ext.data.SimpleStore({
+        fields: ['text', 'value'],
+        id: 1,
+        data: [['Is', 0],
+               ['Is Not', 1],
+               ['Contains', 2]
+              ]
+    }); */
+    Ext.PAIT.compOptions = new Ext.data.SimpleStore({
+        fields: ['text', 'value'],
+        id: 1,
+        data: [['Is Equal To', '=']
+               ,['Is Greater Than', '>']
+               ,['Is Less Than', '<']
+               ,['Is Greater Than or Equal To', '>=']
+               ,['Is Less Than or Equal To', '<=']
+              ]
+    });
+    Ext.PAIT.lastComparison = Ext.PAIT.lobCriteriaTypes;
+    Ext.PAIT.renderComparisonData = function(data) {
+								record = Ext.PAIT.lastComparison.getById(data);
+                                                                console.log('render? ', data, record, Ext.PAIT.lastComparison);
+								if(record) {
+									return record.data.text;
+								} else {
+									return data;
+								}
+							};
+    var columnModel;
+    Ext.PAIT.lobFormColModel = function () {
+		if(!columnModel) {
+			columnModel = new Ext.grid.ColumnModel(
+				[
+					{
+						header: 'Type',
+						sortable: true,
+                                                width: '150',
+						dataIndex: 'type',
+						editor: new Ext.grid.GridEditor(
+						new Ext.form.ComboBox(
+								{
+									typeAhead:false,
+									triggerAction:'all',
+									lazyRender:true,
+									store:  Ext.PAIT.lobCriteriaTypes,
+									displayField: 'text',
+									valueField:'value'
+								}
+							)
+						),
+                                                renderer: function(data) {
+								record = Ext.PAIT.lobCriteriaTypes.getById(data);
+                                                                console.log('render? ', data, record, Ext.PAIT.lastComparison);
+								if(record) {
+									return record.data.text;
+								} else {
+									return data;
+								}
+							}
+					},
+					{
+						header: 'Comparison',
+						sortable: true,
+                                                width:'100',
+						dataIndex: 'comparison',
+                                                renderer: Ext.PAIT.renderComparisonData
+						
+					},
+					{
+						header: 'Value',
+						sortable:true,
+						dataIndex: 'value'
+					}
+					
+				]
+			);
+                      
+		}
+		return columnModel;
+	};
+        
+        
+        Ext.PAIT.lobForm = new Ext.form.Form({
+        labelAlign: 'left',
+        labelWidth: 75,
+        baseParams: {
+            companyID: '<?=$companyID;?>',
+            action: '<?=$action;?>',
+            <? if ($lobID > 0): ?>
+            lobID: <?=$lobID;?>,
+            <? endif; ?>
+            mode: 'LOB'
+            },
+            url: '<?=$self;?>'
+        });
+        var lobForm = Ext.PAIT.lobForm;
+        lobForm.fieldset({labelAlign: 'top', legend: 'Line of Business Details', width: '92%'}
+                         , new Ext.form.TextField({
+                            fieldLabel: 'Brief Name',
+                            name: 'shortname',
+                            allowBlank:false,
+                            width: '80%',
+                            value: '<?=unhtmlize($shortname);?>'
+                            })
+                         , new Ext.form.TextArea({
+                            width: '80%',
+                            fieldLabel: 'Description',
+                            name: 'description',
+                            allowBlank:true,
+                            grow: true,
+                            preventScrollbars:true,
+                            value: '<?=unhtmlize($description);?>'
+                            })
+                         );
+        lobForm.end();
+        lobForm.fieldset(
+            {id:'qual', legend:'Criteria', labelAlign: 'left'}
+        );
+        lobForm.end();
+        
+    
+        lobForm.addButton('Save', Ext.PAIT.SubmitLOB, lobForm);
+        lobForm.addButton('Cancel');
+        lobForm.render('lobEditForm');
+        var qual = Ext.get('qual');
+        var c = qual.createChild({
+            tag:'div'
+        });
+        qdata = new Ext.data.Store({
+			/* proxy:  new Ext.data.ScriptTagProxy({url:'http://127.0.0.1/blah'}), */
+			reader:  new Ext.data.JsonReader(
+				{root: 'data', id: 'myID'},
+				[
+					{name: 'type'},
+					{name: 'comparison'}, 
+					{name: 'value'},
+					{name: 'myID'}
+				]
+			)<? if ($criteria): ?>,
+                        data: {data: <? print unhtmlize($criteria, TRUE); ?>}
+                        <? endif; ?>
+		}
+		);
+        lobForm.qdata = qdata;
+        qualgrid = new Ext.grid.EditorGrid(
+			c,
+			{
+				ds: qdata,
+				cm: Ext.PAIT.lobFormColModel(),
+				autoSizeColumns: true,
+				selModel: new Ext.grid.RowSelectionModel({singleSelect:true})
+			}
+		);
+        
+        qualgrid.startEditing = function(row, col)
+		{
+	        qualgrid.stopEditing();
+	        
+	            qualgrid.view.focusCell(row, col);
+	            var r = qualgrid.dataSource.getAt(row);
+	            var field = qualgrid.colModel.getDataIndex(col);
+				var type = r.data['type'];
+
+	            var e = {
+	                grid: qualgrid,
+	                record: r,
+	                field: field,
+	                value: r.data[field],
+	                row: row,
+	                column: col,
+	                cancel:false
+	            };
+
+	            if(qualgrid.fireEvent("beforeedit", e) !== false && !e.cancel)
+	            {
+	                qualgrid.editing = true; // flag for buffering of orphan key strokes
+	                (function()
+	                { // complex but required for focus issues in safari, ie and opera
+
+	                	var ed ;
+                                    // We have different editors based on our column (1 and 2)... so...
+                                if (col == 0) {
+                                    Ext.PAIT.lastComparison = Ext.PAIT.lobCriteriaTypes;
+                                    ed = new Ext.grid.GridEditor(
+						new Ext.form.ComboBox(
+								{
+									typeAhead:false,
+									triggerAction:'all',
+									lazyRender:true,
+									store:  Ext.PAIT.lobCriteriaTypes,
+									displayField: 'text',
+									valueField:'value'
+								}
+							)
+						);
+                                } else if (col == 1) {
+                                // Get editor based on the 'type' field
+	                	switch(type)
+	                	{
+	                		default:
+                                            return;
+                                            break;
+							case 'title':
+                                                            console.log('Here!');
+                                                            Ext.PAIT.lastComparison = Ext.PAIT.boolOptions;
+                                                            ed = new Ext.grid.GridEditor(
+                                                                                         new Ext.form.ComboBox(
+                                                                                                {
+                                                                                                store: Ext.PAIT.boolOptions,
+                                                                                                displayField:'text',
+                                                                                                valueField:'value',
+                                                                                                lazyRender:'true',
+                                                                                                forceSelection: true,
+                                                                                                triggerAction: 'all'
+                                                                                                }
+                                                                                            )
+                                                                                         );
+                                                            break;
+                                                        case 'tobacco':
+                                                            console.log('Here!');
+                                                            Ext.PAIT.lastComparison = Ext.PAIT.boolOptions;
+                                                            ed = new Ext.grid.GridEditor(
+                                                                                         new Ext.form.ComboBox(
+                                                                                                {
+                                                                                                store: Ext.PAIT.boolOptions,
+                                                                                                displayField:'text',
+                                                                                                valueField:'value',
+                                                                                                lazyRender:'true',
+                                                                                                forceSelection: true,
+                                                                                                triggerAction: 'all'
+                                                                                                }
+                                                                                            )
+                                                                                         );
+                                                            break;
+                                                        case 'payGrade':
+                                                            console.log('Here!');
+                                                            Ext.PAIT.lastComparison = Ext.PAIT.boolOptions;
+                                                            ed = new Ext.grid.GridEditor(
+                                                                                         new Ext.form.ComboBox(
+                                                                                                {
+                                                                                                store: Ext.PAIT.boolOptions,
+                                                                                                displayField:'text',
+                                                                                                valueField:'value',
+                                                                                                lazyRender:'true',
+                                                                                                forceSelection: true,
+                                                                                                triggerAction: 'all'
+                                                                                                }
+                                                                                            )
+                                                                                         );
+                                                            break;
+                                                        case 'location':
+                                                            console.log('Here!');
+                                                            Ext.PAIT.lastComparison = Ext.PAIT.boolOptions;
+                                                            ed = new Ext.grid.GridEditor(
+                                                                                         new Ext.form.ComboBox(
+                                                                                                {
+                                                                                                store: Ext.PAIT.boolOptions,
+                                                                                                displayField:'text',
+                                                                                                valueField:'value',
+                                                                                                lazyRender:'true',
+                                                                                                forceSelection: true,
+                                                                                                triggerAction: 'all'
+                                                                                                }
+                                                                                            )
+                                                                                         );
+                                                            break;
+                                                        case 'totalComp':
+                                                            //console.log('Here!');
+                                                            Ext.PAIT.lastComparison = Ext.PAIT.compOptions;
+                                                            ed = new Ext.grid.GridEditor(
+                                                                                         new Ext.form.ComboBox(
+                                                                                                {
+                                                                                                store: Ext.PAIT.compOptions,
+                                                                                                displayField:'text',
+                                                                                                valueField:'value',
+                                                                                                lazyRender:'true',
+                                                                                                forceSelection: true,
+                                                                                                triggerAction: 'all'
+                                                                                                }
+                                                                                            )
+                                                                                         );
+                                                            break;
+                                                        case 'currentCoverage':
+                                                            //console.log('Here!');
+                                                            Ext.PAIT.lastComparison = Ext.PAIT.compOptions;
+                                                            ed = new Ext.grid.GridEditor(
+                                                                                         new Ext.form.ComboBox(
+                                                                                                {
+                                                                                                store: Ext.PAIT.compOptions,
+                                                                                                displayField:'text',
+                                                                                                valueField:'value',
+                                                                                                lazyRender:'true',
+                                                                                                forceSelection: true,
+                                                                                                triggerAction: 'all'
+                                                                                                }
+                                                                                            )
+                                                                                         );
+                                                            break;
+                                                        case 'currPropCoverage':
+                                                            //console.log('Here!');
+                                                            Ext.PAIT.lastComparison = Ext.PAIT.compOptions;
+                                                            ed = new Ext.grid.GridEditor(
+                                                                                         new Ext.form.ComboBox(
+                                                                                                {
+                                                                                                store: Ext.PAIT.compOptions,
+                                                                                                displayField:'text',
+                                                                                                valueField:'value',
+                                                                                                lazyRender:'true',
+                                                                                                forceSelection: true,
+                                                                                                triggerAction: 'all'
+                                                                                                }
+                                                                                            )
+                                                                                         );
+                                                            break;
+                                                        case 'age':
+                                                            //console.log('Here!');
+                                                            Ext.PAIT.lastComparison = Ext.PAIT.compOptions;
+                                                            ed = new Ext.grid.GridEditor(
+                                                                                         new Ext.form.ComboBox(
+                                                                                                {
+                                                                                                store: Ext.PAIT.compOptions,
+                                                                                                displayField:'text',
+                                                                                                valueField:'value',
+                                                                                                lazyRender:'true',
+                                                                                                forceSelection: true,
+                                                                                                triggerAction: 'all'
+                                                                                                }
+                                                                                            )
+                                                                                         );
+                                                            break;
+                                                        case 'hiredate':
+                                                            //console.log('Here!');
+                                                            Ext.PAIT.lastComparison = Ext.PAIT.timeOptions;
+                                                            ed = new Ext.grid.GridEditor(
+                                                                                         new Ext.form.ComboBox(
+                                                                                                {
+                                                                                                store: Ext.PAIT.timeOptions,
+                                                                                                displayField:'text',
+                                                                                                valueField:'value',
+                                                                                                lazyRender:'true',
+                                                                                                forceSelection: true,
+                                                                                                triggerAction: 'all'
+                                                                                                }
+                                                                                            )
+                                                                                         );
+                                                            break;
+                                                        
+	                	}
+                                } else {
+                                    ed = new Ext.grid.GridEditor(
+                                            new Ext.form.TextField({
+                                               allowBlank: false 
+                                            }))
+                                }
+
+	                    ed.row = row;
+	                    ed.col = col;
+	                    ed.record = r;
+	                    ed.on("complete", qualgrid.onEditComplete, qualgrid, {single: true});
+	                    ed.on("specialkey", qualgrid.selModel.onEditorKey, qualgrid.selModel);
+                            console.log('Editor: %o',ed);
+	                    qualgrid.activeEditor = ed;
+	                    var v = r.data[field];
+	                    ed.startEdit(qualgrid.view.getCell(row, col), v);
+	                }
+	                ).defer(50, qualgrid);
+	            }
+	        
+    	}
+        
+        
+        qualgrid.render();
+        var qgridHeaderPanel = qualgrid.getView().getHeaderPanel(true);
+	var qtb = new Ext.Toolbar(
+			qgridHeaderPanel,
+			[
+				{
+					text: 'Add Criterion',
+					handler: function() {
+						qdata.add(
+							new Ext.data.Record(
+								{
+									type:'totalComp',
+									comparison:'',
+                                                                        value:'',
+                                                                        myID: qdata.getCount()+1
+								}
+							)
+						)
+					}
+				},
+				{
+					text: 'Delete Criterion',
+					handler: function() {
+						selectedRow = qualgrid.getSelectionModel().getSelected();
+						if(selectedRow) {
+							//gridForm.submit(
+							//	{
+							//		waitMsg: 'Deleting row, please wait...',
+									//url:'http://0.0.0.0:3000/admin/deleterow',
+							//		params:{rowid:selectedRow.data.description},
+							//		success:function(form, action) {
+										qdata.remove(selectedRow);
+							//		},
+							//		failure: function(form, action) {
+							//			alert('Oops the delete did not work out too well!');
+							//		}
+							//	}
+							//);												
+						}
+					}
+				}	
+			]
+		)
+	
+        
+ 
+        
+    
+
+    lobForm.reset();
+        
+    
+        
+    });
+</script>

@@ -1,0 +1,85 @@
+<div class="centerContent">
+<? switch ($action): ?>
+<? case "assignCompanies": ?>
+<h2>Assign Companies to user: <?=$userData['gn']." ".$userData['sn'];?></h2>
+Assigned companies:<br />
+<? $notAllowed = array();
+if (count($allowedCompanies) > 0):
+foreach ($companies as $company):
+if (in_array($company['companyID'], $allowedCompanies)): ?>
+<?=$company['name'];?> (<a href="<?=$self;?>?mode=Admin&action=unassignCompany&user_idnum=<?=$user_idnum;?>&companyID=<?=$company['companyID'];?>">unassign</a>)<br />
+<? else:
+$notAllowed[] = $company;
+endif;
+endforeach;
+else:
+$notAllowed = $companies;
+?>No companies assigned to this user.
+<? endif; ?>
+<p>
+Unassigned Companies<br />
+<? foreach ($notAllowed as $company):?>
+<?=$company['name'];?> (<a href="<?=$self;?>?mode=Admin&action=assignCompany&user_idnum=<?=$user_idnum;?>&companyID=<?=$company['companyID'];?>">assign</a>)<br />
+<? endforeach;?>
+<? break; ?>
+<? case "user": ?>
+<center>
+<form action="<?=$self;?>" id="userform" method="POST">
+<input type="hidden" name="mode" value="Admin" />
+<input type="hidden" name="action" value="User" />
+<? if ($user): ?>
+<fieldset><legend><?=($add)?"Add User":"Edit User";?></legend>
+Username: <?=$user->username;?><br />
+<label for="gn">First name: <input type="text" name="gn" id="gn" value="<?=$user->gn;?>" /></label><br />
+<label for="sn">Last name: <input type="text" name="sn" id="sn" value="<?=$user->sn;?>" /></label><br />
+<label for="email">Email Address: <input type="text" name="email" id="email" value="<?=$user->email;?>" /></label><br />
+<? if ($add): ?>
+<label for="password">Password: <input type="password" name="password" id="password" /></label><br />
+<label for="confirmpassword">Confirm Password: <input type="password" name="confirmpassword" id="confirmpassword" /></label><br />
+<? else: ?>
+<input type="hidden" name="userID" value="<?=$user->user_idnum;?>" />
+<label for="password">Change Password (leave blank if not changing): <input type="password" name="password" id="password" /></label><br />
+<label for="confirmpassword">Confirm Password: <input type="password" name="confirmpassword" id="confirmpassword" /></label><br /><label for="access_lv">Access Level: <select name="access_lv">
+<option value="2" <?=($user->access_lv == 2)?"SELECTED":"";?>>Administrator</option>
+<option value="1" <?=($user->access_lv == 1)?"SELECTED":"";?>>Read/Write (Self Only)</option>
+<option value="0" <?=($user->access_lv == 0)?"SELECTED":"";?>>Read Only</option>
+<option value="5" <?=($user->access_lv == 5)?"SELECTED":"";?>>Company Representative (Read Only)</option>
+<option value="3" <?=($user->access_lv == 3)?"SELECTED":"";?>>Upload Census Only</option>
+<option value="4" <?=($user->access_lv == 4)?"SELECTED":"";?>>Lead Tracker Only</option>
+</select>
+</label><br />
+<input type="submit" name="delete" value="Delete User" />
+<? endif; ?>
+<? else: ?>
+<label for="username">Username: <input type="text" name="username" id="username" value="" /></label><br />
+<label for="gn">First name: <input type="text" name="gn" id="gn" value="" /></label><br />
+<label for="sn">Last name: <input type="text" name="sn" id="sn" value="" /></label><br />
+<label for="email">Email Address: <input type="text" name="email" id="email" value="" /></label><br />
+<label for="password">Password: <input type="password" name="password" id="password" /></label><br />
+<label for="confirmpassword">Confirm Password: <input type="password" name="confirmpassword" id="confirmpassword" /></label><br />
+<label for="access_lv">Access Level: <select name="access_lv">
+<option value="2">Administrator</option>
+<option value="1">Read/Write (Self Only)</option>
+<option value="0">Read Only</option>
+<option value="5">Company Representative (Read Only)</option>
+<option value="3">Upload Census Only</option>
+<option value="4">Lead Tracker Only</option>
+</select>
+</label><br />
+<? endif; ?>
+<input type="submit" name="submit" value="Save User" /><br><br>
+</fieldset>
+</form></center>
+<? break; ?>
+<? case "userlist": ?>
+<h2>User List</h2>
+<ul>
+<? foreach ($records as $record): ?>
+<li><?=$record['gn']." ".$record['sn'];?> <?=($record['email'])?" &lt;".$record['email']."&gt;":"";?><? if ($userObj->access_lv > 1): ?><span class="edit">(<a href="<?=$self;?>?mode=Admin&action=User&userID=<?=$record['user_idnum'];?>">edit</a>)<? if ($record['access_lv'] == 1 || $record['access_lv'] == 5): ?>&nbsp;(<a href="<?=$self;?>?mode=Admin&action=assignCompany&user_idnum=<?=$record['user_idnum'];?>">Assign Companies</a>)<? endif;?></span><? endif; ?>
+</li>
+<? endforeach; ?>
+</ul>
+<? break; ?>
+
+<? endswitch; ?>
+</div>

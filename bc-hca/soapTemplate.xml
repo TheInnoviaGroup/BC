@@ -1,0 +1,30 @@
+<?php echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://www.plane.biz/exchange/20060125/employeeinfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="http://www.plane.biz/exchange/20080115/exchangestatusinput" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns3="http://www.plane.biz/exchange/20060125/logoninfoemployee" xmlns:ns4="http://www.plane.biz/exchange/20060125/hostinfo" xmlns:ns5="http://www.plane.biz/exchange/20060125/headerinfo" xmlns:ns6="http://www.plane.biz/exchange/20060125/benefitinfo" xmlns:ns7="http://www.plane.biz/exchange/20060125/htmllayoutinfo" xmlns:ns8="http://www.plane.biz/exchange/20060125/dependentinfo">
+  <SOAP-ENV:Header>
+    <ns5:HeaderInfo>
+      <ns5:EmployerID><?=$unumKey;?></ns5:EmployerID>
+    </ns5:HeaderInfo>
+  </SOAP-ENV:Header>
+  <SOAP-ENV:Body>
+    <ns2:ExchangeStatusInput>
+    <ns1:Employee>
+      <ns1:SSN><?=$ssn;?></ns1:SSN>
+<ns1:FirstName><?=$user->gn;?></ns1:FirstName>
+<ns1:LastName><?=$user->sn;?></ns1:LastName>
+      <ns1:Class><?=$unumClass;?></ns1:Class>
+      <ns1:Location><?=$unumLocation;?></ns1:Location>
+     </ns1:Employee>
+     <ns6:BenefitInfo />
+     <ns7:HTMLLayout />
+     <ns4:HostURL>
+      <ns4:ReturnURL><?=$bcReturnURL;?></ns4:ReturnURL>
+      <ns4:ExceptionURL>https://hca.benefitcoach.net/</ns4:ExceptionURL>
+      <ns4:TimeoutURL>https://hca.benefitcoach.net/</ns4:TimeoutURL>
+     </ns4:HostURL>
+     <ns8:Dependents />
+     <ns3:LogonEmployee>
+      <ns3:IDKey>SSN</ns3:IDKey>
+     </ns3:LogonEmployee>
+    </ns2:ExchangeStatusInput>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

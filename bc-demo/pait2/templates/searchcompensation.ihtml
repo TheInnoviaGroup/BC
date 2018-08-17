@@ -1,0 +1,16 @@
+<table class="sortable" id="searchresults"><thead><caption>Search results for: <?=$for;?></caption>
+<tr><th>Name</th><th>Company</th><th><?=$complabel;?></th><th>Year</th><th>Status</th></tr>
+</thead>
+<tbody>
+<? foreach ($results as $row): ?>
+<tr class="hoverable">
+<td><a href="<?=$self;?>?mode=Person&action=showPerson&personID=<?=$row['personID'];?>"><?=($row['cn'])?$row['cn']:$row['gn'].'&nbsp;'.$row['sn'];?></a></td>
+<td><a href="<?=$self;?>?mode=Company&action=showCompany&companyID=<?=$row['companyID'];?>"><?=$row['companyName'];?></a></td>
+<td><?=formatMoney($row['amount']);?></td>
+<td><?=$row['year'];?></td>
+<td><?=$row['status'];?></td>
+</tr>
+<? endforeach; ?>
+<tr><td colspan=6 align="right"><form name="savesearch" action="<?=$self;?>" method="POST"><input type="hidden" name="mode" value="Search" /><input type="hidden" name="action" value="saveSearch" /><label for="savesearchname">Save this search as: </label><input type="text" name="savesearchname"><input type="submit" value="Save" name="Submit"><input type="hidden" name="saveit" value="<?=$saveit;?>" /></form></td></tr>
+</tbody>
+</table>

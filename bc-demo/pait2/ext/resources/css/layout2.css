@@ -1,0 +1,82 @@
+/*
+ * Ext JS Library 1.0.1
+ * Copyright(c) 2006-2007, Ext JS, LLC.
+ * licensing@extjs.com
+ * 
+ * http://www.extjs.com/license
+ */
+
+.x-border-layout-ct {
+    background:#dfe8f6;
+}
+.x-border-panel {
+    position:absolute;
+    left:0;
+    top:0;
+}
+
+.x-tool-collapse-south {
+    background-position:0 -75px;
+}
+.x-tool-collapse-south-over {
+    background-position:-15px -75px;
+}
+
+.x-tool-collapse-north {
+    background-position:0 -60px;
+}
+.x-tool-collapse-north-over {
+    background-position:-15px -60px;
+}
+
+.x-tool-collapse-west {
+    background-position:0 -105px;
+}
+.x-tool-collapse-west-over {
+    background-position:-15px -105px;
+}
+
+.x-tool-collapse-east {
+    background-position:0 -120px;
+}
+.x-tool-collapse-east-over {
+    background-position:-15px -120px;
+}
+
+
+.x-tool-expand-south {
+    background-position:0 -60px;
+}
+.x-tool-expand-south-over {
+    background-position:-15px -60px;
+}
+
+.x-tool-expand-north {
+    background-position:0 -75px;
+}
+.x-tool-expand-north-over {
+    background-position:-15px -75px;
+}
+
+.x-tool-expand-west {
+    background-position:0 -120px;
+}
+.x-tool-expand-west-over {
+    background-position:-15px -120px;
+}
+
+.x-tool-expand-east {
+    background-position:0 -105px;
+}
+.x-tool-expand-east-over {
+    background-position:-15px -105px;
+}
+
+.x-tool-expand-north, .x-tool-expand-south {
+    float:right;
+    margin:3px;
+}
+.x-tool-expand-east, .x-tool-expand-west {
+    float:none;
+    margin:3px auto;
+}

@@ -1,0 +1,28 @@
+<center>
+<table id="comphistdata<?=$personID;?>" class="sortable comphist">
+<caption>Compensation History</caption>
+<thead>
+<tr>
+<th>Company</th>
+<th>Type</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<? foreach ($compensationData as $record): ?>
+<tr class="hoverable">
+<td><a href="<?=$self;?>?mode=Company&action=showCompany&companyID=<?=$record['companyID'];?>" class="centerTarget" title="Company: <?=$record['name'];?>" id="company<?=$record['companyID'];?>"><?=$record['name'];?></a></td>
+<td><?=($record['type'])?$record['type']:$record['year'] . " " . $record['TYPE'];?>
+<? if ($record['updated'] > 1000): ?>
+<span style="float: right"><font size=-2><i>Updated on <?=gmdate(PAITDATE, $record['updated']);?></i></font></span>
+<? endif; ?>
+</td>
+<td><?=formatMoney($record['amount']);?></td>
+</tr>
+<? endforeach; ?>
+</tbody>
+</table></center>
+<script type="text/javascript">
+    var CHgrid = new Ext.grid.TableGrid("comphistdata<?=$personID;?>");
+        CHgrid.render();
+</script>

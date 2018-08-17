@@ -1,0 +1,268 @@
+<div class="centerContent">
+<div class="policyData" id="policyinfo">
+<h2>Policies for: <? if ($personData['cn']): ?>
+    <?=$personData['cn'];?>
+    <? elseif (preg_match("/[A-Za-z]/",$personData['gn']) && preg_match("/[A-Za-z]/",$personData['sn'])): ?>
+        <?=$personData['salutation'];?> <?=$personData['gn'];?><?=($personData['mn'])?" ".$personData['mn']:"";?> <?=$personData['sn'];?><?=($personData['suffix'])?", ".$personData['suffix']:"";?>
+        <? else: ?>
+        <?=$personData['cn'];?><? endif; ?></h2>
+<? if ($personData['additionalBenefits']): ?>
+<p class="additionalBenefits"><b>Additional Benefits</b><br />
+<?=multiline($personData['additionalBenefits']);?></p>
+<? endif; ?>
+<? if (is_array($policyinfo)): ?>
+<table id="policydetailsummary">
+<thead><tr><th style="display:none">UID</th><th>Carrier</th><th>Policy Number</th><th>Policy Type</th><th>Policy Status</th><th>Effective Date</th><th>Benefit Amount</th><th>Premium</th><th>Premium Term</th><th>Catastrophic</th></tr></thead>
+<tbody>
+<? foreach($policyinfo as $policy): ?>
+<tr><td style="display:none"><?=$policy['uid'];?></td>
+<td><?=$policy['carrierName'];?></td>
+<td><?=($policy['policyNumber'])?$policy['policyNumber']:"Prospective Policy";?></td>
+<td><?=($policy['policyType'])?$policy['policyType']." ":"";?></td>
+<td><?=$policyStatuses[$policy['policyStatus']];?></td>
+<td><?=(!preg_match("/^\-*\d+$/", $policy['effectiveDate']))?$policy['effectiveDate']:(($policy['effectiveDate'] > 0)?gmdate(PAITDATE,$policy['effectiveDate']):$policy['effectiveDate']);?></td>
+<td><?=$policy['benefitAmount'];?></td>
+<td><?=$policy['premium'];?></td>
+<td><?=$policy['premiumTerm'];?></td>
+<td><?=$policy['catastrophic'];?></td></tr>
+<? endforeach; ?>
+</tbody>
+</table>
+<? foreach($policyinfo as $policy): ?>
+<div id="policyInfo-<?=$policy['uid'];?>" style="display:none;">
+<div class="actionBox">
+<?=($policy['policyType'])?$policy['policyType']." ":"";?>Policy Info <span class="policyNote"> <a href="<?=$self;?>?mode=Person&action=editPolicy&personID=<?=$personData['personID'];?>&uid=0">add new</a> <a href="<?=$self;?>?mode=Person&action=deletePolicy&personID=<?=$personData['personID'];?>&uid=<?=$policy['uid'];?>">Delete</a> <br /><br /> Click policy number to edit existing policy
+</div>
+<table id="policyData2" class="sortable" style="text-align: left; width: 100%;" cellpadding="2" cellspacing="2">
+<tbody>
+ <th><a href="#" class="sortheader" >Carrier<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Policy Number<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Policy Status<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Effective Date<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Benefit Amount<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Premium<span class="sortarrow">&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Premium Term</a></th>
+
+      <th><a href="#" class="sortheader" >Catastrophic<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+<tr><td><a href="<?=$self;?>?mode=Carrier&action=showCarrier&carrierID=<?=$policy['carrierID'];?>"><?=$policy['carrierName'];?></td>
+<td><a href="javascript:void(0);" onclick="javascript:Ext.ux.CascadingDialogs.openCenter({target:{href:'<?=$self;?>?mode=Person&module=editpolicy&action=editPolicy&personID=<?=$personData['personID'];?>&uid=<?=$policy['uid'];?>', title: 'Edit Policy', id:'editpolicyinfo'}}, App);return false;" class="openCenter" title="Edit Policy" id="editpolicy"><?=($policy['policyNumber'])?$policy['policyNumber']:"Prospective Policy";?></a></td>
+<td><?=$policyStatuses[$policy['policyStatus']];?></td>
+<td><?=(!preg_match("/^\-*\d+$/", $policy['effectiveDate']))?$policy['effectiveDate']:(($policy['effectiveDate'] > 0)?gmdate(PAITDATE,$policy['effectiveDate']):$policy['effectiveDate']);?></td>
+<td><?=$policy['benefitAmount'];?></td><td><?=$policy['premium'];?></td><td><?=$policy['premiumTerm'];?></td><td><?=$policy['catastrophic'];?></td></tr>  </tbody>
+</table>
+<table id="policyData3" class="sortable" style="text-align: left; width: 100%;" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+      <th><a href="#" class="sortheader" >Paid By<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Policy Form<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Elimination
+Period<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Benefit Period<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Tobacco Use<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Class<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >State App Signed<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+    </tr>
+
+    <tr>
+<td><?=($policy['paidBy'] == 1)?"Employer Paid":"Employee Paid";?></td>
+
+<td><?=$policy['policyForm'];?></td><td><?=$policy['eliminationPeriod'];?></td><td><?=$policy['benefitPeriod'];?></td><td><?=($policy['tobaccoUser'] == 2)?"Unknown":(($policy['tobaccoUser'])?"Yes":"No");?></td><td><?=$policy['class'];?></td><td><?=$policy['stateAppSigned'];?></td>
+</tr>
+<table id="policyData4" class="sortable" style="text-align: left; width: 100%;" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <th><a href="#" class="sortheader" >Risk Number<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Discount<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Amendment Info<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Reconsideration
+Date<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >MNDA<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+      <th><a href="#" class="sortheader" >COLA<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+
+    </tr>
+
+    <tr>
+<td><?=$policy['riskNumber'];?></td><td><?=$policy['discount'];?></td><td><?=preg_replace("/\n/", "<br />", $policy['amendment']);?></td><td><?=(!preg_match("/^\-*\d+$/", $policy['reconsiderationDate']))?$policy['reconsiderationDate']:(($policy['reconsiderationDate'] > 0)?gmdate(PAITDATE,$policy['reconsiderationDate']):$policy['reconsiderationDate']);?></td><td><?=$policy['mnda'];?></td><td><?=$policy['cola'];?></td>
+    </tr>
+
+  </tbody>
+</table>
+
+<table id="policyData5" class="sortable" style="text-align: left; width: 100%;" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <th><a href="#" class="sortheader" >Recovery<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >WIB<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Group LTD<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Extended Partial<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >LC<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+      
+      <th><a href="#" class="sortheader" >FIO<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Residual<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+<th><a href="#" class="sortheader" >Substandard<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+<th><a href="#" class="sortheader" >Own Occ<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+
+    </tr>
+
+    <tr>
+<td><?=preg_replace("/\n/", "<br />", $policy['recovery']);?></td>
+<td><?=preg_replace("/\n/", "<br />", $policy['wib']);?></td>
+<td><?= $policy['groupLTD'];?></td>
+<td><?= $policy['extendedPartial'];?></td>
+<td><?=preg_replace("/\n/", "<br />", $policy['lc']);?></td>
+<td><?=preg_replace("/\n/", "<br />", $policy['fio']);?></td>
+<td><?=preg_replace("/\n/", "<br />", $policy['residual']);?></td>
+<td><?=preg_replace("/\n/", "<br />", $policy['substandard']);?></td>
+<td><?=preg_replace("/\n/", "<br />", $policy['ownocc']);?></td>
+    </tr>
+
+  </tbody>
+</table>
+<? if (is_array($ratefile)): ?>
+<? $data = $ratefile[$policy['importID']]; ?>
+<? if (is_array($data) && is_array($data['data']) && is_array($data['info'])): ?>
+<tr><td colspan="17"><table id="<?=$count;?>extraPolData<?=$personID;?>" class="sortable comphist">
+<thead><caption><?=$data['title']?></caption><tr>
+<? foreach ($data['info'] as $header): ?>
+<? if ($header != "personID" && $header != "policyNumber" && $header != "iuid"): ?>
+<th><?=$header;?></th>
+<? endif; ?>
+<? endforeach; ?>
+</tr></thead><tbody>
+<? foreach ($data['data'] as $row): ?>
+<tr class="hoverable">
+<? foreach ($row as $key => $val): ?>
+<? if ($key != "personID" && ! preg_match("/^\d+$/", $key) && $key != "policyNumber" && $key != "iuid"): ?>
+<td><?=$val;?></td>
+<? endif; ?>
+<? endforeach; ?>
+</tr>
+<? endforeach; ?>
+</tbody></table></td></tr>
+ <? endif; ?>
+<? endif; ?>
+</table>
+</div>
+
+<? endforeach; ?>
+<? endif; ?>
+</div>
+</div>
+<script type="text/javascript">
+
+Ext.PAIT.showPolicyBlock = function (g) {
+    var newBlock = g.rowRecord.data['tcol-0'];
+    if (newBlock != g.lastUID) {
+        
+        if (g.lastUID) {
+        Ext.Element.fly('policyInfo-'+g.lastUID).setVisibilityMode(Ext.Element.DISPLAY).hide();
+        }
+        Ext.Element.fly('policyInfo-'+newBlock).setVisibilityMode(Ext.Element.DISPLAY).show();
+        g.lastUID = newBlock;
+    } else {
+        if (g.lastUID) {
+        
+        Ext.Element.fly('policyInfo-'+g.lastUID).setVisibilityMode(Ext.Element.DISPLAY).toggle();
+        }
+    }
+    
+}
+
+    var PolicySummaryGrid = new Ext.grid.TableGrid("policydetailsummary");
+    // create the grid
+    PolicySummaryGrid.lastUID = false;
+    PolicySummaryGrid.toggleDetails = false;
+  PolicySummaryGrid.on('rowdblclick', function(PolicySummaryGrid, rowIndex, e) {
+    e.stopEvent();
+    PolicySummaryGrid.rowRecord = PolicySummaryGrid.getDataSource().getAt(rowIndex);
+    console.log('Double: %o %o', PolicySummaryGrid.rowRecord, PolicySummaryGrid);
+    Ext.PAIT.showPolicyBlock(PolicySummaryGrid);
+
+});
+  PolicySummaryGrid.on('rowclick', function(PolicySummaryGrid, rowIndex, e) {
+    e.stopEvent();
+    
+    PolicySummaryGrid.rowRecord = PolicySummaryGrid.getDataSource().getAt(rowIndex);
+    console.log('Single: %o %o', PolicySummaryGrid.rowRecord, PolicySummaryGrid);
+    if (PolicySummaryGrid.toggleDetails) {
+        Ext.PAIT.showPolicyBlock(PolicySummaryGrid);
+    }
+});
+  
+function onGridContextMenuClick(item, e) {
+// row data or handle to grid or row id is not available in item or e
+//only the id and text of the selected contextmenu
+console.log("this: %o, item: %o, e: %o");
+  switch  (item.id) {
+    case 'delete':
+        Ext.MessageBox.confirm('Confirm Delete', 'Are you sure you want to delete this policy?', Ext.PAIT.confirmDeletePolicy, this);
+    break;
+    case 'edit':
+        var myUID = this.rowRecord.data['tcol-0'];
+        Ext.ux.CascadingDialogs.openCenter({target:{href:'<?=$self;?>?mode=Person&module=editpolicy&action=editPolicy&personID=<?=$personData['personID'];?>&uid='+myUID, title: 'Edit Policy', id:'editpolicyinfo'}}, App);
+        break;
+    case 'show':
+        this.toggleDetails = (this.toggleDetails)?false:true;
+        Ext.PAIT.showPolicyBlock(this);
+    break;
+  }
+}
+
+Ext.PAIT.confirmDeletePolicy = function(e,f,g) {
+    console.log('Confirm Delete: ',e,f,g);
+    if (e == 'yes') {
+        Ext.PAIT.deletePolicyHandler(this);
+    }
+}
+
+var gridContextMenu = new Ext.menu.Menu('policySummaryGrid-cm');
+gridContextMenu.add({ id: 'show', text: 'Toggle Policy Details', handler: onGridContextMenuClick, scope: PolicySummaryGrid});
+gridContextMenu.add({ id: 'delete', text: 'Delete Policy', handler: onGridContextMenuClick , scope: PolicySummaryGrid});
+gridContextMenu.add({id: 'edit', text: 'Edit Policy', handler: onGridContextMenuClick, scope: PolicySummaryGrid});
+
+
+  PolicySummaryGrid.doRowContextMenu = function (grid, rowIndex, e) {
+    //row data is available here
+    e.stopEvent();
+    var coords = e.getXY();
+    var rowRecord = PolicySummaryGrid.getDataSource().getAt(rowIndex);
+    PolicySummaryGrid.rowRecord = rowRecord;
+    gridContextMenu.showAt([coords[0], coords[1]]);
+    
+  }
+  PolicySummaryGrid.addListener('rowcontextmenu', PolicySummaryGrid.doRowContextMenu);
+        PolicySummaryGrid.render();
+        PolicySummaryGrid.getColumnModel().setHidden(0, true);
+    </script>

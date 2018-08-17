@@ -1,0 +1,164 @@
+/*
+ * Ext JS Library 1.0.1
+ * Copyright(c) 2006-2007, Ext JS, LLC.
+ * licensing@extjs.com
+ * 
+ * http://www.extjs.com/license
+ */
+
+html, body {
+    font: normal 12px tahoma, arial, verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+    overflow: hidden;
+    height: 100%;
+    background: url( images/beach.jpg ) no-repeat left bottom;
+}
+
+.plugin {
+    background-image: url( ../shared/icons/fam/plugin.gif );
+}
+
+#desktop {
+    width: 100%;
+    height: 100%;
+    border: 0 none;
+}
+
+#desktop-bg {
+    width: 100%;
+    height: 100%;
+    border: 0 none;
+}
+
+#taskbar {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    background: #15428b url( images/appbar-bg.gif ) repeat-x;
+    padding: 4px 0 2px 0;
+    z-index: 25000;
+    opacity: .9;
+    -moz-opacity: .9;
+    filter: alpha( opacity = 90 );
+}
+
+#taskbar .x-toolbar {
+    border: 0 none;
+    background: 0 none;
+}
+
+#winbar .x-btn {
+    float: left;
+    margin: 2px 0 0 2px;
+}
+
+#winbar .x-btn-left {
+    width: 3px;
+    height: 21px;
+    background: url( images/app-win-btn-sprite.gif ) no-repeat 0 0;
+}
+
+#winbar .x-btn-right {
+    width: 3px;
+    height: 21px;
+    background: url( images/app-win-btn-sprite.gif ) no-repeat 0 -21px;
+}
+
+#winbar .x-btn-left i, .x-btn-right i {
+    display: block;
+    width: 3px;
+    overflow: hidden;
+    font-size: 1px;
+    line-height: 1px;
+}
+
+#winbar .x-btn-center {
+    background: url( images/app-win-btn-sprite.gif ) repeat-x 0 -42px;
+    vertical-align: middle;
+    text-align: center;
+    padding: 0 5px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+#winbar .x-btn-over .x-btn-left {
+    background-position: 0 -126px;
+}
+
+#winbar .x-btn-over .x-btn-right {
+    background-position: 0 -147px;
+}
+
+#winbar .x-btn-over .x-btn-center {
+    background-position: 0 -168px;
+}
+
+#winbar .active-win .x-btn-left {
+    background-position: 0 -63px !important;
+}
+
+#winbar .active-win .x-btn-right {
+    background-position: 0 -84px !important;
+}
+
+#winbar .active-win .x-btn-center {
+    background-position: 0 -105px !important;
+}
+
+#qlaunch button {
+    color: white;
+}
+
+#qlaunch .x-btn-over .x-btn-left {
+    background-image: url( images/task-btn-sprite.gif );
+    background-position: 0 -126px;
+}
+
+#qlaunch .x-btn-over .x-btn-right {
+    background-image: url( images/task-btn-sprite.gif );
+    background-position: 0 -147px;
+}
+
+#qlaunch .x-btn-over .x-btn-center {
+    background-image: url( images/task-btn-sprite.gif );
+    background-position: 0 -168px;
+}
+
+#qlaunch .x-btn-click .x-btn-left {
+    background-image: url( images/task-btn-sprite.gif );
+    background-position: 0 -63px;
+}
+
+#qlaunch .x-btn-click .x-btn-right {
+    background-image: url( images/task-btn-sprite.gif );
+    background-position: 0 -84px;
+}
+
+#qlaunch .x-btn-click .x-btn-center {
+    background-image: url( images/task-btn-sprite.gif );
+    background-position: 0 -105px;
+}
+
+#winbar button {
+    width: 150px;
+    overflow: hidden;
+    text-align: left;
+    background-image: url( ../shared/icons/fam/plugin.gif );
+    background-position: 0 2px;
+    color: white;
+}
+
+#spacer {
+    height: 25px;
+    float: left;
+    width: 0;
+    overflow: hidden;
+    margin-top: 2px;
+}
+.x-window-body p {
+    padding:10px;
+    margin:0;
+}

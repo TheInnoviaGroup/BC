@@ -1,0 +1,102 @@
+<html><head><title>Alib Ajax Test</title>
+<script type='text/javascript' src='ajax1.php?client'></script>
+<script type='text/javascript'>
+function doTestObject() {
+   var arg = document.getElementById('arg1').value;
+   
+   // Setup the callback object
+   var toHandler = new testObjectHandler();
+
+   // Create the remote object in async mode
+   var to = new testobject(toHandler);
+
+   // Call the remote method
+   to.testmethod(arg);
+}
+function testObjectHandler(){}
+testObjectHandler.prototype.testmethod = function(response) {
+    alert(response);
+}
+
+
+
+function doTestObjectTwoOne() {
+   var arg = document.getElementById('arg2').value;
+   
+   // Setup the callback object
+   var toHandler = new testObjectTwoHandler();
+
+   // Create the remote object in async mode
+   var to = new testobjecttwo(toHandler);
+
+   // Call the remote method
+   to.testmethodone(arg);
+}
+function doTestObjectTwoTwo() {
+   var arg = document.getElementById('arg3').value;
+   
+   // Setup the callback object
+   var toHandler = new testObjectTwoHandler();
+
+   // Create the remote object in async mode
+   var to = new testobjecttwo(toHandler);
+
+   // Call the remote method
+   to.testmethodtwo(arg);
+}
+function doTestObjectTwoThree() {
+   var arg = document.getElementById('arg3').value;
+   
+   // Setup the callback object
+   var toHandler = new testObjectTwoHandler();
+
+   // Create the remote object in async mode
+   var to = new testobjecttwo(toHandler);
+
+   // Call the remote method
+   to.testmethodthree(arg);
+}
+function testObjectTwoHandler(){}
+testObjectTwoHandler.prototype.testmethodone = function(response) {
+    alert(response);
+}
+testObjectTwoHandler.prototype.testmethodtwo = function(response) {
+    alert(response);
+}
+testObjectTwoHandler.prototype.testmethodthree = function(response) {
+    alert(response);
+}
+
+
+
+function doTestFunction() {
+   var arg = document.getElementById('arg5').value;
+   
+   // Setup the callback object
+   var toHandler = new testFunctionHandler();
+
+   // Create the remote object in async mode
+   var to = new ajaxfunction(toHandler);
+
+   // Call the remote method
+   to.testfunction(arg);
+}
+function testFunctionHandler(){}
+testFunctionHandler.prototype.testfunction = function(response) {
+    alert(response);
+}
+
+</script>
+</head>
+<body>
+<form action="ajax.html" method=POST>
+<table><tr><th>PHP Object/Function</th><th>Argument</th><th>Do it!</th></tr>
+<tr><td>testObject::testMethod</td><td><input id="arg1" type="text"></td><td><input type="button" onclick="doTestObject();"></td></tr>
+<tr><td>testObjectTwo::testMethodOne</td><td><input id="arg2" type="text"></td><td><input type="button" onclick="doTestObjectTwoOne();"></td></tr>
+<tr><td>testObjectTwo::testMethodTwo</td><td><input id="arg3" type="text"></td><td><input type="button" onclick="doTestObjectTwoTwo();"></td></tr>
+<tr><td>testObjectTwo::testMethodThree</td><td><input id="arg4" type="text"></td><td><input type="button" onclick="doTestObjectTwoThree();"></td></tr>
+<tr><td>testFunction</td><td><input id="arg5" type="text"></td><td><input type="button" onclick="doTestFunction();"></td></tr>
+</table>
+</form>
+</body>
+</html>

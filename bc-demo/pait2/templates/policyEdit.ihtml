@@ -1,0 +1,100 @@
+<div class="personData">
+<form action="<?=$self;?>" method="POST" id="policyEditForm">
+<fieldset><legend><?=$policyLegend;?> Policy for: <?=$personData['gn'];?> <?=$personData['sn'];?></legend>
+<div class="notes"><h4 style="width: 80%;">Edit a Policy</h4><br />
+<p class="last">Fields in bold are required.</p>
+</div>
+<div class="x-form-item">
+<label for="carrier">Carrier:</label>
+<select name="carrier" id="carrier" class="selectOne" tabindex="101">
+<? foreach ($carriers as $key => $val): ?>
+<option value="<?=$val;?>" <?=($policyData['carrierID']==$val)?"SELECTED":"";?>><?=$key;?></option>
+<? endforeach;?>
+</select>
+</div>
+<div class="x-form-item">
+<label for="policyStatus">Policy Status</label>
+<select name="policyStatus" id="policyStatus" class="selectOne" tabindex="101">
+<? global $policyStatuses; ?>
+<? foreach ($policyStatuses as $number => $status): ?>
+<option value="<?=$number;?>" <?=($policyData['policyStatus'] == $number)?"SELECTED":"";?>><?=$status;?></option>
+<? endforeach; ?>
+</select>
+</div>
+<div class="x-form-item">
+<label for="policyType">Policy Type</label>
+<select name="policyType" id="policyType" class="selectOne" tabindex="101">
+<? global $policyTypes; ?>
+<? foreach ($policyTypes as $number => $status): ?>
+<option value="<?=$status;?>" <?=($policyData['policyType'] == $status)?"SELECTED":"";?>><?=$status;?></option>
+<? endforeach; ?>
+</select>
+</div>
+<div class="x-form-item">
+<label for="paidBy">Paid By</label>
+<select name="paidBy" id="paidBy" class="selectOne" tabindex="101">
+<option value="1" <?=($policyData['paidBy'] == 1)?"SELECTED":"";?>>Employer Paid</option>
+<option value="0" <?=($policyData['paidBy'] == 0)?"SELECTED":"";?>>Employee Paid</option>
+</select>
+</div>
+<div class="x-form-item"><label for="policyNumber">Policy Number: </label><input tabindex="100" type="text" id="policyNumber" name="policyNumber" value="<?=$policyData['policyNumber'];?>" /></div>
+<div class="x-form-item"><label for="effectiveDate">Effective Date:</label><input class="DateField" tabindex="101" type="text" id="effectiveDate" name="effectiveDate" value="<?=($policyData['effectiveDate'] > 100)?gmdate(PAITDATE,$policyData['effectiveDate']):"";?>" /></div>
+
+<div class="x-form-item"><label for="policyForm">Policy Form: </label><input tabindex="102" type="text" id="policyForm" name="policyForm" value="<?=$policyData['policyForm'];?>" /></div>
+
+<div class="x-form-item"><label for="benefitAmount">Benefit Amount: </label><input tabindex="103" type="text" id="benefitAmount" name="benefitAmount" value="<?=$policyData['benefitAmount'];?>" /></div>
+
+<div class="x-form-item"><label for="premium">Premium: </label><input tabindex="104" type="text" id="premium" name="premium" value="<?=$policyData['premium'];?>" /></div>
+
+<div class="x-form-item"><label for="premiumTerm">Premium Term: </label><input tabindex="105" type="text" id="premiumTerm" name="premiumTerm" value="<?=$policyData['premiumTerm'];?>" /></div>
+
+<div class="x-form-item"><label for="eliminationPeriod">Elimination Period: </label><input tabindex="106" type="text" id="eliminationPeriod" name="eliminationPeriod" value="<?=$policyData['eliminationPeriod'];?>" /></div>
+
+<div class="x-form-item"><label for="benefitPeriod">Benefit Period: </label><input tabindex="107" type="text" id="benefitPeriod" name="benefitPeriod" value="<?=$policyData['benefitPeriod'];?>" /></div>
+
+<div class="x-form-item"><label for="riskNumber">Risk Number: </label><input tabindex="108" type="text" id="riskNumber" name="riskNumber" value="<?=$policyData['riskNumber'];?>" /></div>
+
+<div class="x-form-item"><label for="class">Class: </label><input tabindex="109" type="text" id="class" name="class" value="<?=$policyData['class'];?>" /></div>
+
+<div class="x-form-item"><label for="stateAppSigned">State App Signed: </label><input tabindex="110" type="text" id="stateAppSigned" name="stateAppSigned" value="<?=$policyData['stateAppSigned'];?>" /></div>
+
+<div class="x-form-item"><label for="amendment">Amendment: </label><input tabindex="111" type="text" id="amendment" name="amendment" value="<?=$policyData['amendment'];?>" /></div>
+
+<div class="x-form-item"><label for="reconsiderationDate">Reconsideration Date: </label><input class="DateField" tabindex="112" type="text" id="reconsiderationDate" name="reconsiderationDate" value="<?=($policyData['reconsiderationDate']>100)?gmdate(PAITDATE,$policyData['reconsiderationDate']):"";?>" /></div>
+
+<div class="x-form-item"><label for="tobaccoUser">Tobacco User: </label>
+<select name="tobaccoUser" tabindex="113">
+<? if($policyData['tobaccoUser'] != 0): ?>
+<option label="yes" value="1" selected>yes</option>
+<option label="no" value="0">no</option>
+<? else: ?>
+<option label="yes" value="1">yes</option>
+<option label="no" value="0" selected>no</option>
+<? endif; ?>
+</select>
+</div>
+
+<div class="x-form-item"><label for="catastrophic">Catastrophic: </label><input tabindex="114" type="text" id="catastrophic" name="catastrophic" value="<?=$policyData['catastrophic'];?>" /></div>
+
+<div class="x-form-item"><label for="discount">Discount: </label><input tabindex="115" type="text" id="discount" name="discount" value="<?=$policyData['discount'];?>" /></div>
+<div class="x-form-item"><label for="mnda">MNDA: </label><input tabindex="116" type="text" id="mnda" name="mnda" value="<?=$policyData['mnda'];?>" /></div>
+
+
+<div class="x-form-item"><label for="recovery">Recovery: </label><input tabindex="115" type="text" id="recovery" name="recovery" value="<?=$policyData['recovery'];?>" /></div>
+<div class="x-form-item"><label for="wib">WIB: </label><input tabindex="115" type="text" id="wib" name="wib" value="<?=$policyData['wib'];?>" /></div>
+<div class="x-form-item"><label for="groupLTD">Group LTD: </label><input tabindex="115" type="text" id="groupLTD" name="groupLTD" value="<?=$policyData['groupLTD'];?>" /></div>
+<div class="x-form-item"><label for="extendedPartial">Extended Partial: </label><input tabindex="115" type="text" id="extendedPartial" name="extendedPartial" value="<?=$policyData['extendedPartial'];?>" /></div>
+<div class="x-form-item"><label for="lc">LC: </label><input tabindex="115" type="text" id="lc" name="lc" value="<?=$policyData['lc'];?>" /></div>
+<div class="x-form-item"><label for="fio">FIO: </label><input tabindex="115" type="text" id="fio" name="fio" value="<?=$policyData['fio'];?>" /></div>
+<div class="x-form-item"><label for="substandard">Substandard: </label><input tabindex="115" type="text" id="substandard" name="substandard" value="<?=$policyData['substandard'];?>" /></div>
+<div class="x-form-item"><label for="ownocc">Own Occ: </label><input tabindex="115" type="text" id="ownocc" name="ownocc" value="<?=$policyData['ownocc'];?>" /></div>
+
+<div class="x-form-item"><input type="submit" class="inputSubmit" tabindex="219" name="submit" value="Submit" /><input tabindex="120" type="submit" class="inputSubmit" name="cancel" value="Cancel" onclick="Ext.PAIT.doCancel('editpolicyinfo');return false;" /></div>
+</fieldset>
+</form>
+</div>
+<script type="text/javascript">
+Ext.QuickTips.init();
+Ext.PAIT.policyuid = '<?=$policyData['uid'];?>';
+    Ext.ux.HTMLForm('policyEditForm', Ext.PAIT.editPolicy);
+    </script>

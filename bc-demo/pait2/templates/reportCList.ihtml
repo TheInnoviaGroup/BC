@@ -1,0 +1,181 @@
+<div class="centerContent">
+<table border=0 width="85%"><caption>Please choose a company for this report:</caption>
+<? if($action == '60DaysOut'): ?>
+<tr><td align=center><a href="javascript:Ext.PAIT.openReconsiderationGrid({url: '<?=$self;?>?mode=Report&action=60DaysOut&companyID=all', title: 'Report: All Companies'}, App);">All Companies</a></td></tr>
+<? foreach ($companies as $company): ?>
+<tr><td align=center><a href="javascript:Ext.PAIT.openReconsiderationGrid({url: '<?=$self;?>?mode=Report&action=60DaysOut&companyID=<?=$company['companyID'];?>', title: 'Report: <?=$company['name'];?>'}, App);"><?=$company['name'];?></a></td></tr>
+<? endforeach;?>
+<? else: ?>
+<? foreach ($companies as $company): ?>
+<tr><td align=center><a href="<?=$self;?>?mode=Report&action=<?=$action;?>&companyID=<?=$company['companyID'];?>" class="centerTarget" id="<?=$action;?>" title="Report: <?=$company['name'];?>"><?=$company['name'];?></a></td></tr>
+<? endforeach;?>
+<? endif; ?>
+
+</table>
+</div>
+
+<script type="text/javascript">
+    Ext.onReady(function() {
+       Ext.ux.CascadingDialogs.scanHrefs(); 
+       Ext.namespace('Ext.PAIT');
+       Ext.PAIT.openReconsiderationGrid = function(config, scope) {
+  var layout = scope.layout;
+  console.log('Got Config: %o', config);
+  layout.beginUpdate();
+  // create the Data Store
+    var ds = new Ext.data.Store({
+        // load using script tags for cross domain, if the data in on the same domain as
+        // this page, an HttpProxy would be better
+        proxy: new Ext.data.HttpProxy({
+            url: config.url
+        }),
+
+        // create reader that reads the Topic records
+        reader: new Ext.data.JsonReader({
+            root: 'results',
+            totalProperty: 'totalCount',
+            id: 'personID'
+        }, [
+            {name: 'name', mapping: 'name'},
+            {name: 'personID', mapping: 'personID'},
+	    			{name: 'personURL', mapping: 'personURL'},
+            {name: 'homePhone', mapping: 'homePhone'},
+            {name: 'workPhone', mapping: 'workPhone'},
+            {name: 'reconsiderationDate', mapping: 'reconsiderationDate'},
+            {name: 'policyNumber', mapping: 'policyNumber'}
+        ]),
+
+        // turn on remote sorting
+        remoteSort: true
+    });
+
+
+    // the column model has information about grid columns
+    // dataIndex maps the column to the specific data field in
+    // the data store
+    var cm = new Ext.grid.ColumnModel([{
+           id: 'name', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+           header: "Name",
+           dataIndex: 'name',
+           width: 100,
+           css: 'white-space:normal;',
+	   				sortable: true
+        },{
+           id: 'homePhone',
+           header: "Home Phone",
+           dataIndex: 'homePhone'
+        }
+	,{
+           id: 'workPhone', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+           header: "Work Phone",
+           dataIndex: 'workPhone',
+           css: 'white-space:normal;',
+	   sortable: true
+        }
+	,{
+           id: 'reconsiderationDate', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+           header: "Reconsideration Date",
+           dataIndex: 'reconsiderationDate',
+           width: 130,
+           css: 'white-space:normal;',	   
+	   sortable: true
+        }
+	,{
+           id: 'policyNumber', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+           header: "Policy Number",
+           dataIndex: 'policyNumber',
+           css: 'white-space:normal;',
+	   sortable: true
+        }
+
+]);
+
+  var gridE = Ext.DomHelper.append(document.body,{tag: 'div', id:Ext.id()});
+
+    // create the editor grid
+  var grid = new Ext.grid.Grid(gridE, {
+        ds: ds,
+        cm: cm,
+        selModel: new Ext.grid.RowSelectionModel({singleSelect:true}),
+        enableColLock:true,
+        loadMask: true,
+	autoSizeColumns: false,
+        autoExpandColumn: 'name',
+	monitorWindowResize: false
+    });
+  
+var cdrType = 'search';
+// handler for context menu items
+function onGridContextMenuClick(item, e) {
+// row data or handle to grid or row id is not available in item or e
+//only the id and text of the selected contextmenu
+  switch  (item.id) {
+      case cdrType+'-person':
+	console.log('Opening %o', {href: grid.rowRecord.data.personURL, title: grid.rowRecord.data.personID+'Person'});
+	Ext.ux.CascadingDialogs.openWindow({target: {href: grid.rowRecord.data.personURL, title: grid.rowRecord.data.personID+'Person'}});
+      break;
+  case cdrType+'-company':
+	Ext.ux.CascadingDialogs.openWindow({target: {href: grid.rowRecord.data.companyURL, title: grid.rowRecord.data.companyID+'Company'}});
+      break;
+  }
+}
+
+var gridContextMenu = new Ext.menu.Menu(cdrType+'-cm');
+gridContextMenu.add({ id: cdrType+'-person', text: 'Open Person', handler: onGridContextMenuClick});
+gridContextMenu.add({ id: cdrType+'-company', text: 'Open Company', handler: onGridContextMenuClick});
+
+  grid.doRowContextMenu = function (grid, rowIndex, e) {
+    //row data is available here
+    e.stopEvent();
+    var coords = e.getXY();
+    
+    var rowRecord = grid.getDataSource().getAt(rowIndex);
+    grid.rowRecord = rowRecord;
+    gridContextMenu.showAt([coords[0], coords[1]]);
+    
+  }
+  grid.addListener('rowcontextmenu', grid.doRowContextMenu);
+grid.on('rowdblclick', function(grid, rowIndex, e) {
+    grid.rowRecord = grid.getDataSource().getAt(rowIndex);
+    onGridContextMenuClick({id:cdrType+'-person'});
+
+});
+
+    // render it
+    grid.render();
+
+    var gridFoot = grid.getView().getFooterPanel(true);
+
+    // add a paging toolbar to the grid's footer
+    var paging = new Ext.PagingToolbar(gridFoot, ds, {
+        pageSize: 50,
+        displayInfo: true,
+        displayMsg: 'Displaying results {0} - {1} of {2}',
+        emptyMsg: "No results to display."
+    });
+
+    
+    paging.add('-',{
+       text: 'Export to Excel',
+       icon: 'images/excel.gif',
+       cls: 'x-btn-text-icon button', // icon and text class
+       handler: Ext.PAIT.exportReconsiderationData,
+       scope: config
+    });
+  var gpanel = new Ext.GridPanel(grid, {title:config.title, closable: true});
+  layout.add('center', gpanel);  
+  layout.endUpdate();
+    // trigger the data store load
+  console.log('Grid: %o', grid);
+    ds.load({params:{start:0, limit:50}});
+
+
+
+}
+
+Ext.PAIT.exportReconsiderationData = function(e,f,g,h) {
+    window.location.href = this.url+'&format=xls';
+}
+
+    });
+    </script>

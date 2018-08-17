@@ -1,0 +1,19 @@
+<?
+$array = array('success' => ($max > 0)?TRUE:FALSE,
+	       'test' => $test,
+	       'sql' => $sql,
+	       'totalCount' => $max);
+global $self;
+foreach ($results as $row):
+$array['results'][] = array('name' => ($row['cn'])?$row['cn']:$row['gn'].'&nbsp;'.$row['sn'],
+			    'personID' => $row['personID'],
+			    'personURL' => $self."?mode=Person&action=showPerson&personID=".$row['personID'],
+			    'homePhone' => $row['homephone'],
+			    'workPhone' => $row['workphone'],
+			    'reconsiderationDate' => gmdate(PAITDATE, $row['reconsiderationDate']),
+			    'policyNumber' => $row['policyNumber']
+			    );
+endforeach;
+print json_encode($array);
+exit;
+?>

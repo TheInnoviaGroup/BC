@@ -1,0 +1,85 @@
+.debugtable {
+  background-color: #ffffff;
+  border: thin solid black;
+  padding: 0px;
+}
+
+.debugheader {
+	background-color: #ffffff;
+	font-size: x-small;
+    vertical-align: text-top;
+}
+.debugdataodd {
+	background-color: #ffffff;
+  vertical-align: text-top;
+  border-bottom: thin solid black;
+  padding: 0px;
+  border-spacing: 0px;
+
+}
+.debugdataeven {
+	background-color: #c0c0c0;
+  vertical-align: text-top;
+  border-bottom: thin solid black;
+  padding: 0px;
+  border-spacing: 0px;
+}
+.debugsummary { 
+  background-color: #e0e0e0;
+  text-align: center;
+  vertical-align: text-top;
+ }
+.debugtime {
+	font-size: x-small;
+  white-space: nowrap;
+  
+}
+.debugelapsed {
+	font-size: x-small;
+}
+.debuglevel {
+	font-size: x-small;
+}
+.debugdata {
+	font-size: x-small;
+  width: 100%;
+}
+.debugvar {
+	font-size: x-small;
+}
+.debuginline0 {
+	background-color: green;
+	color: white;
+	text-indent: 5em;
+	font-size: x-small;
+}
+.debuginline1 {
+	text-indent: 5em;
+	font-size: x-small;
+}
+.debuginline2 {
+	text-indent: 5em;
+	font-size: x-small;
+}
+.debuginline3 {
+	text-indent: 5em;
+	font-size: x-small;
+}
+.debuginline4 {
+	text-indent: 5em;
+	font-size: x-small;
+}
+.debuginline5 {
+	background-color: red;
+	color: yellow;
+	text-indent: 5em;
+	font-size: x-small;
+}
+
+.ruled{
+  background: #9cf;
+  vertical-align: text-top;
+  border-bottom: 1px solid black;
+  padding: 0px;
+  border-spacing: 0px;
+} 

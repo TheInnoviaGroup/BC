@@ -1,0 +1,517 @@
+<? switch ($action): ?>
+<? case "delete": ?>
+<h3>Deletion Successful.</h3>
+<? break;?>
+<? case "editPerson": ?>
+<div class="personData">
+<form action="<?=$self;?>" method="POST">
+<input type="hidden" name="personID" value="<?=$personData['personID'];?>" />
+<input type="hidden" name="mode" value="Person" />
+<input type="hidden" name="action" value="editPerson" />
+<fieldset><legend>Editing <?=$personData['cn'];?></legend>
+<div class="notes"><h4 style="width: 80%;">Edit a Person</h4><br />
+<p class="last">Fields in bold are required.</p>
+</div>
+<div class="optional"><label for="salutation">Salutation (eg Mr., Ms., Mrs.): </label><input tabindex="101" type="text" id="salutation" name="salutation" value="<?=$personData['salutation'];?>" /></div>
+<div class="required"><label for="gn">First Name: </label><input type="text" tabindex="102" id="gn" name="gn" value="<?=$personData['gn'];?>" /></div>
+<div class="optional"><label for="mn">Middle Name or Initial: </label><input type="text" tabindex="103" id="mn" name="mn" value="<?=$personData['mn'];?>" /></div>
+<div class="required"><label for="sn">Last Name: </label><input type="text" tabindex="104" id="sn" name="sn" value="<?=$personData['sn'];?>" /></div>
+<div class="optional"><label for="suffix">Suffix (eg. Jr., Sr.): </label><input tabindex="105" type="text" id="suffix" name="suffix" value="<?=$personData['suffix'];?>" /></div>
+<div class="required"><label for="companyID">Company: </label><select tabindex="106" id="companyID" name="companyID">
+<? foreach($companyList as $id => $company): ?>
+<option value="<?=$id;?>"<?=($id == $companyID)?" SELECTED":"";?>><?=$company;?></option>
+<? endforeach; ?>
+</select></div>
+<div class="optional"><label for="title">Title: </label><input tabindex="105" type="text" id="title" name="title" value="<?=$companyData['title'];?>" /></div>
+<div class="optional"><label for="department">Department/Division: </label><input tabindex="105" type="text" id="department" name="department" value="<?=$companyData['department'];?>" /></div>
+<div class="optional"><label for="hiredate">Hire Date: <a href="javascript:displayDatePicker('hiredate');"><img src="cal.gif" style="height: 16px;width:16px;" border=0/></a></label><input tabindex="108" type="text" id="hiredate" name="hiredate" value="<?=(!preg_match("/^\-*\d+$/", $companyData['hiredate']))?$companyData['hiredate']:(($companyData['hiredate'] != 0)?gmdate(PAITDATE,$companyData['hiredate']):"");?>" /></div>
+<div class="required"><label for="status">Status: </label><select tabindex="107" name="status" id="status" >
+<? foreach($statuses as $id => $status): ?>
+<option<?=($status == $personData['status'])?" SELECTED":"";?>><?=$status;?></option>
+<? endforeach; ?>
+</select></div>
+<div class="optional"><label for="birthdate">Date of Birth: <a href="javascript:displayDatePicker('birthdate');"><img src="cal.gif" style="height: 16px;width:16px;" border=0/></a></label><input tabindex="108" type="text" id="birthdate" name="birthdate" value="<?=(!preg_match("/^\-*\d+$/", $personData['birthdate']))?$personData['birthdate']:(($personData['birthdate'] != 0)?gmdate(PAITDATE,$personData['birthdate']):"");?>" /></div>
+<div class="optional"><label for="ssn">Social Security Number: </label><input tabindex="109" type="text" id="ssn" name="ssn" value="<?=($personData['ssn'] != "")?formatSocial($personData['ssn']):"";?>" /></div>
+<div class="optional"><label for="gender">Gender: </label><select tabindex="110" name="gender" id="gender">
+<option value="0"<?=($personData['gender'] == 0)?" SELECTED":"";?>>------</option>
+<option value="1"<?=($personData['gender'] == 1)?" SELECTED":"";?>>Female</option>
+<option value="2"<?=($personData['gender'] == 2)?" SELECTED":"";?>>Male</option>
+</select></div>
+<div class="optional"><label for="address">Street Address: </label><textarea tabindex="111" id="address" name="address"><?=$personData['address'];?></textarea></div>
+<div class="required"><label for="city">City: </label><input type="text" tabindex="112" id="city" name="city" value="<?=$personData['city'];?>" /></div>
+<div class="required"><label for="state">State: </label><input type="text" tabindex="113" id="state" name="state" value="<?=$personData['state'];?>" size="2" maxlength="2"/></div>
+<div class="required"><label for="postal">Postal or Zip Code: </label><input tabindex="114" type="text" id="postal" name="postal" value="<?=$personData['postal'];?>" /></div>
+<div class="optional"><label for="workphone">Work Phone: </label><input type="text" tabindex="115" id="workphone" name="workphone" value="<?=$personData['workphone'];?>" /></div>
+<div class="optional"><label for="homephone">Home Phone: </label><input type="text" tabindex="116" id="homephone" name="homephone" value="<?=$personData['homephone'];?>" /></div>
+<div class="optional"><label for="cellphone">Cell Phone: </label><input type="text" tabindex="117" id="cellphone" name="cellphone" value="<?=$personData['cellphone'];?>" /></div>
+<div class="optional"><label for="email">E-mail: </label><input type="text" tabindex="118" id="email" name="email" value="<?=$personData['email'];?>" /></div>
+<div class="optional"><label for="additionalBenefits">Additional Benefits: </label><textarea tabindex="119" id="additionalBenefits" name="additionalBenefits"><?=$personData['additionalBenefits'];?></textarea></div>
+<div class="submit"><input type="submit" class="inputSubmit" tabindex="219" name="submit" value="Submit" /><input tabindex="120" type="submit" class="inputSubmit" name="cancel" value="Cancel" /></div>
+</fieldset>
+</form>
+</div>
+<? break; ?>
+<? case "showPerson": ?>
+<div class="personData">
+<div class="personDataHeader">
+<h3 style="color: rgb(255, 255, 255);"><? if (preg_match("/[A-Za-z]/",$personData['gn']) && preg_match("/[A-Za-z]/",$personData['sn'])): ?>
+<?=$personData['salutation'];?> <?=$personData['gn'];?><?=($personData['mn'])?" ".$personData['mn']:"";?> <?=$personData['sn'];?><?=($personData['suffix'])?", ".$personData['suffix']:"";?>
+<? else: ?>
+<?=$personData['cn'];?><? endif; ?></h3>
+
+<h4 style="color: rgb(255, 255, 255);">Status: <?=$personData['status'];?>
+<? if ($personData['status'] != "Prospect"): ?><br />
+Total Benefit: <?=formatMoney($totalBenefit);?><br />
+Total Premium: <?=formatMoney($totalPremium);?><br />
+<a href="" onClick="Menu.Appear('benefitBreakdown');return false;" style="color: #ffffff";>Benefit Breakdown&nbsp;&nbsp;&nbsp;<img src="downarrow.gif" height=16 width=16 border=0/></a>
+<? endif; ?></h4>
+<div id="benefitBreakdown" style="display:none;position:absolute;right:10px;top:5em;z-index:1000;background:#315ba1;">
+<table border=1 cellpadding=2 cellspacing=0>
+<tr><th>Policy Type</th><th>Paid By</th><th>Benefit</th><th>Premium</th></tr>
+<? foreach($beneBreak['type'] as $key => $total): ?>
+<? list($type, $paidBy) = explode('-', $key); ?>
+<tr><td><?=$type;?></td><td><?=$paidBy;?></td><td><?=formatMoney($total['benefit']);?></td><td><?=formatMoney($total['premium']);?></td></tr>
+<? endforeach; ?>
+</table>
+</div>
+<div class="clear">&nbsp;</div>
+
+</div>
+
+<span class="address"><b>Home Address:</b> <br />
+<?=($personData['address'])?multiline($personData['address'])."<br />":"";?>
+<?=($personData['city'])?$personData['city'].", ":"";?><?=$personData['state']." ".$personData['postal'];?></span>
+<? if (is_array($companyData)): ?>
+<div class="companyInfo"><b>Company Info:</b><br /><?=$companyData['title'];?><br /><? if ($companyData['department']):?><?=$companyData['department'];?><br /><? endif;?>
+<a href="<?=$self;?>?mode=Company&action=showCompany&companyID=<?=$personData['companyID'];?>"><?=$companyData['name'];?></a><br />
+<? if ($companyData['employeeID']): ?>
+Employee ID: <?=$companyData['employeeID'];?><br />
+<? endif; ?>
+<? if ($personData['facility']): ?>
+Facility Code: <?=$personData['facility'];?><br />
+<? endif; ?>
+<?=multiline($companyData['address']);?><br /></div>
+<div class="personalInfo">
+<b>Personal Info: </b><br />
+<? if ($companyData['hiredate'] > 1900 && $companyData['hiredate'] < 2010): ?>
+Hire Date: <?=$companyData['hiredate'];?><br />
+<? elseif (is_numeric($companyData['hiredate'])): ?>
+Hire Date: <?=gmdate(PAITDATE, $companyData['hiredate']);?><br />
+<? endif; ?>
+<? else: ?>
+<div class="personalInfo">
+<b>Personal Info</b><br />
+<? endif; ?>
+<? if ($personData['ssn']): ?>
+Social Security Number: <?=formatSocial($personData['ssn']);?><br />
+<? endif; ?>
+<? global $genders; ?>
+Gender: <?=$genders[$personData['gender']];?><br />
+<? if ($personData['birthdate']): ?>
+Birthdate: <?=gmdate(PAITDATE,$personData['birthdate']);?><br />
+<? endif; ?>
+<? if ($personData['workphone']): ?>
+Work Phone: <?=formatPhone($personData['workphone']);?><br />
+<? endif; ?>
+<? if ($personData['homephone']): ?>
+Home Phone: <?=formatPhone($personData['homephone']);?><br />
+<? endif; ?>
+<? if ($personData['cellphone']): ?>
+Cell Phone: <?=formatPhone($personData['cellphone']);?><br />
+<? endif; ?>
+<? if ($personData['email']): ?>
+E-mail: <a href="mailto:<?=$personData['email'];?>"><?=$personData['email'];?></a><br />
+<? endif; ?>
+</div>
+<div class="actionBox inlineaction">
+<? if (is_array($compensationData)):?>[<a href="javascript:void(0);" onclick="Menu.Appear('compHist')">Compensation History</a>]
+<? endif; ?>
+<? if (is_array($logData)):?>[<a href="javascript:void(0);" onclick="Menu.Appear('acctHist')">Account History</a>]
+<? endif; ?>
+<? if (is_array($extraData)):?>[<a href="javascript:void(0);" onclick="Menu.Appear('extraData')">Extra Census Data</a>]
+<? endif; ?>
+<? if (is_array($bidData)):?>[<a href="javascript:void(0);" onclick="Menu.Appear('bidHist')">Bid History</a>]
+<? endif; ?>
+<? if (is_array($policyinfo) || $personData['additionalBenefits']):?>[<a href="javascript:void(0);" onclick="Menu.Appear('policyinfo')">Policy Info</a>]
+<? endif; ?>
+[<a href="<?=$self;?>?mode=Log&action=addPerson&personID=<?=$personData['personID'];?>">Add Log Entry</a>] 
+<? if ($allowed): ?>
+[<a href="<?=$self;?>?mode=Person&action=editPolicy&personID=<?=$personData['personID'];?>&uid=0">Add Policy</a>]
+[<a href="<?=$self;?>?mode=Person&action=editPerson&personID=<?=$personData['personID'];?>">Edit Person</a>]
+[<a href="<?=$self;?>?mode=Person&action=delete&personID=<?=$personData['personID'];?>" onClick="return confirmSubmit('Are you sure you want to delete this person?');">Delete Person</a>]
+<? endif; ?>
+<br />
+
+</div>
+<? if (is_array($compensationData)): ?>
+<div class="compensationHistory" id="compHist" style="display:none;">
+
+<table id="comphistdata<?=$personID;?>" class="sortable comphist">
+<caption>Compensation History</caption>
+<thead>
+<tr>
+<th>Company</th>
+<th>Type</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<? foreach ($compensationData as $record): ?>
+<tr class="hoverable">
+<td><a href="<?=$self;?>?mode=Company&action=showCompany&companyID=<?=$record['companyID'];?>"><?=$record['name'];?></a></td>
+<td><?=($record['type'])?$record['type']:$record['year'] . " " . $record['TYPE'];?>
+<? if ($record['updated'] > 1000): ?>
+<span style="float: right"><font size=-2><i>Updated on <?=gmdate(PAITDATE, $record['updated']);?></i></font></span>
+<? endif; ?>
+</td>
+<td><?=formatMoney($record['amount']);?></td>
+</tr>
+<? endforeach; ?>
+</tbody>
+</table>
+</div>
+<? endif; ?>
+<? if (is_array($logData)):?>
+<div class="logData" id="acctHist" style="display:none;"><table id="logData<?=$personID;?>" class="sortable log">
+<caption>Account History</caption>
+<thead>
+<tr>
+<th>Date</th>
+<th>Created By</th>
+<th>Type</th>
+<th style="width: 50%;">Notes</th>
+</tr>
+</thead>
+<tbody>
+<? foreach ($logData as $record): ?>
+<tr class="hoverable">
+<td><?=date('g:i a\<\b\r \/\>j M, Y', $record['time']);?></td>
+<td><a href="mailto:<?=$record['email'];?>"><?=$record['gn']." ".$record['sn'];?></a></td>
+<td><?=$record['category'];?></td>
+<td style="width: 50%;"><?=$record['notes'];?></td>
+</tr>
+<? endforeach; ?>
+</tbody>
+</table>
+</div>
+<? endif; ?>
+<? if (is_array($extraData)): ?>
+<div class="extraData" id="extraData" style="display:none;">
+<? $count = 0; foreach($extraData as $data): ?>
+<? if (is_array($data) && is_array($data['data']) && is_array($data['info'] && count($data['info'])>0)): ?>
+<? $count++; ?>
+<table id="<?=$count;?>extraData<?=$personID;?>" class="sortable comphist">
+<thead><caption><?=$data['title']?></caption><tr>
+<? foreach ($data['info'] as $header): ?>
+<? if ($header != "personID"): ?>
+<th><?=$header;?></th>
+<? endif; ?>
+<? endforeach; ?>
+</tr></thead><tbody>
+<? foreach ($data['data'] as $row): ?>
+<tr class="hoverable">
+<? foreach ($row as $key => $val): ?>
+<? if ($key != "personID" && ! preg_match("/^\d+$/", $key)): ?>
+<td><?=$val;?></td>
+<? endif; ?>
+<? endforeach; ?>
+</tr>
+<? endforeach; ?>
+</tbody></table>
+<? endif; ?>
+<? endforeach; ?>
+ 
+</div>
+<? endif; ?>
+<? if (is_array($bidData)): ?>
+<div class="bidData" id="bidHist" style="display:none'">
+<? $count = 0; foreach($bidData as $data): ?>
+<? if (is_array($data) && is_array($data['data']) && is_array($data['info'])): ?>
+<? $count++; ?>
+<table id="<?=$count;?>bidData<?=$personID;?>" class="sortable comphist">
+<thead><caption><?=$data['title']?></caption><tr>
+<? foreach ($data['info'] as $header): ?>
+<? if ($header != "personID"): ?>
+<th><?=$header;?></th>
+<? endif; ?>
+<? endforeach; ?>
+</tr></thead><tbody>
+<? foreach ($data['data'] as $row): ?>
+<tr class="hoverable">
+<? foreach ($row as $key => $val): ?>
+<? if ($key != "personID" && ! preg_match("/^\d+$/", $key)): ?>
+<td><?=$val;?></td>
+<? endif; ?>
+<? endforeach; ?>
+</tr>
+<? endforeach; ?>
+</tbody></table>
+<? endif; ?>
+<? endforeach; ?>
+ 
+</div>
+<? endif; ?>
+<? if (is_array($policyinfo) || $personData['additionalBenefits']): ?>
+<div class="policyData" id="policyinfo" style="display:none'">
+<? if ($personData['additionalBenefits']): ?>
+<p class="additionalBenefits"><b>Additional Benefits</b><br />
+<?=multiline($personData['additionalBenefits']);?></p>
+<? endif; ?>
+<? if (is_array($policyinfo)): ?>
+<? foreach($policyinfo as $policy): ?>
+<table id="policyData2" class="sortable" style="text-align: left; width: 100%;" cellpadding="2" cellspacing="2">
+<thead></thead><caption><?=($policy['policyType'])?$policy['policyType']." ":"";?>Policy Info <span class="policyNote">[<a href="<?=$self;?>?mode=Person&action=editPolicy&personID=<?=$personData['personID'];?>&uid=0">add new</a>] [<a href="<?=$self;?>?mode=Person&action=deletePolicy&personID=<?=$personData['personID'];?>&uid=<?=$policy['uid'];?>">Delete</a>]<br /> Click policy number to edit existing policy</a></caption>
+<tbody>
+ <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Carrier<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Policy Number<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Policy Status<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Effective Date<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Benefit Amount<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Premium<span class="sortarrow">&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Premium Term</a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Catastrophic<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+<tr><td><a href="<?=$self;?>?mode=Carrier&action=showCarrier&carrierID=<?=$policy['carrierID'];?>"><?=$policy['carrierName'];?></td><td><a href="<?=$self;?>?mode=Person&action=editPolicy&personID=<?=$personData['personID'];?>&uid=<?=$policy['uid'];?>"><?=($policy['policyNumber'])?$policy['policyNumber']:"Prospective Policy";?></a></td>
+<td><?=$policyStatuses[$policy['policyStatus']];?></td>
+<td><?=(!preg_match("/^\-*\d+$/", $policy['effectiveDate']))?$policy['effectiveDate']:(($policy['effectiveDate'] > 0)?gmdate(PAITDATE,$policy['effectiveDate']):$policy['effectiveDate']);?></td>
+<td><?=$policy['benefitAmount'];?></td><td><?=$policy['premium'];?></td><td><?=$policy['premiumTerm'];?></td><td><?=$policy['catastrophic'];?></td></tr>  </tbody>
+</table>
+<table id="policyData3" class="sortable" style="text-align: left; width: 100%;" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Paid By<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Policy Form<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Elimination
+Period<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Benefit Period<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Tobacco Use<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Class<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">State App Signed<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+    </tr>
+
+    <tr>
+<td><?=($policy['paidBy'] == 1)?"Employer Paid":"Employee Paid";?></td>
+
+<td><?=$policy['policyForm'];?></td><td><?=$policy['eliminationPeriod'];?></td><td><?=$policy['benefitPeriod'];?></td><td><?=($policy['tobaccoUser'] == 2)?"Unknown":(($policy['tobaccoUser'])?"Yes":"No");?></td><td><?=$policy['class'];?></td><td><?=$policy['stateAppSigned'];?></td>
+</tr>
+<table id="policyData4" class="sortable" style="text-align: left; width: 100%;" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Risk Number<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Discount<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Amendment Info<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Reconsideration
+Date<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">MNDA<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">COLA<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+
+    </tr>
+
+    <tr>
+<td><?=$policy['riskNumber'];?></td><td><?=$policy['discount'];?></td><td><?=preg_replace("/\n/", "<br />", $policy['amendment']);?></td><td><?=(!preg_match("/^\-*\d+$/", $policy['reconsiderationDate']))?$policy['reconsiderationDate']:(($policy['reconsiderationDate'] > 0)?gmdate(PAITDATE,$policy['reconsiderationDate']):$policy['reconsiderationDate']);?></td><td><?=$policy['mnda'];?></td><td><?=$policy['cola'];?></td>
+    </tr>
+
+  </tbody>
+</table>
+
+<table id="policyData5" class="sortable" style="text-align: left; width: 100%;" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Recovery<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">WIB<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Group LTD<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Extended Partial<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">LC<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+      
+      <th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">FIO<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+
+    </tr>
+
+    <tr>
+<td><?=preg_replace("/\n/", "<br />", $policy['recovery']);?></td>
+<td><?=preg_replace("/\n/", "<br />", $policy['wib']);?></td>
+<td><?= $policy['groupLTD'];?></td>
+<td><?= $policy['extendedPartial'];?></td>
+<td><?=preg_replace("/\n/", "<br />", $policy['lc']);?></td>
+<td><?=preg_replace("/\n/", "<br />", $policy['fio']);?></td>
+    </tr>
+
+  </tbody>
+</table>
+<? if (is_array($ratefile)): ?>
+<? $data = $ratefile[$policy['importID']]; ?>
+<? if (is_array($data) && is_array($data['data']) && is_array($data['info'])): ?>
+<tr><td colspan="17"><table id="<?=$count;?>extraPolData<?=$personID;?>" class="sortable comphist">
+<thead><caption><?=$data['title']?></caption><tr>
+<? foreach ($data['info'] as $header): ?>
+<? if ($header != "personID" && $header != "policyNumber" && $header != "iuid"): ?>
+<th><?=$header;?></th>
+<? endif; ?>
+<? endforeach; ?>
+</tr></thead><tbody>
+<? foreach ($data['data'] as $row): ?>
+<tr class="hoverable">
+<? foreach ($row as $key => $val): ?>
+<? if ($key != "personID" && ! preg_match("/^\d+$/", $key) && $key != "policyNumber" && $key != "iuid"): ?>
+<td><?=$val;?></td>
+<? endif; ?>
+<? endforeach; ?>
+</tr>
+<? endforeach; ?>
+</tbody></table></td></tr>
+ <? endif; ?>
+<? endif; ?>
+
+<? endforeach; ?>
+</table>
+</div>
+<? endif; ?>
+<? endif; ?>
+
+
+</div>
+<? break; ?>
+
+<? case "editPolicy": ?>
+
+<? if ($form->submit): ?>
+
+
+<? else: ?>
+<div class="personData">
+<form action="<?=$self;?>" method="POST">
+<input type="hidden" name="uid" value="<?=$policyData['uid'];?>" />
+<input type="hidden" name="personID" value="<?=$personData['personID'];?>" />
+<input type="hidden" name="mode" value="Person" />
+<input type="hidden" name="action" value="editPolicy" />
+<fieldset><legend><?=$policyLegend;?> Policy for: <?=$personData['gn'];?> <?=$personData['sn'];?></legend>
+<div class="notes"><h4 style="width: 80%;">Edit a Policy</h4><br />
+<p class="last">Fields in bold are required.</p>
+</div>
+<div class="required">
+<label for="carrier">Carrier:</label>
+<select name="carrier" id="carrier" class="selectOne" tabindex="101">
+<? foreach ($carriers as $key => $val): ?>
+<option value="<?=$val;?>" <?=($policyData['carrierID']==$val)?"SELECTED":"";?>><?=$key;?></option>
+<? endforeach;?>
+</select>
+</div>
+<div class="required">
+<label for="policyStatus">Policy Status</label>
+<select name="policyStatus" id="policyStatus" class="selectOne" tabindex="101">
+<? global $policyStatuses; ?>
+<? foreach ($policyStatuses as $number => $status): ?>
+<option value="<?=$number;?>" <?=($policyData['policyStatus'] == $status)?"SELECTED":"";?>><?=$status;?></option>
+<? endforeach; ?>
+</select>
+</div>
+<div class="required">
+<label for="policyType">Policy Type</label>
+<select name="policyType" id="policyType" class="selectOne" tabindex="101">
+<? global $policyTypes; ?>
+<? foreach ($policyTypes as $number => $status): ?>
+<option value="<?=$status;?>" <?=($policyData['policyType'] == $status)?"SELECTED":"";?>><?=$status;?></option>
+<? endforeach; ?>
+</select>
+</div>
+<div class="required">
+<label for="paidBy">Paid By</label>
+<select name="paidBy" id="paidBy" class="selectOne" tabindex="101">
+<option value="1" <?=($policyData['paidBy'] == 1)?"SELECTED":"";?>>Employer Paid</option>
+<option value="0" <?=($policyData['paidBy'] == 0)?"SELECTED":"";?>>Employee Paid</option>
+</select>
+</div>
+<div class="optional"><label for="policyNumber">Policy Number: </label><input tabindex="100" type="text" id="policyNumber" name="policyNumber" value="<?=$policyData['policyNumber'];?>" /></div>
+<div class="optional"><label for="effectiveDate">Effective Date: <a href="javascript:displayDatePicker('effectiveDate');"><img src="cal.gif" style="height: 16px;width:16px;" border=0/></a></label><input tabindex="101" type="text" id="effectiveDate" name="effectiveDate" value="<?=($policyData['effectiveDate'] > 100)?gmdate(PAITDATE,$policyData['effectiveDate']):"";?>" /></div>
+
+<div class="optional"><label for="policyForm">Policy Form: </label><input tabindex="102" type="text" id="policyForm" name="policyForm" value="<?=$policyData['policyForm'];?>" /></div>
+
+<div class="optional"><label for="benefitAmount">Benefit Amount: </label><input tabindex="103" type="text" id="benefitAmount" name="benefitAmount" value="<?=$policyData['benefitAmount'];?>" /></div>
+
+<div class="optional"><label for="premium">Premium: </label><input tabindex="104" type="text" id="premium" name="premium" value="<?=$policyData['premium'];?>" /></div>
+
+<div class="optional"><label for="premiumTerm">Premium Term: </label><input tabindex="105" type="text" id="premiumTerm" name="premiumTerm" value="<?=$policyData['premiumTerm'];?>" /></div>
+
+<div class="optional"><label for="eliminationPeriod">Elimination Period: </label><input tabindex="106" type="text" id="eliminationPeriod" name="eliminationPeriod" value="<?=$policyData['eliminationPeriod'];?>" /></div>
+
+<div class="optional"><label for="benefitPeriod">Benefit Period: </label><input tabindex="107" type="text" id="benefitPeriod" name="benefitPeriod" value="<?=$policyData['benefitPeriod'];?>" /></div>
+
+<div class="optional"><label for="riskNumber">Risk Number: </label><input tabindex="108" type="text" id="riskNumber" name="riskNumber" value="<?=$policyData['riskNumber'];?>" /></div>
+
+<div class="optional"><label for="class">Class: </label><input tabindex="109" type="text" id="class" name="class" value="<?=$policyData['class'];?>" /></div>
+
+<div class="optional"><label for="stateAppSigned">State App Signed: </label><input tabindex="110" type="text" id="stateAppSigned" name="stateAppSigned" value="<?=$policyData['stateAppSigned'];?>" /></div>
+
+<div class="optional"><label for="amendment">Amendment: </label><input tabindex="111" type="text" id="amendment" name="amendment" value="<?=$policyData['amendment'];?>" /></div>
+
+<div class="optional"><label for="reconsiderationDate">Reconsideration Date: <a href="javascript:displayDatePicker('reconsiderationDate');"><img src="cal.gif" style="height: 16px;width:16px;" border=0/></a></label><input tabindex="112" type="text" id="reconsiderationDate" name="reconsiderationDate" value="<?=($policyData['reconsiderationDate']>100)?gmdate(PAITDATE,$policyData['reconsiderationDate']):"";?>" /></div>
+
+<div class="optional"><label for="tobaccoUser">Tobacco User: </label>
+<select name="tobaccoUser" tabindex="113">
+<? if($policyData['tobaccoUser'] != 0): ?>
+<option label="yes" value="1" selected>yes</option>
+<option label="no" value="0">no</option>
+<? else: ?>
+<option label="yes" value="1">yes</option>
+<option label="no" value="0" selected>no</option>
+<? endif; ?>
+</select>
+</div>
+
+<div class="optional"><label for="catastrophic">Catastrophic: </label><input tabindex="114" type="text" id="catastrophic" name="catastrophic" value="<?=$policyData['catastrophic'];?>" /></div>
+
+<div class="optional"><label for="discount">Discount: </label><input tabindex="115" type="text" id="discount" name="discount" value="<?=$policyData['discount'];?>" /></div>
+<div class="optional"><label for="mnda">MNDA: </label><input tabindex="116" type="text" id="mnda" name="mnda" value="<?=$policyData['mnda'];?>" /></div>
+
+
+<div class="optional"><label for="recovery">Recovery: </label><input tabindex="115" type="text" id="recovery" name="recovery" value="<?=$policyData['recovery'];?>" /></div>
+<div class="optional"><label for="wib">WIB: </label><input tabindex="115" type="text" id="wib" name="wib" value="<?=$policyData['wib'];?>" /></div>
+<div class="optional"><label for="groupLTD">Group LTD: </label><input tabindex="115" type="text" id="groupLTD" name="groupLTD" value="<?=$policyData['groupLTD'];?>" /></div>
+<div class="optional"><label for="extendedPartial">Extended Partial: </label><input tabindex="115" type="text" id="extendedPartial" name="extendedPartial" value="<?=$policyData['extendedPartial'];?>" /></div>
+<div class="optional"><label for="lc">LC: </label><input tabindex="115" type="text" id="lc" name="lc" value="<?=$policyData['lc'];?>" /></div>
+<div class="optional"><label for="fio">FIO: </label><input tabindex="115" type="text" id="fio" name="fio" value="<?=$policyData['fio'];?>" /></div>
+
+<div class="submit"><input type="submit" class="inputSubmit" tabindex="219" name="submit" value="Submit" /><input tabindex="120" type="submit" class="inputSubmit" name="cancel" value="Cancel" /></div>
+</fieldset>
+</form>
+</div>
+
+<? endif; ?>
+<? break; ?>
+<? case "addPolicy": ?>
+
+
+
+<? break; ?>
+<? endswitch;?>

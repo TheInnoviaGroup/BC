@@ -1,0 +1,669 @@
+<?PHP
+include_once('importMaps.inc');
+global $db, $form, $body, $debug, $self, $noDisplay;
+$sheetDB = createSheetDB();
+$noDisplay = FALSE;
+$wizTemp = new template('importHandler.ihtml');
+$nodeInfo = split('/', $form->node);
+$sheetID = $nodeInfo[2];
+$importID = $nodeInfo[2]+200;
+$wizTemp->set('node', $form->node);
+$sql1 = "select * from sheets where sheetID = '$sheetID'";
+$sheetDB->query($sql1);
+$sheetInfo = $sheetDB->nextRecord();
+$sql = "select * from rawdatatoc where importID = '$importID'";
+$db->query($sql);
+$import = $db->nextRecord();
+$config = unserialize($sheetInfo['importConfig']);
+
+if ($form->action == "delete") {
+  $sql = "delete from rawdatatoc where importID = '$importID'";
+  $db->query($sql);
+  $sql = "drop table `$tablename`";
+  $db->query($sql);
+  include_once('welcomeScreen.inc');
+
+} else {
+
+switch ($form->step) {
+case "1":
+  // This is where the user assigns the columns to their types.
+  assignTypes();
+  break;
+case "2":
+  print "2";
+  break;
+case "3":
+  header("Location: ".$self."?mode=Report&action=changeReport&importID=".$importID);
+  exit;
+  break;
+case "7":
+  print "7";
+  break;
+case "5":
+  print "5";
+  break;
+case "20":
+  print "20";
+  break;
+case "21":
+  print "21";
+  break;
+default:
+  print "0";
+  break;
+}
+$wizTemp->set('form', $form);
+if ($noDisplay) {
+    
+$debug->line('parsing WizTemp', 1);
+    $body = $wizTemp->parse();
+} else {
+  
+  $array = array('success' => TRUE);
+    $array['html'] = $wizTemp->parse();
+    print json_encode($array);
+    exit;
+}
+}
+function assignTypes() {
+  global $import, $config, $wizTemp, $db, $form, $body, $debug, $sheetID, $sheetInfo, $sheetDB, $sheetName;
+  $tablename = $config['type'].'-'.$config['importID'].'-'.$config['companyID'].'-'.$config['carrierID'].'-';
+  $tablename .= ($config['worksheet'])?$config['worksheet']:0;
+  $sheetName = "sheet-".$sheetID;
+  $wizTemp->set('import', $import);
+  $wizTemp->set('config', $config);
+  // This is upside down. In this if statement, the last step is first, and the first last. Why? Because.
+  if ($form->next == "Finish") {
+    $finish = TRUE;
+    $failure = array();
+    if ($form->xlCarriers || $form->policyTypes || $form->dateType) {
+      $config['xlCarriers'] = $form->xlCarriers;
+      $config['policyTypes'] = $form->policyTypes;
+      $config['dateType'] = $form->dateType;
+      $finish = TRUE;
+      $noHeader = TRUE;
+    }
+      //This is where I add the bit about "hey, there's no identifier."
+    $array = $form->headerAction;
+    $array2 = $form->headerSub2Action;
+    if (is_object($config['headerStuff'])) {
+      $oldForm = $config['headerStuff'];
+      if ($form->headerAction && $oldForm->headerAction) {
+      $array = array_merge($oldForm->headerAction, $form->headerAction);
+      $array2 = array_merge($oldForm->headerSub2Action, $form->headerSub2Action);
+      } elseif ($oldForm->headerAction) {
+	$array = $oldForm->headerAction;
+        $array2 = $oldForm->headerSub2Action;
+      }
+    } else {
+      $array = $form->headerAction;
+      $array2 = $form->headerSub2Action;
+      $oldForm = $form;
+    }
+    $debug->line('headers: ',3);
+    $debug->variable($oldForm->headerAction, 3);
+    $debug->variable($form->headerAction, 3);
+    $debug->variable($array, 3);
+    
+    //$oldForm = is_object($config['headerStuff']))?$config['headerStuff']:$form;
+    //Check for identifying columns
+      if (!$noHeader && !(array_search('ssn', $array) || (array_search('sn', $array) && array_search('gn', $array)) || array_search('employeeID', $array) )) {    
+	$finish = FALSE;
+	$failure['identifier'] = TRUE;
+      }
+      if (!$noHeader && array_search('carrier', $array)) {
+	//If carrier is a column, we have to normalize.
+	$finish = FALSE;
+	$failure['carrier'] = TRUE;
+	$sql = "select carrierID, name from carriers where carrierID > 0";
+	$db->query($sql, 'carrierList');
+	$debug->line($sql, 1);
+	while ($res = $db->nextRecord('carrierList')) {
+	  $carriers[$res['name']] = $res['carrierID'];
+	}
+	$wizTemp->set('carriers', $carriers);
+	$debug->variable($config, 1);
+	$mykey = array_search('carrier', $array);
+	$mycol = "field".array_search($mykey, array_keys($array));
+	$sql = "select distinct $mycol from `$tablename` where rowID != '".$oldForm->headerrow."'";
+	$debug->line($sql, 1);
+	$db->query($sql);
+	$wizTemp->set('xlCarriers', $db->allRecords());
+      }
+      if (!$noHeader && array_search('policytype', $array)) {
+	//If policy type is one, we have to freak out, too.
+	$finish = FALSE;
+	$failure['policytype'] = TRUE;
+	global $policyTypes;
+	$wizTemp->set('policyTypes', $policyTypes);
+	$mycol = array_search('policytype', $array);
+	$sql = "select distinct $mycol from `$tablename`";
+	$debug->line($sql, 1);
+	$db->query($sql);
+	$wizTemp->set('xlPolicyTypes', $db->allRecords());
+      }
+      $peopleDateCols = arraySearchRegex('date', $array);
+      $policyDateCols = arraySearchRegex('date', $array2);
+      $debug->variable(array('peopledates'=>$peopleDateCols, 'policydates'=>$policyDateCols),2);
+      if (!$form->dateType) {
+      $dateCols = array_merge($peopleDateCols, $policyDateCols);
+      if (count($dateCols) > 0 && !$form->dateType) {
+	$cols = array();
+	foreach ($dateCols as $testcol) {
+	  $cols[] = "field".array_search($testcol, array_keys($array));
+	}
+	$debug->line('Datecols',2);
+	$debug->variable($dateCols,2);
+	//	$debug->variable($array,2);
+	$debug->variable($cols,2);
+	$finish = FALSE;
+	$failure['dateCols'] = TRUE;
+	$dateColString = join(',', $cols);
+	$sql = "select rowID,field0,field1,".$dateColString." from `$sheetName` order by rowID limit 0,4";
+	$sheetDB->query($sql);
+        //$wizTemp->set('dumpMe', $sql);
+	$wizTemp->set('dateRows', $sheetDB->allRecords('Default', MYSQL_ASSOC));
+	$wizTemp->set('rowTitles', $array);
+      }
+      }
+    if ($finish) {
+      $wizTemp->set('subStep', 'Finish');
+      if (!$noHeader) {
+      $config['headerStuff'] = $form;
+      }
+      $statusSQL = "update rawdatatoc set time = '".time()."', status = 2,config = '".serialize($config)."' where importID = '".$import['importID']."'";
+      $db->query($statusSQL);
+      $debug->line($statusSQL, 4);
+      $form = $config['headerStuff'];
+      if (assignHeaders($wizTemp)) {
+        $sheetStatusSQL = "update sheets set status='2', importConfig = '".serialize($config)."', type='".strtolower($config['headerStuff']->importType)."' where sheetID = '".$sheetID."'";
+      $sheetDB->query($sheetStatusSQL);
+        $sheetInfo = "select * from sheets where sheetID = '$sheetID'";
+        $sheetDB->query($sheetInfo);
+        $row = $sheetDB->nextRecord();
+        $updateWSTocSQL = "update wstoc set sheetName = '".$row['type'].":".$row['filename']."', state=2 where sheetID = '$sheetID'";
+        $sheetDB->query($updateWSTocSQL);
+      }
+    } else {
+      $config['headerStuff'] = $form;
+      $statusSQL = "update rawdatatoc set time = '".time()."',config = '".serialize($config)."' where importID = '".$import['importID']."'";
+      $db->query($statusSQL);
+      $debug->line($statusSQL, 4);
+      $sheetStatusSQL = "update sheets set companyID = '".$config['headerStuff']->company."', carrierID = '".$config['headerStuff']->carrier."', importConfig = '".serialize($config)."', type='".strtolower($config['headerStuff']->importType)."' where sheetID = '".$sheetID."'";
+      $sheetDB->query($sheetStatusSQL);
+      $wizTemp->set('subStep', 'dataFailure');
+      $wizTemp->set('failures', $failure);
+    }
+
+  } elseif ($form->next) {
+    global $headerMap, $compensationMap, $compTypes, $policyMap, $personStatus;
+    $headerSQL = "select * from `$sheetName` where rowID = '".$form->headerrow."'";
+    $sheetDB->query($headerSQL);
+    $headerRowTemp = $sheetDB->nextRecord();
+    $headerRow = array();
+    foreach($headerRowTemp as $key => $val) {
+      if (! is_numeric($key) && $key != 'rowID') {
+	$headerRow[] = $val;
+      }
+    }
+    $examplenum = $form->headerrow;
+    $examplenum++;
+    $exampleSQL = "select * from `$sheetName` where rowID = '".$examplenum."'";
+    $sheetDB->query($exampleSQL);
+    $exampleRow = array();
+    $exampleRowTemp = $sheetDB->nextRecord();
+    foreach($exampleRowTemp as $key => $val) {
+      if (! is_numeric($key) && $key != 'rowID') {
+	$exampleRow[] = $val;
+      }
+    }
+    
+    $threefer = mapThis($headerRow);
+    $mapped = $threefer[0];
+    $sub1mapped = $threefer[1];
+    $sub2mapped = $threefer[2];
+    global $headerMap;
+    $wizTemp->set('personStatus', $personStatus);
+    $wizTemp->set('exampleRow', $exampleRow);
+    $wizTemp->set('headerMap', $headerMap);
+    $wizTemp->set('sub2HeaderMap', $policyMap);
+    $wizTemp->set('sub1HeaderMap', $compensationMap);
+    //   $debug->variable($policyMap, 1);
+    
+    $wizTemp->set('headerRow', $headerRow);
+    $wizTemp->set('headerRowNum', $form->headerrow);
+    $wizTemp->set('mapped', $mapped);
+    $wizTemp->set('sub1mapped', $sub1mapped);
+    $wizTemp->set('sub2mapped', $sub2mapped);
+    $wizTemp->set('subStep', 'normalizeHeaders');
+    $companies = array();
+    $carriers = array('None, Company Census Only' => 0);
+    $sql = "select companyID, name from companies";
+$debug->line($sql, 1);
+    $db->query($sql, 'companyList');
+    while ($res = $db->nextRecord('companyList')) {
+      $companies[$res['name']] = $res['companyID'];
+    }
+ 
+    $sql = "select carrierID, name from carriers where carrierID > 0";
+    $db->query($sql, 'carrierList');
+$debug->line($sql, 1);
+    while ($res = $db->nextRecord('carrierList')) {
+      $carriers[$res['name']] = $res['carrierID'];
+    }
+    global $policyStatuses;
+$wizTemp->set('policyStats', $policyStatuses);
+global $policyTypes;
+$wizTemp->set('policyTypes', $policyTypes);
+
+       $wizTemp->set('companies', $companies);
+       $wizTemp->set('carriers', $carriers);
+
+
+  } else {
+  $sql = "select * from `$sheetName` limit 0,15";
+  $sheetDB->query($sql);
+  $debug->line($sql, 1);
+  $data = $sheetDB->allRecords();
+  $wizTemp->set('data', $data);
+  $wizTemp->set('subStep', 'pickHeaderRow');
+  global $noDisplay;
+  $noDisplay = TRUE;
+  }
+
+
+}
+
+function findPerson($data, $headerRow, $headerAction, $companyID) {
+// This seriously needs to be rewritten.
+$headerTemp = $headerRow;
+$headerRow = array();
+foreach ($headerTemp as $header ) {
+$headerRow[] = preg_replace("/\s+/", "", $header);
+}
+
+global $db, $debug;
+$sql = NULL;
+if (in_array('ssn', $headerAction)) {
+
+#Woot, SSN. That's my boy.
+#First, which header is the ssn:
+$header = array_search('ssn', $headerAction);
+#Now, which element in the row is that?
+$cell = array_search($header, $headerRow);
+#Now, what's that value?
+$ssn = $data[$cell];
+$ssnnodash = preg_replace('/-/', '', $ssn);
+if ($ssn == $ssnnodash) {
+  $sql = "select personID from people where ssn = '$ssn'";
+} else {
+ $sql = "select personID from people where ssn = '$ssn' OR ssn = '$ssnnodash'";
+}
+} elseif (in_array('employeeID')) {
+$header = array_search('employeeID', $headerAction);
+$cell = array_search($header, $headerRow);
+$id = $data[$cell];
+$sql = "select personID from companypeople where companyID = '$companyID' and employeeID = '$id'";
+} elseif (in_array('sn', $headerAction) && (in_array('gn', $headerAction) || in_array('3', $headerAction))) {
+#lucky us, we have a first and last name!
+$headerSN = array_search('sn', $headerAction);
+if (in_array('gn', $headerAction)) {
+$headerGN = array_search('gn', $headerAction);
+} else {
+$headerGN = array_search('3', $headerAction);
+}
+$cellSN = array_search($headerSN, $headerRow);
+$cellGN = array_search($headerGN, $headerRow);
+$debug->line("Header SN/GN: $headerSN $headerGN", 1);
+$debug->line("cellSN/GN: $cellSN $cellGN");
+$sn = $data[$cellSN];
+$gn = $data[$cellGN];
+if (preg_match("/ /", $gn)) {
+$crap = explode(" ", $gn);
+$gn = $crap[0];
+}
+$sql = "select personID from people where sn = '$sn' AND gn = '$gn' AND companyID = '$companyID'";
+} elseif (in_array('cn', $headerAction)) {
+$header = array_search('cn', $headerAction);
+$cell = array_search($header, $headerRow);
+$cn = $data[$cell];
+$sql = "select personID from people where cn = '$cn' AND companyID = '$companyID'";
+}
+if ($sql) {
+$debug->line("Couldn't find person for:", 1);
+$debug->variable($data, 1);
+$debug->variable($headerAction, 1);
+$debug->variable($headerRow, 1);
+$debug->line("Findperson SQL: $sql", 1);
+$db->query($sql);
+$res = $db->nextRecord();
+$retval = $res['personID'];
+} else {
+$retval = 0;
+}
+return $retval;
+}
+
+
+function mapThis($headerRow) {
+  $retval = array();
+  $map = array('#.*#i' => "Leave As Is",  #This is always first. Leave it.
+	       '#id$#i' => "Employee ID",
+	       '#name#i' => "Full Name",
+    '#fname#i' => "First Name",
+    '#lname#i' => "Last Name",
+	       '#givenname#i' => "First Name",
+	       '#firstname#i' => "First Name",
+	       '#surname#i' => "Last Name",
+	       '#lastname#i' => "Last Name",
+    '#middlename#i' => "Middle Name",
+    '#middleinitial#i' => "Middle Name",
+    '#middle#i' => "Middle Name",
+	       '#social#i' => "Social Security Number",
+	       '#soc#i' => "Social Security Number",
+	       '#ssn#i' => "Social Security Number",
+	       '#gender#i' => "Gender",
+	       '#sex#i' => "Gender",
+	       '#birth#i' => "Birth Date",
+	       '#^dob$#i' => "Birth Date",
+	       '#city#i' => "City",
+	       '#postal#i' => "Postal Code",
+	       '#zip#i' => "Postal Code",
+    '#addr.*2#i' => "Address 2",
+    '#addr.*two#i' => "Address 2",
+	       '#addr#i' => "Address",
+	       '#workphone#i' => "Work Phone",
+	       '#homephone#i' => "Home Phone",
+	       '#cellphone#i' => "Cell Phone",
+    '#email#i' => "E-mail",
+    '#e-mail#i' => "E-mail",
+	       '#employee#i' => "Employee ID",
+	       '#title#i' => "Job Title",
+    '#department#i' => "Department/Division",
+'#dept#i' => "Department/Division",
+'#division#i' => "Department/Division",
+'#div#i' => "Department/Division",
+	       '#hiredate#i' => "Hire Date",
+    '#^ep$#i' => 'map2',
+    '#^bp$#i' => 'map2',
+    '#premium#i' => 'map2',
+    '#premiumterm#i' => 'map2',
+    '#form#i' => 'map2',
+    '#catastrophic#i' => 'map2',
+    '#occ#i' => 'map2',
+    '#policy#i' => 'map2',
+'#signed#i' => 'map2',
+'#class#i' => 'map2',
+'#catas#i' => 'map2',
+'#tob#i' => 'map2',
+'#prem.*term#i' => 'map2',
+'#occ#i' => 'map2', 
+'#res#i' => 'map2',
+'#risk#i' => 'map2',
+    '#effectivedate#i' => 'map2',
+	       '#state#i' => "State",
+	       '#^st$#i' => "State",
+    '#benefit#i' => 'map2',
+    '#smoker#i' => 'map2',
+    '#discount#i' => 'map2',
+    '#mnda#i' => 'map2',
+    '#cola#i' => 'map2',
+	       '#salary#i' => "map3",
+	       '#basecomp#i' => "map3",
+	       '#bonus#i' => "map3",
+	       '#commission#i' => "map3",
+	       '#incentivecomp#i' => "map3",
+	       ); #This has to be the last one. Add new matches above.
+	       $map2 = array('#form#' => "Policy Form",
+    '#^ep$#i' => "Elimination Period",
+    '#^bp$#i' => "Benefit Period",
+		 '#benefit period#i' => "Benefit Period",
+    '#premiu.*term#i' => "Premium Term",
+    '#premiu.*form#i' => "Premium Form",
+    '#premium#i' => "Premium",
+    '#policy#i' => "Policy Number",
+    '#effectivedate#i' => "Effective Date",
+    '#benefit#i' => "Benefit Amount",
+    '#tob#i' => "Tobacco Use",
+    '#smoker#i' => "Tobacco Use",
+    '#discount#i' => "Discount",
+    '#mnda#i' => "MNDA",
+		 '#cola#i' => "COLA",
+'#signed#i' => 'State App Signed',
+'#class#i' => 'Class',
+'#catas#i' => 'Catastrophic',
+'#res#i' => 'Residual',
+'#risk#i' => 'Risk Number',
+		 '#catastrophic#i' => "Catastrophic",
+);
+global $compTypes;
+$map3 = array();
+foreach ($compTypes as $name => $val) {
+$map3["#".strtolower(preg_replace('/[\s]+/', '', $name))."#i"] = $name;
+}
+#1 = comp, 2 = policy
+		    $count = 0;
+  foreach ($headerRow as $header) {
+    $checkme = preg_replace('/[\s]+/', '', $header); #Check against header with whitespace stripped. 'cuz I said so.
+    foreach ($map as $regexp => $name) {
+if (preg_match($regexp, $checkme)) {
+if ($name == "map2") {
+foreach($map2 as $regexp2=>$newname) {
+if (preg_match($regexp2, $checkme)) {
+$retval[0][$header] = "Policy Information";
+$retval[2][$header] = $newname;
+$retval[1][$header] = "Leave As Is";
+}
+}
+} elseif ($name == "map3") {
+foreach($map3 as $regexp3=>$newname) {
+if (preg_match($regexp3, $checkme)) {
+$retval[0][$header] = "Include in Compensation History";
+$retval[1][$header] = $name;
+$retval[2][$header] = "Leave As Is";
+}}
+} else {
+$retval[0][$header] = $name;
+$retval[1][$header] = "Leave As Is";
+$retval[2][$header] = "Leave As Is";
+}
+}
+}
+ }   
+
+  
+return($retval);
+}
+
+function arraySearchRegex( $find, $in_array, $keys_found=Array() )
+{
+    if( is_array( $in_array ) )
+    {
+        foreach( $in_array as $key=> $val )
+        {
+	  if( is_array( $val ) ) {
+	    arraySearchRegex( $find, $val, $keys_found );
+	  } else {
+	    if( preg_match( '/'. $find .'/i', $val ) ) $keys_found[] = $key;
+	  }
+        }
+        return $keys_found;
+    }
+    return false;
+}
+
+
+function assignHeaders($temp) {
+    global $form, $db, $sheetID;
+    $returnValue = array();
+    $myDB = createSheetDB();
+    $sheet1 = $sheetID;
+//    pre($form);
+$uniqueCol = FALSE;
+    $headerRow = $form->headerrow;
+    $headerAction = $form->headerAction;
+    $headerSub1Action = $form->headerSub1Action;
+    $headerSub2Action = $form->headerSub2Action;
+    
+    $headerRowSQL = "select * from `sheet-$sheet1` where rowID = '".$headerRow."'";
+    //print $headerRowSQL."\n";
+    $myDB->query($headerRowSQL, 'headerRow');
+    $headerRow = $myDB->nextRecord('headerRow', MYSQL_ASSOC);
+    $ignoreCount = 0;
+    $errors = array();
+    $sqlT = ' ALTER TABLE `sheet-%s` CHANGE `%s` `%s` %s ';
+    foreach ($headerRow as $column => $header) {
+        $temph = preg_replace('/[\s]+/', '', $header);
+        $newColumn = $headerAction[$temph];
+//        print "$header:$temph:$newColumn<br />";
+        if (is_numeric($newColumn)) {
+        if ($newColumn == 6) { // policy info
+            $newColumn = $headerSub2Action[$temph];
+            if (is_numeric($newColumn) && $newColumn == 0) {
+              $newColumn = 'policy-AsIs-'.$temph;
+            }
+        } else if ($newColumn == 1) {
+            $newColumn = $headerSub1Action[$temph];
+        } else if ($newColumn == 2) {
+            $newColumn = 'ignore'.$ignoreCount;
+            $ignoreCount++;
+        } else if ($newColumn == 0) {
+            $newColumn = $temph;  
+        }
+        }
+        if ($uniqueCol != 'ssn' && ($newColumn == 'ssn' || $newColumn == 'employeeID')) {
+            $uniqueCol = $newColumn;
+        }
+        
+        //We can't do dates as integers yet since we aren't doing our date conversions yet.
+        $typeMap = array(
+												'cn' => 'TEXT',
+												'title' => 'TEXT',
+												'amendment' => 'TEXT',
+												'gn' => 'varchar(128)',
+												'mn' => 'varchar(128)',
+												'sn' => 'varchar(128)',
+												'suffix' => 'varchar(10)',
+												'salutation' => 'varchar(32)',
+												'gender' => 'tinyint(2)',
+												'birthdate' => 'varchar(255)',
+												'ssn' => 'varchar(20)',
+												'city' => 'varchar(255)',
+												'state' => 'varchar(64)',
+												'postal' => 'varchar(32)',
+												'address' => 'text',
+												'address2' => 'text',
+												'workphone' => 'text',
+												'homephone' => 'text',
+												'cellphone' => 'text',
+												'companyID' => 'int(255)',
+												'status' => 'varchar(64)',
+												'email' => 'varchar(255)',
+												'additionalBenefits' => 'text',
+												'facility' => 'varchar(255)',
+												'spouseID' => 'int(255)',
+												'newStatus' => 'varchar(64)',
+												'lobStatus' => 'text',
+												'personID' => 'int(255)',
+												'hiredate' => 'varchar(255)',
+												'title' => 'text',
+												'status' => 'int(32)',
+												'employeeID' => 'varchar(255)',
+												'department' => 'varchar(255)',
+												'uid' => 'int(11)',
+												'personID' => 'int(64) ',
+												'carrierID' => 'int(64) ',
+												'importID' => 'int(64) ',
+												'policyNumber' => 'varchar(255)',
+												'effectiveDate' => 'varchar(255)',
+												'policyForm' => 'varchar(64)',
+												'benefitAmount' => 'varchar(64)',
+												'premium' => 'varchar(64)',
+												'premiumTerm' => 'varchar(64)',
+												'eliminationPeriod' => 'varchar(64)',
+												'benefitPeriod' => 'varchar(64)',
+												'riskNumber' => 'varchar(64)',
+												'class' => 'varchar(64)',
+												'stateAppSigned' => 'varchar(64)',
+												'amendment' => 'text,',
+												'reconsiderationDate' => 'varchar(255)',
+												'tobaccoUser' => 'int(2) ',
+												'catastrophic' => 'varchar(255)',
+												'discount' => 'varchar(255)',
+												'mnda' => 'text,',
+												'cola' => 'varchar(255)',
+												'proposed' => 'int(10) ',
+												'policyStatus' => 'int(32) ',
+												'paidBy' => 'int(32) ',
+												'policyType' => 'varchar(255)',
+												'residual' => 'text,',
+												'gpi' => 'text,',
+												'ndi' => 'text,',
+												'ltc' => 'text,',
+												'recovery' => 'varchar(255)',
+												'wib' => 'varchar(255)',
+												'groupLTD' => 'float ',
+												'extendedPartial' => 'float ',
+												'lc' => 'varchar(255)',
+												'fio' => 'varchar(255)',
+                                                                                                'substandard' => 'varchar(255)',
+                                                                                                'ownocc' => 'text',
+												'lobID' => 'int(64) ',
+												'lobStatus' => 'varchar(255)',
+												'type' => 'varchar(255) ',
+												'amount' => 'text',
+												'year' => 'varchar(32)',
+												'updated' => 'int(64)'
+                         );
+        $type = 'VARCHAR ( 255 )'; 
+        if (array_key_exists($newColumn, $typeMap)) {
+            $type = $typeMap[$newColumn];
+        }
+        if ($newColumn) {
+        $myDB->query(sprintf($sqlT, $sheet1, $column, $newColumn, $type), 'alterTable');
+        if ($myDB->isError()) {
+            $errors[] = array('from' => $column,
+                              'header' => $header,
+                              'to' => $newColumn,
+                              'sql' => sprintf($sqlT, $sheet1, $column, $newColumn, $type),
+                              'error' => $myDB->getError());
+        }
+        }
+    }
+    
+    if (count(array_keys($errors)) > 0) {
+        $returnValue['success'] = FALSE;
+        $returnValue['errors'] = $errors;
+    } else {
+        $returnValue['success'] = TRUE;
+       // $updateStatusSQL = "update sheets set status = 2 where sheetID = 'sheet-".$sheet1."'";
+       // $myDB->query($updateStatusSQL);
+       if ($uniqueCol) {
+        #Duplicate checking... If we have no unique column, we can't check for duplicates
+        $alterSQLD = "ALTER TABLE `sheet-".$sheet1."` ADD `duplicates` INT( 64 ) NOT NULL DEFAULT '0' AFTER `rowID` ;";
+        $returnValue['sql'][] = $alterSQLD;
+        $myDB->query($alterSQLD);
+        $duplicateSQL = "UPDATE `sheet-".$sheet1."` LEFT JOIN (
+                            SELECT `".$uniqueCol."`, count( `".$uniqueCol."` ) AS total
+                            FROM `sheet-".$sheet1."`
+                            GROUP BY `".$uniqueCol."`
+                            HAVING total >1
+                            ) AS dupTot
+                        USING ( `".$uniqueCol."` )
+                        SET duplicates = total;";
+                        #Wow, that's gnarly.
+        $myDB->query($duplicateSQL);
+        $returnValue['sql'][] = $duplicateSQL;
+        $addDupeReport = "insert into reports set sheetID = '".$sheet1."', type = 'duplicateRows', time = '".time()."', status=2, owner='".$user->user_idnum."', name='Duplicate Entries'";
+        $myDB->query($addDupeReport);
+        $returnValue['sql'][] = $addDupeReport;
+   //print json_encode($returnValue);
+   // exit;      
+        }
+       return TRUE;
+    }
+  
+}
+
+?>

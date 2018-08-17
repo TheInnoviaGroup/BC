@@ -1,0 +1,230 @@
+<?php
+global $form, $login, $db, $debug;
+$debug->level = 0;
+switch($form->module) {
+    case "searchPersonForm":
+        searchPersonForm();
+    break;
+    case "undoPerson":
+	undoPerson();
+    break;
+    case "policySummary":
+        policySummary();
+    break;
+    case "personAcctHistory":
+        personAcctHistory();
+    break;
+}
+
+function undoPerson() {
+    global $form, $login, $db, $debug;
+    
+    $uniqueID = $form->uniqueID;
+    $temp = explode('-', $uniqueID);
+    $personID = $temp[0];
+    $username = $temp[1];
+    $time = $temp[2];
+    $field = $temp[3];
+    $result = array();
+    
+    global $AGLOBAL;
+    $logDB = new db($AGLOBAL['AUDITDBURL']);
+    #First we verify our field, our from and our to:
+    $verifySQL = "select * from personaccounthistory where personID = '$personID' AND time = '$time' AND field = '$field' AND username = '$username'";
+    $logDB->query($verifySQL);
+    if ($res = $logDB->nextRecord()) {
+	#This is a bit backward. But we can work with it. the "to" is what we're changing from and the "from" is what we're changing to.
+	# So first we check that the current pait entry has the same information we're trying to undo.
+	$temp = explode('.', $res['field']);
+	$table = $temp[0];
+	$column = $temp[1];
+	#Update this for policyinfo to include policy uid.
+	$checkSQL = "select $column from $table where personID = '$personID'";
+	$db->query($sql);
+	$row = $db->nextRecord();
+	if ($row[$column] == $res['to']) {
+	    #Rock on. Let's do this thing!
+	    $updateSQL = "update $table set $column = '".$res['from']."' where personID = '$personID'";
+	    $db->query($updateSQL);
+	    if ($db->affectedRows() == 1) {
+		audit($table, $res['to'], $res['from'], 'undo'); #Yep. We re-log.
+		$result['success'] = TRUE;
+	    } else {
+		$result['success'] = FALSE;
+		$result['errorText'] = "There has been an unexpected database error: ".$db->getError();
+	    }
+	} else {
+	    $result['success'] = FALSE;
+	    $result['errorText'] = "The current value for ".ucfirst($column)." does not match the value you're trying to undo.";
+	}
+    } else {
+	$result['success'] = FALSE;
+	$result['errorText'] = "Could not find the correct undo information. Please refresh the person's account history.";
+    }
+    print json_encode($result);
+    exit;
+}
+
+function personAcctHistory() {
+    global $form, $login, $db, $debug;
+    $personID = $form->personID;
+    $order = ($form->sort)?$form->sort.' '.$form->dir:'time desc';
+    $array = array('success' => TRUE);
+    global $AGLOBAL;
+    $logDB = new db($AGLOBAL['AUDITDBURL']);
+    $sql1 = "select count(*) as total from personaccounthistory where personID = '".$personID."'";
+    $logDB->query($sql1);
+    $res = $logDB->nextRecord();
+    $array['totalCount'] = $res['total'];
+    $sql = "select * from personaccounthistory where personID = '".$personID."' ORDER BY $order LIMIT ".$form->start.", ".$form->limit;
+    $logDB->query($sql);
+    while ($res = $logDB->nextRecord('Default', MYSQL_ASSOC)) {
+	$res['uniqueID'] = $personID.'-'.$res['username'].'-'.$res['time'].'-'.$res['field'];
+	$res['time'] = date('g:i:s m/d/y', $res['time']);
+	$temp = explode('.', $res['field']);
+	$res['field'] = ucfirst($temp[1]);
+	$res['action'] = ucfirst($res['action']);
+	$res['username'] = ucfirst($res['username']);
+        $array['results'][] = $res;
+    }
+    print json_encode($array);
+    exit;
+}
+
+function policySummary() {
+    global $form, $login, $db, $debug;
+    $beneBreak = array();
+    $personID = $form->personID;
+    $array = array('success' => TRUE);
+    $sql11 = "select p.*, c.name as carrierName from policyinfo as p, carriers as c where personID = '$personID' AND c.carrierID = p.carrierID ORDER BY effectiveDate DESC";
+    $array['sql1'] = $sql11;
+    $debug->line("SQL11: $sql11",1 );
+    $db->query($sql11, 'policyinfo');
+    $policyinfo = array();
+    while ($res11 = $db->nextRecord('policyinfo')) {
+      $policyinfo[] = $res11;
+      $paidBy = NULL;
+      $myType = NULL;
+      if ($res11['policyStatus'] == 0) {
+	$paidBy = ($res11['paidBy'] == 1)?"Employer":"Employee";
+	$myType = (preg_match('/[A-Za-z]+/', $res11['policyType']))?$res11['policyType']:"Supplemental Disability";
+        $myTerm = (preg_match('/[A-Za-z]+/', $res11['premiumTerm']))?$res11['premiumTerm']:"Unknown";
+	$temp = $beneBreak['type'][$myType.'-'.$paidBy.'-'.$myTerm];
+	//	$beneBreak['type'][$myType] = array( 'benefit' => $res11['benefitAmount']
+	$temp['benefit'] += $res11['benefitAmount'];
+	$temp['premium'] += $res11['premium'];
+	$beneBreak['type'][$myType.'-'.$paidBy.'-'.$myTerm] = $temp;
+
+       }
+    }
+    //$array['beneBreak'] = $beneBreak;
+    
+    $sql12 = "select sum(benefitAmount) as totalBenefit from policyinfo where personID = '$personID' AND policyNumber IS NOT NULL AND (policyStatus = '0' OR policyStatus ='3' OR policyStatus = '4')";
+    $db->query($sql12, 'policytotals');
+    $res = $db->nextRecord('policytotals');
+    $array['totalBenefit'] = $res['totalBenefit'];
+    $sql14 = "select sum(premium) as totalPremium from policyinfo where personID = '$personID' AND policyNumber IS NOT NULL AND (policyStatus = '0' OR policyStatus = '4')";
+    $db->query($sql14, 'policytotals');
+    $res = $db->nextRecord('policytotals');
+    $array['totalPremium'] = $res['totalPremium'];
+    foreach ($beneBreak['type'] as $types => $data) {
+        $array2 = split('-', $types);
+        $array['policyTypes'][] = array('type' => $array2[0],
+                                        'term' => $array2[2],
+                                        'paidBy' => $array2[1],
+                                        'benefit' => $data['benefit'],
+                                        'premium' => $data['premium']);
+    }
+    print json_encode($array);
+    exit;
+    
+}
+
+function searchPersonForm() {
+global $self;
+$array = array();
+$array['success'] = TRUE;
+$array['form']['options']['labelWidth'] = '75';
+$array['form']['options']['url'] = $self;
+$array['form']['options']['baseParams'] = array('action' => 'searchPerson',
+						 'mode' => 'Search');
+
+$fieldset1 = array('type' => 'FieldSet',
+		  'options' => array(
+				     'legend' => 'Search',
+				     ));
+$textbox = array(
+		 'type' => 'TextField',
+		 'options' => array(
+				    'fieldLabel' => 'Find a Person',
+				    'name' => 'searchperson',
+				    'width' => 175,
+				    'allowBlank' => false,
+				    ));
+$checkbox = array(
+		 'type' => 'Checkbox',
+		 'options' => array(
+				    'fieldLabel' => 'Search by Name Only',
+				    'name' => 'limitname',
+				    'width' => 175,
+				    'allowBlank' => FALSE,
+				    'checked' => TRUE,
+				    ));
+ $fieldset1['children'] = array($textbox, $checkbox);
+ $fieldset2 = array('type' => 'FieldSet',
+		    'options' => array(
+				       'legend' => 'Limit Your Results',
+				       ));
+$combobox = array(
+		  'type' => 'ComboBox',
+		  'options' => array(
+				     'fieldLabel' => 'To a Specific Company',
+				     'hiddenName' => 'limitcompany',
+				     'displayField' => 'companyName',
+				     'valueField' => 'id',
+				     'typeAhead' => true,
+				     'mode' => 'local',
+				     'triggerAction' => 'all',
+				     'emptyText' => 'Select a company...',
+				     'selectOnFocus' => true,
+				     'width' => 190
+				     ),
+		  'simplestore' => array(
+				   'fields' => array('id', 'companyName'),
+				   'data' => 'Ext.PAIT.companyList' // from states.js
+				   ),
+
+                  );
+$combobox2 = array(
+		  'type' => 'ComboBox',
+		  'options' => array(
+				     'fieldLabel' => 'To a Specific Status',
+				     'hiddenName' => 'limitstatus',
+				     'displayField' => 'status',
+				     'valueField' => 'id',
+				     'typeAhead' => true,
+				     'mode' => 'local',
+				     'triggerAction' => 'all',
+				     'emptyText' => 'Select a status...',
+				     'selectOnFocus' => true,
+				     'width' => 190
+				     ),
+		  'simplestore' => array(
+				   'fields' => array('id', 'status'),
+				   'data' => 'Ext.PAIT.statusList' // from states.js
+				   ),
+
+                  );
+
+
+ $fieldset2['children'] = array($combobox, $combobox2);
+$array['form']['children'][] = $fieldset1;
+$array['form']['children'][] = $fieldset2;
+$saveButton = array('name' => 'Search',
+		    'handler' => 'Ext.PAIT.handleSearchSubmit');
+$cancelButton = array('name' => 'Reset',
+		    'handler' => 'this.Reset');
+ $array['form']['buttons'] = array($cancelButton, $saveButton);
+print json_encode($array);
+}
+?>

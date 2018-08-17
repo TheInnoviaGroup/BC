@@ -1,0 +1,153 @@
+<div class="policyData" id="policyinfo">
+<? if ($personData['additionalBenefits']): ?>
+<p class="additionalBenefits"><b>Additional Benefits</b><br />
+<?=multiline($personData['additionalBenefits']);?></p>
+<? endif; ?>
+<? if (is_array($policyinfo)): ?>
+<? foreach($policyinfo as $policy): ?>
+<table id="policyData2" class="sortable" style="text-align: left; width: 100%;" cellpadding="2" cellspacing="2">
+<thead></thead><caption><?=($policy['policyType'])?$policy['policyType']." ":"";?>Policy Info <span class="policyNote">[<a href="<?=$self;?>?mode=Person&action=editPolicy&personID=<?=$personData['personID'];?>&uid=0">add new</a>] [<a href="<?=$self;?>?mode=Person&action=deletePolicy&personID=<?=$personData['personID'];?>&uid=<?=$policy['uid'];?>">Delete</a>]<br /> Click policy number to edit existing policy</a></caption>
+<tbody>
+ <th><a href="#" class="sortheader" >Carrier<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Policy Number<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Policy Status<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Effective Date<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Benefit Amount<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Premium<span class="sortarrow">&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Premium Term</a></th>
+
+      <th><a href="#" class="sortheader" >Catastrophic<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+<tr><td><a href="<?=$self;?>?mode=Carrier&action=showCarrier&carrierID=<?=$policy['carrierID'];?>" ><?=$policy['carrierName'];?></td>
+<td>: <a href="" onclick="javascript:Ext.ux.CascadingDialogs.openCenter({target:{href:'<?=$self;?>?mode=Person&action=editPolicy&personID=<?=$personData['personID'];?>&uid=<?=$policy['uid'];?>', title: 'Edit Policy', id:'editpolicyinfo'}});return false;" class="openCenter" title="Edit Policy" id="editpolicy"><?=($policy['policyNumber'])?$policy['policyNumber']:"Prospective Policy";?></a></td>
+<td><?=$policyStatuses[$policy['policyStatus']];?></td>
+<td><?=(!preg_match("/^\-*\d+$/", $policy['effectiveDate']))?$policy['effectiveDate']:(($policy['effectiveDate'] > 0)?gmdate(PAITDATE,$policy['effectiveDate']):$policy['effectiveDate']);?></td>
+<td><?=$policy['benefitAmount'];?></td><td><?=$policy['premium'];?></td><td><?=$policy['premiumTerm'];?></td><td><?=$policy['catastrophic'];?></td></tr>  </tbody>
+</table>
+<table id="policyData3" class="sortable" style="text-align: left; width: 100%;" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+      <th><a href="#" class="sortheader">Paid By<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Policy Form<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Elimination
+Period<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Benefit Period<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Tobacco Use<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Class<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >State App Signed<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+    </tr>
+
+    <tr>
+<td><?=($policy['paidBy'] == 1)?"Employer Paid":"Employee Paid";?></td>
+
+<td><?=$policy['policyForm'];?></td><td><?=$policy['eliminationPeriod'];?></td><td><?=$policy['benefitPeriod'];?></td><td><?=($policy['tobaccoUser'] == 2)?"Unknown":(($policy['tobaccoUser'])?"Yes":"No");?></td><td><?=$policy['class'];?></td><td><?=$policy['stateAppSigned'];?></td>
+</tr>
+<table id="policyData4" class="sortable" style="text-align: left; width: 100%;" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <th><a href="#" class="sortheader" >Risk Number<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Discount<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Amendment Info<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Reconsideration
+Date<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >MNDA<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+      <th><a href="#" class="sortheader" >COLA<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+
+    </tr>
+
+    <tr>
+<td><?=$policy['riskNumber'];?></td><td><?=$policy['discount'];?></td><td><?=preg_replace("/\n/", "<br />", $policy['amendment']);?></td><td><?=(!preg_match("/^\-*\d+$/", $policy['reconsiderationDate']))?$policy['reconsiderationDate']:(($policy['reconsiderationDate'] > 0)?gmdate(PAITDATE,$policy['reconsiderationDate']):$policy['reconsiderationDate']);?></td><td><?=$policy['mnda'];?></td><td><?=$policy['cola'];?></td>
+    </tr>
+
+  </tbody>
+</table>
+
+<table id="policyData5" class="sortable" style="text-align: left; width: 100%;" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <th><a href="#" class="sortheader" >Recovery<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >WIB<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Group LTD<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >Extended Partial<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+      <th><a href="#" class="sortheader" >LC<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+      
+      <th><a href="#" class="sortheader" >FIO<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+<th><a href="#" class="sortheader" >Substandard<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+<th><a href="#" class="sortheader" >Own Occ<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+
+
+    </tr>
+
+    <tr>
+<td><?=preg_replace("/\n/", "<br />", $policy['recovery']);?></td>
+<td><?=preg_replace("/\n/", "<br />", $policy['wib']);?></td>
+<td><?= $policy['groupLTD'];?></td>
+<td><?= $policy['extendedPartial'];?></td>
+<td><?=preg_replace("/\n/", "<br />", $policy['lc']);?></td>
+<td><?=preg_replace("/\n/", "<br />", $policy['fio']);?></td>
+<td><?=preg_replace("/\n/", "<br />", $policy['substandard']);?></td>
+<td><?=preg_replace("/\n/", "<br />", $policy['ownocc']);?></td>
+    </tr>
+
+  </tbody>
+</table>
+<? if (is_array($ratefile)): ?>
+<? $data = $ratefile[$policy['importID']]; ?>
+<? if (is_array($data) && is_array($data['data']) && is_array($data['info'])): ?>
+<tr><td colspan="17"><table id="<?=$count;?>extraPolData<?=$personID;?>" class="sortable comphist">
+<thead><caption><?=$data['title']?></caption><tr>
+<? foreach ($data['info'] as $header): ?>
+<? if ($header != "personID" && $header != "policyNumber" && $header != "iuid"): ?>
+<th><?=$header;?></th>
+<? endif; ?>
+<? endforeach; ?>
+</tr></thead><tbody>
+<? foreach ($data['data'] as $row): ?>
+<tr class="hoverable">
+<? foreach ($row as $key => $val): ?>
+<? if ($key != "personID" && ! preg_match("/^\d+$/", $key) && $key != "policyNumber" && $key != "iuid"): ?>
+<td><?=$val;?></td>
+<? endif; ?>
+<? endforeach; ?>
+</tr>
+<? endforeach; ?>
+</tbody></table></td></tr>
+ <? endif; ?>
+<? endif; ?>
+
+<? endforeach; ?>
+</table>
+</div>
+<? endif; ?>
+<script type="text/javascript">
+    Ext.ux.CascadingDialogs.scanHrefs();
+    </script>

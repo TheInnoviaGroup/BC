@@ -1,0 +1,302 @@
+
+Time		Debug Level		Data
+1190915122.38		1		aLib init complete
+1190915122.38		1		1: select * from rawtransactions limit 0,1
+
+1190915122.39		1		DB error: 
+1190915122.39		1		DB error: 
+1190915122.39		1		2: delete from rawtransactions where time = '1190915107.28' AND action = 'edit' AND source = 'user'
+
+1190915122.44		1		PAH1: Here.
+
+1190915122.44		1		PAH2: I care.
+
+1190915122.44		1		User source
+1190915122.44		1		From:
+1190915122.44		2		array(82) {
+  [0]=>
+  string(4) "2545"
+  ["uid"]=>
+  string(4) "2545"
+  [1]=>
+  string(3) "196"
+  ["personID"]=>
+  string(3) "196"
+  [2]=>
+  string(1) "1"
+  ["carrierID"]=>
+  string(1) "1"
+  [3]=>
+  string(1) "0"
+  ["importID"]=>
+  string(1) "0"
+  [4]=>
+  string(3) "241"
+  ["policyNumber"]=>
+  string(3) "241"
+  [5]=>
+  string(10) "1190955661"
+  ["effectiveDate"]=>
+  string(10) "1190955661"
+  [6]=>
+  string(6) "421251"
+  ["policyForm"]=>
+  string(6) "421251"
+  [7]=>
+  string(6) "521521"
+  ["benefitAmount"]=>
+  string(6) "521521"
+  [8]=>
+  string(6) "215521"
+  ["premium"]=>
+  string(6) "215521"
+  [9]=>
+  string(6) "521521"
+  ["premiumTerm"]=>
+  string(6) "521521"
+  [10]=>
+  string(6) "521251"
+  ["eliminationPeriod"]=>
+  string(6) "521251"
+  [11]=>
+  string(9) "521521215"
+  ["benefitPeriod"]=>
+  string(9) "521521215"
+  [12]=>
+  string(0) ""
+  ["riskNumber"]=>
+  string(0) ""
+  [13]=>
+  string(0) ""
+  ["class"]=>
+  string(0) ""
+  [14]=>
+  string(0) ""
+  ["stateAppSigned"]=>
+  string(0) ""
+  [15]=>
+  string(0) ""
+  ["amendment"]=>
+  string(0) ""
+  [16]=>
+  string(1) "0"
+  ["reconsiderationDate"]=>
+  string(1) "0"
+  [17]=>
+  string(1) "0"
+  ["tobaccoUser"]=>
+  string(1) "0"
+  [18]=>
+  string(0) ""
+  ["catastrophic"]=>
+  string(0) ""
+  [19]=>
+  string(0) ""
+  ["discount"]=>
+  string(0) ""
+  [20]=>
+  string(0) ""
+  ["mnda"]=>
+  string(0) ""
+  [21]=>
+  string(2) "No"
+  ["cola"]=>
+  string(2) "No"
+  [22]=>
+  string(1) "0"
+  ["proposed"]=>
+  string(1) "0"
+  [23]=>
+  string(1) "0"
+  ["policyStatus"]=>
+  string(1) "0"
+  [24]=>
+  string(1) "0"
+  ["paidBy"]=>
+  string(1) "0"
+  [25]=>
+  string(9) "Group LTD"
+  ["policyType"]=>
+  string(9) "Group LTD"
+  [26]=>
+  NULL
+  ["residual"]=>
+  NULL
+  [27]=>
+  NULL
+  ["gpi"]=>
+  NULL
+  [28]=>
+  NULL
+  ["ndi"]=>
+  NULL
+  [29]=>
+  NULL
+  ["ltc"]=>
+  NULL
+  [30]=>
+  string(0) ""
+  ["recovery"]=>
+  string(0) ""
+  [31]=>
+  string(0) ""
+  ["wib"]=>
+  string(0) ""
+  [32]=>
+  string(1) "0"
+  ["groupLTD"]=>
+  string(1) "0"
+  [33]=>
+  string(1) "0"
+  ["extendedPartial"]=>
+  string(1) "0"
+  [34]=>
+  string(0) ""
+  ["lc"]=>
+  string(0) ""
+  [35]=>
+  string(0) ""
+  ["fio"]=>
+  string(0) ""
+  [36]=>
+  string(1) "0"
+  ["companyID"]=>
+  string(1) "0"
+  [37]=>
+  string(1) "0"
+  ["lobID"]=>
+  string(1) "0"
+  [38]=>
+  string(0) ""
+  ["lobStatus"]=>
+  string(0) ""
+  [39]=>
+  string(0) ""
+  ["substandard"]=>
+  string(0) ""
+  [40]=>
+  string(0) ""
+  ["ownocc"]=>
+  string(0) ""
+}
+
+1190915122.44		1		To:
+1190915122.44		2		array(28) {
+  ["uid"]=>
+  string(4) "2545"
+  ["personID"]=>
+  string(3) "196"
+  ["policyNumber"]=>
+  string(3) "241"
+  ["policyForm"]=>
+  string(5) "11111"
+  ["benefitAmount"]=>
+  string(6) "521521"
+  ["premium"]=>
+  string(6) "215521"
+  ["premiumTerm"]=>
+  string(6) "521521"
+  ["eliminationPeriod"]=>
+  string(6) "521251"
+  ["benefitPeriod"]=>
+  string(9) "521521215"
+  ["riskNumber"]=>
+  string(0) ""
+  ["class"]=>
+  string(0) ""
+  ["stateAppSigned"]=>
+  string(0) ""
+  ["amendment"]=>
+  string(0) ""
+  ["tobaccoUser"]=>
+  string(1) "0"
+  ["catastrophic"]=>
+  string(0) ""
+  ["discount"]=>
+  string(0) ""
+  ["mnda"]=>
+  string(0) ""
+  ["carrierID"]=>
+  string(1) "1"
+  ["policyStatus"]=>
+  string(1) "0"
+  ["policyType"]=>
+  string(9) "Group LTD"
+  ["paidBy"]=>
+  string(1) "0"
+  ["recovery"]=>
+  string(0) ""
+  ["wib"]=>
+  string(0) ""
+  ["groupLTD"]=>
+  string(1) "0"
+  ["extendedPartial"]=>
+  string(1) "0"
+  ["lc"]=>
+  string(0) ""
+  ["fio"]=>
+  string(0) ""
+  ["effectiveDate"]=>
+  int(1190955661)
+}
+
+1190915122.44		1		Checking policyForm
+1190915122.44		1		PAH3: insert INTO `personaccounthistory` SET `personID` = '196', `source` = 'user', `username` = 'bryan', `action` = 'edit', `time` = '1190915107.28', `field` = 'policyinfo.policyForm', `from` = '421251', `to` = '11111' 
+
+1190915122.48		1		Checking 0
+1190915122.48		1		Checking 1
+1190915122.48		1		Checking 2
+1190915122.48		1		Checking 3
+1190915122.48		1		Checking importID
+1190915122.48		1		Checking 4
+1190915122.48		1		Checking 5
+1190915122.48		1		Checking 6
+1190915122.48		1		Checking 7
+1190915122.48		1		Checking 8
+1190915122.48		1		Checking 9
+1190915122.48		1		Checking 10
+1190915122.48		1		Checking 11
+1190915122.48		1		Checking 12
+1190915122.48		1		Checking 13
+1190915122.48		1		Checking 14
+1190915122.48		1		Checking 15
+1190915122.48		1		Checking 16
+1190915122.48		1		Checking reconsiderationDate
+1190915122.48		1		Checking 17
+1190915122.48		1		Checking 18
+1190915122.48		1		Checking 19
+1190915122.48		1		Checking 20
+1190915122.48		1		Checking 21
+1190915122.48		1		Checking cola
+1190915122.48		1		Checking 22
+1190915122.48		1		Checking proposed
+1190915122.48		1		Checking 23
+1190915122.48		1		Checking 24
+1190915122.48		1		Checking 25
+1190915122.48		1		Checking 26
+1190915122.48		1		Checking residual
+1190915122.48		1		Checking 27
+1190915122.48		1		Checking gpi
+1190915122.48		1		Checking 28
+1190915122.48		1		Checking ndi
+1190915122.48		1		Checking 29
+1190915122.48		1		Checking ltc
+1190915122.48		1		Checking 30
+1190915122.48		1		Checking 31
+1190915122.48		1		Checking 32
+1190915122.48		1		Checking 33
+1190915122.48		1		Checking 34
+1190915122.48		1		Checking 35
+1190915122.48		1		Checking 36
+1190915122.48		1		Checking companyID
+1190915122.48		1		Checking 37
+1190915122.48		1		Checking lobID
+1190915122.48		1		Checking 38
+1190915122.48		1		Checking lobStatus
+1190915122.48		1		Checking 39
+1190915122.48		1		Checking substandard
+1190915122.48		1		Checking 40
+1190915122.49		1		Checking ownocc
+1190915122.49		1		1: select * from rawtransactions limit 0,1
+
+1190915122.49		1		Debug Info Printed.

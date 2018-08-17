@@ -1,0 +1,308 @@
+<? print "You should see this."; ?>
+
+
+<? if ($error): ?>
+<div class="errorMessage"><?=$error;?></div>
+<? endif; ?>
+<form  class="wide" enctype="multipart/form-data" method="post" action="<?=$self;?>">
+<input type="hidden" name="file" value="<?=$file;?>" />
+<input type="hidden" name="step" value="<?=$step;?>" />
+
+<? switch ($step): ?>
+<? case "1": ?>
+<fieldset><div class="notes"><h4>Please choose a carrier and/or company.</h4>
+<p>Which company is this spreadsheet related to? Please choose a company from the drop down. If this is a company census only, and not a bid from a carrier, leave carrier blank.</p>
+</div>
+<div class="required">
+<label for="Company">Company:</label>
+<select name="company" id="company" class="selectOne" tabindex="101">
+<? foreach ($companies as $key => $val): ?>
+<option value="<?=$val;?>"><?=$key;?></option>
+<? endforeach;?>
+</select>
+</div>
+<div class="required">
+<label for="Carrier">Carrier:</label>
+<select name="carrier" id="carrier" class="selectOne" tabindex="101">
+<? foreach ($carriers as $key => $val): ?>
+<option value="<?=$val;?>"><?=$key;?></option>
+<? endforeach;?>
+</select>
+</div>
+<div class="submit">			<input type="submit" value="Next &rarr;" name="next"/></div>
+
+<? break; ?>
+<? case "2": ?>
+<input type="hidden" name="carrier" value="<?=$carrier;?>" />
+<input type="hidden" name="company" value="<?=$company;?>" />
+<fieldset><div class="notes"><h4>Please choose a worksheet.</h4>
+<p>This spreadsheet file has multiple worksheets. Please select the worksheet you would like to import. You may click on the worksheet name to show a ten by ten section of it's data.</p>
+</div>
+<? for( $ws_num=0; $ws_num<count($xl->worksheet['name']); $ws_num++ )
+     // This was stolen from the excel people. I need to make an alib object for it. Later.
+	{
+		print "<b>";
+?>
+<input name="worksheet" id="worksheet<?=$ws_num;?>" type="radio" class="inputRadio" tabindex="10<?=$ws_num;?>" value="<?=$ws_num;?>" />
+<? print "<a href=\"javascript:void(0);\" onclick=\"Menu.Appear('sheet".$ws_num."')\">Worksheet: \"";
+		if( $xl->worksheet['unicode'][$ws_num] ) {
+			print uc2html($xl->worksheet['name'][$ws_num]);
+		} else
+			print $xl->worksheet['name'][$ws_num];
+
+		print "\"</a></b>";
+		$ws = $xl->worksheet['data'][$ws_num];
+
+		if( is_array($ws) &&
+		    isset($ws['max_row']) && isset($ws['max_col']) ) {
+		  // echo "\n<br><br><table border=1 cellspacing=0 cellpadding=2>\n";
+
+		  print "\n<div class=\"hideme\" style=\"display:none;\" id=\"sheet".$ws_num."\"><br><br><table class=\"sortable worksheet\" id=\"worksheet".$ws_num."\">\n";
+
+		 print "<tr><td>&nbsp;</td>\n";
+		 for( $j=0; $j<=10; $j++ ) {
+			print "<td class=index>&nbsp;";
+			if( $j>25 ) print chr((int)($j/26)+64);
+			print chr(($j % 26) + 65)."&nbsp;</td>";
+		 }
+
+		 for( $i=0; $i<=10; $i++ ) {
+		  print "<tr class=\"hoverable\"><td class=index>".($i+1)."</td>\n";
+		  if(isset($ws['cell'][$i]) && is_array($ws['cell'][$i]) ) {
+		   for( $j=0; $j<=10; $j++ ) {
+
+			if( ( is_array($ws['cell'][$i]) ) &&
+			    ( isset($ws['cell'][$i][$j]) )
+			   ){
+
+			 // print cell data
+			 print "<td class=\"";
+			 $data = $ws['cell'][$i][$j];
+
+			 $font = $ws['cell'][$i][$j]['font'];
+			 $style = " style ='".ExcelFont::ExcelToCSS($exc->fonts[$font])."'";
+
+		   switch ($data['type']) {
+			// string
+			case 0:
+				print "dt_string\"".$style.">";
+				$ind = $data['data'];
+				if( $xl->sst['unicode'][$ind] ) {
+					$s = uc2html($xl->sst['data'][$ind]);
+				} else
+					$s = $xl->sst['data'][$ind];
+				if( strlen(trim($s))==0 )
+					print "&nbsp;";
+				else
+					print $s;
+				break;
+			// integer number
+			case 1:
+				print "dt_int\"".$style.">&nbsp;";
+				print $data['data'];
+				break;
+			// float number
+			case 2:
+				print "dt_float\"".$style.">&nbsp;";
+				echo $data['data'];
+				break;
+			// date
+			case 3:
+				print "dt_date\"".$style.">&nbsp;";
+
+				$ret = $data[data];//str_replace ( " 00:00:00", "", gmdate("d-m-Y H:i:s",$xl->xls2tstamp($data[data])) );
+				echo ( $ret );
+				break;
+			case 4: //string
+			break;
+			case 5: //hlink	
+			print "dt_hlink\"".$style.">";
+			
+			print "<a href=\"";
+			print uc2html($data['hlink']);
+			print "\">";
+			print uc2html($data['data']);
+			print "</a>";
+			break;
+				
+			default:
+				print "dt_unknown\"".$style."> &nbsp;";
+				break;
+		   }
+			 print "</td>\n";
+			} else {
+				print "<td class=empty>&nbsp;</td>\n";
+			}
+		   }
+		  } else {
+			// print an empty row
+			for( $j=0; $j<=10; $j++ )
+				print "<td class=empty>&nbsp;</td>";
+			print "\n";
+		  }
+		  print "</tr>\n";
+		 }
+
+		 echo "</table></div><br>\n";
+		} else {
+			// emtpty worksheet
+			print "<b> - empty</b><br>\n";
+		}
+		print "<br>";
+	}
+	 ?>
+<div class="submit">			<input type="submit" value="Next &rarr;" name="next"/></div>
+
+<? break; ?>
+<? case "3": ?>
+<input type="hidden" name="carrier" value="<?=$carrier;?>" />
+<input type="hidden" name="company" value="<?=$company;?>" />
+<input type="hidden" name="sheetnum" value="<?=$sheetnum;?>" />
+<fieldset><div class="notes"><h4>Please select the row with the data headers.</h4>
+<p>Below is the data from the worksheet you selected. Please select the row which contains the headers (Name, Hire Date, Title, etc).</p>
+</div>
+<?
+		if( is_array($ws) &&
+		    isset($ws['max_row']) && isset($ws['max_col']) ) {
+                   $max_row = ($ws['max_row'] > 100)?100:$ws['max_row'];
+                   $max_col = ($ws['max_col'] > 15)?15:$ws['max_col'];
+		  // echo "\n<br><br><table border=1 cellspacing=0 cellpadding=2>\n";
+
+		  print "\n<div class=\"hideme\" id=\"sheet".$sheetnum."\"><br><br><table class=\"sortable worksheet\" id=\"worksheet".$sheetnum."\">\n";
+
+		 print "<tr><td>&nbsp;</td><td>&nbsp;</td>\n";
+		 for( $j=0; $j<=$max_col; $j++ ) {
+			print "<td class=index>&nbsp;";
+			if( $j>25 ) print chr((int)($j/26)+64);
+			print chr(($j % 26) + 65)."&nbsp;</td>";
+		 }
+
+		 for( $i=0; $i<=$max_row; $i++ ) {
+		  print "<tr class=\"hoverable\"><td>";
+?>
+<input name="headerrow" id="headerrow<?=$i;?>" type="radio" class="inputRadio" tabindex="10<?=$i;?>" value="<?=$i;?>" />
+<?
+                  print "</td><td class=index>".($i+1)."</td>\n";
+		  if(isset($ws['cell'][$i]) && is_array($ws['cell'][$i]) ) {
+		   for( $j=0; $j<=$max_col; $j++ ) {
+
+			if( ( is_array($ws['cell'][$i]) ) &&
+			    ( isset($ws['cell'][$i][$j]) )
+			   ){
+
+			 // print cell data
+			 print "<td class=\"";
+			 $data = $ws['cell'][$i][$j];
+
+			 $font = $ws['cell'][$i][$j]['font'];
+			 $style = " style ='".ExcelFont::ExcelToCSS($exc->fonts[$font])."'";
+
+		   switch ($data['type']) {
+			// string
+			case 0:
+				print "dt_string\"".$style.">";
+				$ind = $data['data'];
+				if( $xl->sst['unicode'][$ind] ) {
+					$s = uc2html($xl->sst['data'][$ind]);
+				} else
+					$s = $xl->sst['data'][$ind];
+				if( strlen(trim($s))==0 )
+					print "&nbsp;";
+				else
+					print $s;
+				break;
+			// integer number
+			case 1:
+				print "dt_int\"".$style.">&nbsp;";
+				print $data['data'];
+				break;
+			// float number
+			case 2:
+				print "dt_float\"".$style.">&nbsp;";
+				echo $data['data'];
+				break;
+			// date
+			case 3:
+				print "dt_date\"".$style.">&nbsp;";
+
+				$ret = $data[data];//str_replace ( " 00:00:00", "", gmdate("d-m-Y H:i:s",$xl->xls2tstamp($data[data])) );
+				echo ( $ret );
+				break;
+			case 4: //string
+			break;
+			case 5: //hlink	
+			print "dt_hlink\"".$style.">";
+			
+			print "<a href=\"";
+			print uc2html($data['hlink']);
+			print "\">";
+			print uc2html($data['data']);
+			print "</a>";
+			break;
+				
+			default:
+				print "dt_unknown\"".$style."> &nbsp;";
+				break;
+		   }
+			 print "</td>\n";
+			} else {
+				print "<td class=empty>&nbsp;</td>\n";
+			}
+		   }
+		  } else {
+			// print an empty row
+			for( $j=0; $j<=$max_col; $j++ )
+				print "<td class=empty>&nbsp;</td>";
+			print "\n";
+		  }
+		  print "</tr>\n";
+		 }
+
+		 echo "</table></div><br>\n";
+		} else {
+			// emtpty worksheet
+			print "<b> - empty</b><br>\n";
+		}
+		print "<br>";
+?>
+<div class="submit">			<input type="submit" value="Next &rarr;" name="next"/></div>
+<? break; ?>
+<? case "4": ?>
+<input type="hidden" name="carrier" value="<?=$carrier;?>" />
+<input type="hidden" name="company" value="<?=$company;?>" />
+<input type="hidden" name="sheetnum" value="<?=$sheetnum;?>" />
+<input type="hidden" name="headerrow" value="<?=$headerRowNum;?>" />
+<fieldset><div class="notes"><h4>Normalize headers...</h4>
+<p>Because the headers aren't guaranteed to follow a standard format, please choose what type the header is from the drop down next to it. All benefit and compensation information should be set to "Leave As Is." We have done our best to identify as many headers as possible.</p>
+</div>
+<div class="required">
+<label for="defaultStatus"> :</label>
+<select name="defaultStatus">
+<? foreach($personStatus as $num => $status) ?>
+<option>$status</option>
+<? endforeach; ?>
+</select></div>
+<? $count = 0; ?>
+<? foreach ($headerRow as $header): ?>
+<? $headername = preg_replace('/[\s]+/', '', $header);?>
+<div class="required">
+<label for="<?=$headername;?>"><?=$header;?> :</label>
+<select name="headerAction[<?=$headername;?>]" id="<?=$headername;?>" class="selectOne" tabindex="<?=$count + 100;?>">
+<? foreach ($headerMap as $key => $val): ?>
+<option value="<?=$val;?>" <?=($mapped[$header] == $key)?"selected":"";?>><?=$key;?></option>
+<? endforeach;?>
+</select><span class="example">Example: <?=$exampleRow[$count];?></span>
+</div>
+<? $count++; ?>
+
+
+<? endforeach;?>
+
+<div class="submit">			<input type="submit" value="Finish" name="next"/></div>
+
+<? break; ?>
+<? case "5": ?>
+
+<div class="message"><?=$message;?></div>
+<? endswitch; ?>
+</fieldset></form>
